@@ -1,3 +1,39 @@
 <resources>
     <string name="app_name">Coin Master</string>
+    
+    <!-- Onboarding Step 1 -->
+    <string name="ob_welcome_title">Welcome to Coin Master</string>
+    <string name="ob_welcome_desc">Let\'s get your profile set up so you can take control of your money.</string>
+    <string name="ob_label_name">What should we call you?</string>
+    <string name="ob_hint_name">Your Name</string>
+    <string name="ob_label_currency">Select Preferred Currency</string>
+    <string name="ob_error_name_empty">Name cannot be empty</string>
+    
+    <!-- Onboarding Step 2 -->
+    <string name="ob_account_title">Create Your First Account</string>
+    <string name="ob_account_desc">All zero-based budgets start with tracking where your money resides.</string>
+    <string name="ob_hint_account_name">Account Name (e.g. Bank, Cash)</string>
+    <string name="ob_hint_opening_balance">Opening Balance</string>
+    <string name="ob_label_account_type">Account Type</string>
+    <string name="ob_error_acc_name_empty">Account name cannot be empty</string>
+    <string name="ob_error_balance_invalid">Please enter a valid balance</string>
+    
+    <!-- Onboarding Step 3 -->
+    <string name="ob_income_title">Declare Monthly Income</string>
+    <string name="ob_income_desc">How much income do you expect to receive this month? We will split this into Needs, Wants, and Savings envelopes.</string>
+    <string name="ob_hint_income">Expected Monthly Income</string>
+    <string name="ob_info_zbb">Zero-Based Budgeting rules dictate that you must give every rupee a job before the month starts.</string>
+    <string name="ob_error_income_invalid">Monthly income must be greater than zero</string>
+    
+    <!-- Navigation & Common -->
+    <string name="btn_next">Next</string>
+    <string name="btn_previous">Back</string>
+    <string name="btn_get_started">Get Started</string>
+    <string name="btn_complete">Complete Setup</string>
+    
+    <!-- Account Types -->
+    <string name="acc_type_cash">Cash</string>
+    <string name="acc_type_bank">Bank Account</string>
+    <string name="acc_type_card">Credit Card</string>
+    <string name="acc_type_invest">Investments</string>
 </resources>

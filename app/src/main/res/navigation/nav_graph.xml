@@ -3,12 +3,49 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/placeholderFragment">
+    app:startDestination="@id/onboardingFragment">
+
+    <fragment
+        android:id="@+id/onboardingFragment"
+        android:name="com.rushi.coinmaster.ui.onboarding.OnboardingFragment"
+        android:label="OnboardingFragment"
+        tools:layout="@layout/fragment_onboarding">
+        <action
+            android:id="@+id/action_onboardingFragment_to_accountsFragment"
+            app:destination="@id/accountsFragment"
+            app:popUpTo="@id/nav_graph"
+            app:popUpToInclusive="true" />
+    </fragment>
 
     <fragment
         android:id="@+id/placeholderFragment"
         android:name="com.rushi.coinmaster.ui.PlaceholderFragment"
         android:label="PlaceholderFragment"
-        tools:layout="@layout/fragment_placeholder" />
+        tools:layout="@layout/fragment_placeholder">
+        <action
+            android:id="@+id/action_placeholderFragment_to_accountsFragment"
+            app:destination="@id/accountsFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/accountsFragment"
+        android:name="com.rushi.coinmaster.ui.accounts.AccountsFragment"
+        android:label="AccountsFragment"
+        tools:layout="@layout/fragment_accounts">
+        <action
+            android:id="@+id/action_accountsFragment_to_addEditAccountFragment"
+            app:destination="@id/addEditAccountFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/addEditAccountFragment"
+        android:name="com.rushi.coinmaster.ui.accounts.AddEditAccountFragment"
+        android:label="AddEditAccountFragment"
+        tools:layout="@layout/fragment_add_edit_account">
+        <argument
+            android:name="accountId"
+            app:argType="long"
+            android:defaultValue="0L" />
+    </fragment>
 
 </navigation>

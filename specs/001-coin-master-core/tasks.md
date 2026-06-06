@@ -52,13 +52,13 @@
 
 **Independent Test**: Clear app storage, launch app, complete 3 steps, verify Dashboard appears and data is persisted in Room/DataStore.
 
-- [ ] T016 [US1] Create `OnboardingViewModel` to manage 3-step state in `app/src/main/java/com/rushi/coinmaster/ui/onboarding/OnboardingViewModel.kt`
-- [ ] T017 [US1] Implement `OnboardingFragment` with `ViewPager2` in `app/src/main/java/com/rushi/coinmaster/ui/onboarding/OnboardingFragment.kt`
-- [ ] T018 [US1] Implement Step 1: `NameCurrencyFragment` for name and currency selection
-- [ ] T019 [US1] Implement Step 2: `AddFirstAccountFragment` to create initial account via `AccountRepository`
-- [ ] T020 [US1] Implement Step 3: `SetIncomeFragment` to set monthly income and seed default categories
-- [ ] T021 [US1] Implement launch logic in `MainActivity` to check `ONBOARDING_COMPLETE` flag
-- [ ] T022 [P] [US1] Unit test `OnboardingViewModel` ensuring steps validate and persist correctly
+- [x] T016 [US1] Create `OnboardingViewModel` to manage 3-step state in `app/src/main/java/com/rushi/coinmaster/ui/onboarding/OnboardingViewModel.kt`
+- [x] T017 [US1] Implement `OnboardingFragment` with `ViewPager2` in `app/src/main/java/com/rushi/coinmaster/ui/onboarding/OnboardingFragment.kt`
+- [x] T018 [US1] Implement Step 1: `NameCurrencyFragment` for name and currency selection
+- [x] T019 [US1] Implement Step 2: `AddFirstAccountFragment` to create initial account via `AccountRepository`
+- [x] T020 [US1] Implement Step 3: `SetIncomeFragment` to set monthly income and seed default categories
+- [x] T021 [US1] Implement launch logic in `MainActivity` to check `ONBOARDING_COMPLETE` flag
+- [x] T022 [P] [US1] Unit test `OnboardingViewModel` ensuring steps validate and persist correctly
 
 ---
 
@@ -68,13 +68,13 @@
 
 **Independent Test**: Add 3 accounts (Cash, Bank, Credit Card), verify Net Worth equals (Cash + Bank - Credit Card).
 
-- [ ] T023 [US2] Implement `AccountRepository` to handle account CRUD in `app/src/main/java/com/rushi/coinmaster/data/repository/AccountRepository.kt`
-- [ ] T024 [US2] Implement `GetNetWorthUseCase` to sum active account balances in `app/src/main/java/com/rushi/coinmaster/domain/usecase/GetNetWorthUseCase.kt`
-- [ ] T025 [US2] Implement `AccountsViewModel` exposing account list and net worth in `app/src/main/java/com/rushi/coinmaster/ui/accounts/AccountsViewModel.kt`
-- [ ] T026 [US2] Create `AccountsFragment` with `RecyclerView` and Net Worth header
-- [ ] T027 [US2] Create `AddEditAccountFragment` with form for name, type, color, and icon
-- [ ] T028 [US2] Implement soft delete and Undo Snackbar logic for accounts
-- [ ] T029 [P] [US2] Unit test `AccountRepository` and `GetNetWorthUseCase`
+- [x] T023 [US2] Implement `AccountRepository` to handle account CRUD in `app/src/main/java/com/rushi/coinmaster/data/repository/AccountRepository.kt`
+- [x] T024 [US2] Implement `GetNetWorthUseCase` to sum active account balances in `app/src/main/java/com/rushi/coinmaster/domain/usecase/GetNetWorthUseCase.kt`
+- [x] T025 [US2] Implement `AccountsViewModel` exposing account list and net worth in `app/src/main/java/com/rushi/coinmaster/ui/accounts/AccountsViewModel.kt`
+- [x] T026 [US2] Create `AccountsFragment` with `RecyclerView` and Net Worth header
+- [x] T027 [US2] Create `AddEditAccountFragment` with form for name, type, color, and icon
+- [x] T028 [US2] Implement soft delete and Undo Snackbar logic for accounts
+- [x] T029 [P] [US2] Unit test `AccountRepository` and `GetNetWorthUseCase`
 
 ---
 
