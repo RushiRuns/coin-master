@@ -21,13 +21,13 @@
 
 **Purpose**: Project initialization and core utilities
 
-- [ ] T001 Create project package structure as defined in plan.md
-- [ ] T002 Configure `build.gradle.kts` with Hilt, Room, Navigation, and MPAndroidChart dependencies
-- [ ] T003 Initialize `CoinMasterApplication` class with `@HiltAndroidApp` in `app/src/main/java/com/rushi/coinmaster/CoinMasterApplication.kt`
-- [ ] T004 Implement `MoneyMath` utility for `Long` (paise) arithmetic in `app/src/main/java/com/rushi/coinmaster/util/MoneyMath.kt`
-- [ ] T005 Implement `LocaleHelper` for in-app language switching in `app/src/main/java/com/rushi/coinmaster/util/LocaleHelper.kt`
-- [ ] T006 Implement `CurrencyFormatter` and `DateFormatter` in `app/src/main/java/com/rushi/coinmaster/util/CurrencyFormatter.kt`
-- [ ] T007 Configure Hilt `DatabaseModule` and `PreferencesModule` in `app/src/main/java/com/rushi/coinmaster/di/`
+- [x] T001 Create project package structure as defined in plan.md
+- [x] T002 Configure `build.gradle.kts` with Hilt, Room, Navigation, and MPAndroidChart dependencies
+- [x] T003 Initialize `CoinMasterApplication` class with `@HiltAndroidApp` in `app/src/main/java/com/rushi/coinmaster/CoinMasterApplication.kt`
+- [x] T004 Implement `MoneyMath` utility for `Long` (paise) arithmetic in `app/src/main/java/com/rushi/coinmaster/util/MoneyMath.kt`
+- [x] T005 Implement `LocaleHelper` for in-app language switching in `app/src/main/java/com/rushi/coinmaster/util/LocaleHelper.kt`
+- [x] T006 Implement `CurrencyFormatter` and `DateFormatter` in `app/src/main/java/com/rushi/coinmaster/util/CurrencyFormatter.kt`
+- [x] T007 Configure Hilt `DatabaseModule` and `PreferencesModule` in `app/src/main/java/com/rushi/coinmaster/di/`
 
 ---
 
@@ -35,14 +35,14 @@
 
 **Purpose**: Core database schema and repository infrastructure
 
-- [ ] T008 [P] Define `AccountEntity` and `AccountDao` in `app/src/main/java/com/rushi/coinmaster/data/local/`
-- [ ] T009 [P] Define `CategoryEntity` and `CategoryDao` in `app/src/main/java/com/rushi/coinmaster/data/local/`
-- [ ] T010 [P] Define `TransactionEntity` and `TransactionDao` in `app/src/main/java/com/rushi/coinmaster/data/local/`
-- [ ] T011 [P] Define `BudgetMonthEntity`, `EnvelopeAllocationEntity`, and their DAOs in `app/src/main/java/com/rushi/coinmaster/data/local/`
-- [ ] T012 Initialize `CoinMasterDatabase` with all entities in `app/src/main/java/com/rushi/coinmaster/data/local/database/CoinMasterDatabase.kt`
-- [ ] T013 Implement `AppPreferences` using DataStore in `app/src/main/java/com/rushi/coinmaster/data/preferences/AppPreferences.kt`
-- [ ] T014 Create base `nav_graph.xml` with placeholder destinations in `app/src/main/res/navigation/nav_graph.xml`
-- [ ] T015 [P] Implement integration tests for `AccountDao` and `CategoryDao` (Principle X) in `app/src/androidTest/java/com/rushi/coinmaster/data/`
+- [x] T008 [P] Define `AccountEntity` and `AccountDao` in `app/src/main/java/com/rushi/coinmaster/data/local/`
+- [x] T009 [P] Define `CategoryEntity` and `CategoryDao` in `app/src/main/java/com/rushi/coinmaster/data/local/`
+- [x] T010 [P] Define `TransactionEntity` and `TransactionDao` in `app/src/main/java/com/rushi/coinmaster/data/local/`
+- [x] T011 [P] Define `BudgetMonthEntity`, `EnvelopeAllocationEntity`, and their DAOs in `app/src/main/java/com/rushi/coinmaster/data/local/`
+- [x] T012 Initialize `CoinMasterDatabase` with all entities in `app/src/main/java/com/rushi/coinmaster/data/local/database/CoinMasterDatabase.kt`
+- [x] T013 Implement `AppPreferences` using DataStore in `app/src/main/java/com/rushi/coinmaster/data/preferences/AppPreferences.kt`
+- [x] T014 Create base `nav_graph.xml` with placeholder destinations in `app/src/main/res/navigation/nav_graph.xml`
+- [x] T015 [P] Implement integration tests for `AccountDao` and `CategoryDao` (Principle X) in `app/src/androidTest/java/com/rushi/coinmaster/data/`
 
 ---
 
