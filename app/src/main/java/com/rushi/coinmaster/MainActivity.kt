@@ -41,7 +41,7 @@ class MainActivity : AppCompatActivity() {
         binding.bottomNavigation.setupWithNavController(navController)
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
-            if (destination.id == R.id.accountsFragment || destination.id == R.id.budgetFragment) {
+            if (destination.id == R.id.homeFragment || destination.id == R.id.accountsFragment || destination.id == R.id.budgetFragment) {
                 binding.bottomNavigation.visibility = View.VISIBLE
             } else {
                 binding.bottomNavigation.visibility = View.GONE
@@ -53,7 +53,7 @@ class MainActivity : AppCompatActivity() {
                 appPreferences.isOnboardingComplete.collect { complete ->
                     val graph = navController.navInflater.inflate(R.navigation.nav_graph)
                     if (complete) {
-                        graph.setStartDestination(R.id.accountsFragment)
+                        graph.setStartDestination(R.id.homeFragment)
                     } else {
                         graph.setStartDestination(R.id.onboardingFragment)
                     }
