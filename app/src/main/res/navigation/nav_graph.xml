@@ -48,4 +48,43 @@
             android:defaultValue="0L" />
     </fragment>
 
+    <fragment
+        android:id="@+id/budgetFragment"
+        android:name="com.rushi.coinmaster.ui.budget.BudgetFragment"
+        android:label="BudgetFragment"
+        tools:layout="@layout/fragment_budget">
+        <action
+            android:id="@+id/action_budgetFragment_to_addEditEnvelopeFragment"
+            app:destination="@id/addEditEnvelopeFragment" />
+        <action
+            android:id="@+id/action_budgetFragment_to_monthSetupFragment"
+            app:destination="@id/monthSetupFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/addEditEnvelopeFragment"
+        android:name="com.rushi.coinmaster.ui.budget.AddEditEnvelopeFragment"
+        android:label="AddEditEnvelopeFragment"
+        tools:layout="@layout/fragment_add_edit_envelope">
+        <argument
+            android:name="categoryId"
+            app:argType="long"
+            android:defaultValue="0L" />
+        <argument
+            android:name="bucketTypeOrdinal"
+            app:argType="integer"
+            android:defaultValue="-1" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/monthSetupFragment"
+        android:name="com.rushi.coinmaster.ui.budget.MonthSetupFragment"
+        android:label="MonthSetupFragment"
+        tools:layout="@layout/fragment_month_setup">
+        <argument
+            android:name="budgetMonthId"
+            app:argType="integer"
+            android:defaultValue="0" />
+    </fragment>
+
 </navigation>

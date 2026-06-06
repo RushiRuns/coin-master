@@ -9,7 +9,7 @@ import androidx.room.PrimaryKey
 @Entity(
     tableName = "envelope_allocations",
     indices = [
-        Index("budget_month_id"),
+        Index(value = ["budget_month_id", "category_id"], unique = true),
         Index("category_id")
     ],
     foreignKeys = [

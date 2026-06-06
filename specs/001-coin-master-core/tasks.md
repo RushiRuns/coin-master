@@ -84,14 +84,14 @@
 
 **Independent Test**: Set income, assign all money to envelopes, activate budget. Try to activate with ₹1 imbalance and verify it's blocked.
 
-- [ ] T030 [US3] Implement `BudgetRepository` for budget month and allocation management
-- [ ] T031 [US3] Implement `ComputeBucketSplitUseCase` (50/30/20 with remainder to Savings) in `app/src/main/java/com/rushi/coinmaster/domain/usecase/ComputeBucketSplitUseCase.kt`
-- [ ] T032 [US3] Implement `ValidateZeroBalanceUseCase` to enforce zero-based budgeting in `app/src/main/java/com/rushi/coinmaster/domain/usecase/ValidateZeroBalanceUseCase.kt`
-- [ ] T033 [US3] Implement `BudgetViewModel` with live unallocated counter in `app/src/main/java/com/rushi/coinmaster/ui/budget/BudgetViewModel.kt`
-- [ ] T034 [US3] Create `BudgetFragment` to display buckets and current activation status
-- [ ] T035 [US3] Create `AddEditEnvelopeFragment` to manage categories within buckets
-- [ ] T036 [US3] Create `MonthSetupFragment` for income declaration and percentage adjustment
-- [ ] T037 [P] [US3] Unit test `ValidateZeroBalanceUseCase` with various allocation scenarios
+- [x] T030 [US3] Implement `BudgetRepository` for budget month and allocation management
+- [x] T031 [US3] Implement `ComputeBucketSplitUseCase` (50/30/20 with remainder to Savings) in `app/src/main/java/com/rushi/coinmaster/domain/usecase/ComputeBucketSplitUseCase.kt`
+- [x] T032 [US3] Implement `ValidateZeroBalanceUseCase` to enforce zero-based budgeting in `app/src/main/java/com/rushi/coinmaster/domain/usecase/ValidateZeroBalanceUseCase.kt`
+- [x] T033 [US3] Implement `BudgetViewModel` with live unallocated counter in `app/src/main/java/com/rushi/coinmaster/ui/budget/BudgetViewModel.kt`
+- [x] T034 [US3] Create `BudgetFragment` to display buckets and current activation status
+- [x] T035 [US3] Create `AddEditEnvelopeFragment` to manage categories within buckets
+- [x] T036 [US3] Create `MonthSetupFragment` for income declaration and percentage adjustment
+- [x] T037 [P] [US3] Unit test `ValidateZeroBalanceUseCase` with various allocation scenarios
 
 ---
 

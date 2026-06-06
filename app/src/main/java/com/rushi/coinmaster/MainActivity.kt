@@ -2,11 +2,13 @@ package com.rushi.coinmaster
 
 import android.content.Context
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.setupWithNavController
 import com.rushi.coinmaster.data.preferences.AppPreferences
 import com.rushi.coinmaster.databinding.ActivityMainBinding
 import com.rushi.coinmaster.util.LocaleHelper
@@ -34,6 +36,17 @@ class MainActivity : AppCompatActivity() {
         // Dynamically set start destination based on onboarding completion status
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         val navController = navHostFragment.navController
+
+        // Bind BottomNavigationView
+        binding.bottomNavigation.setupWithNavController(navController)
+
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            if (destination.id == R.id.accountsFragment || destination.id == R.id.budgetFragment) {
+                binding.bottomNavigation.visibility = View.VISIBLE
+            } else {
+                binding.bottomNavigation.visibility = View.GONE
+            }
+        }
 
         lifecycleScope.launch {
             lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
