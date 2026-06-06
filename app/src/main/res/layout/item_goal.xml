@@ -2,13 +2,16 @@
 <com.google.android.material.card.MaterialCardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="12dp"
-    app:cardCornerRadius="16dp"
-    app:cardElevation="2dp"
-    app:strokeWidth="0dp">
+    android:layout_marginStart="16dp"
+    android:layout_marginEnd="16dp"
+    android:layout_marginTop="8dp"
+    android:layout_marginBottom="8dp"
+    app:cardCornerRadius="4dp"
+    app:cardElevation="1dp"
+    app:strokeWidth="1dp"
+    app:strokeColor="@color/divider">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -20,15 +23,17 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
+            <!-- Goal Name (Subtitle 1) -->
             <TextView
                 android:id="@+id/tv_goal_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="MacBook Pro"
                 android:textColor="@color/text_primary"
-                android:textSize="18sp"
+                android:textSize="16sp"
                 android:textStyle="bold" />
 
+            <!-- Goal Category (Caption) -->
             <TextView
                 android:id="@+id/tv_goal_category"
                 android:layout_width="wrap_content"
@@ -41,24 +46,31 @@
 
             <ImageButton
                 android:id="@+id/btn_delete_goal"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginTop="-8dp"
+                android:layout_marginBottom="-8dp"
+                android:layout_marginEnd="-8dp"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentTop="true"
+                android:padding="12dp"
                 android:background="?android:attr/selectableItemBackgroundBorderless"
-                android:src="@android:drawable/ic_menu_delete"
-                android:contentDescription="Delete Goal"
+                android:src="@drawable/ic_delete"
+                android:contentDescription="@string/cd_delete_goal"
                 app:tint="@color/text_secondary" />
 
             <ImageButton
                 android:id="@+id/btn_edit_goal"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginTop="-8dp"
+                android:layout_marginBottom="-8dp"
                 android:layout_toStartOf="@id/btn_delete_goal"
                 android:layout_alignParentTop="true"
+                android:padding="12dp"
                 android:background="?android:attr/selectableItemBackgroundBorderless"
-                android:src="@android:drawable/ic_menu_edit"
-                android:contentDescription="Edit Goal"
+                android:src="@drawable/ic_edit"
+                android:contentDescription="@string/cd_edit_goal"
                 app:tint="@color/text_secondary" />
         </RelativeLayout>
 
@@ -86,20 +98,21 @@
                 android:textSize="14sp" />
         </RelativeLayout>
 
+        <!-- Linear Progress Indicator (MD2: 4dp thick, square ends) -->
         <com.google.android.material.progressindicator.LinearProgressIndicator
             android:id="@+id/progress_goal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            app:trackCornerRadius="4dp"
-            app:trackThickness="8dp"
+            app:trackThickness="4dp"
+            app:trackCornerRadius="0dp"
             app:indicatorColor="@color/primary"
-            app:trackColor="#E0E0E0" />
+            app:trackColor="@color/divider" />
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp">
+            android:layout_marginTop="8dp">
 
             <TextView
                 android:id="@+id/tv_goal_duration"
@@ -124,17 +137,18 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_marginTop="12dp"
-            android:layout_marginBottom="12dp"
-            android:background="#E0E0E0" />
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            android:background="@color/divider" />
 
+        <!-- Monthly Savings Needed (Body 2) -->
         <TextView
             android:id="@+id/tv_monthly_savings_needed"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Monthly savings needed: ₹8,000/month"
             android:textColor="@color/text_primary"
-            android:textSize="13sp"
+            android:textSize="14sp"
             android:textStyle="bold" />
 
     </LinearLayout>

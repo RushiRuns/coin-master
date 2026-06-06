@@ -2,18 +2,18 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@id/homeFragment"
-        android:icon="@android:drawable/ic_menu_myplaces"
+        android:icon="@drawable/ic_home"
         android:title="Home" />
     <item
         android:id="@id/accountsFragment"
-        android:icon="@android:drawable/ic_menu_agenda"
+        android:icon="@drawable/ic_accounts"
         android:title="Accounts" />
     <item
         android:id="@id/budgetFragment"
-        android:icon="@android:drawable/ic_menu_manage"
+        android:icon="@drawable/ic_budget"
         android:title="Budget" />
     <item
         android:id="@id/settingsFragment"
-        android:icon="@android:drawable/ic_menu_preferences"
+        android:icon="@drawable/ic_settings"
         android:title="Settings" />
 </menu>

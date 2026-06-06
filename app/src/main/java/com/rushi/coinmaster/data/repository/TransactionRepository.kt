@@ -12,6 +12,14 @@ class TransactionRepository @Inject constructor(
 ) {
     fun getTransactionsFlow(): Flow<List<TransactionEntity>> = transactionDao.getTransactionsFlow()
 
+    /**
+     * Returns a Flow of the most recent [limit] transactions ordered by date descending.
+     * Uses SQL-level LIMIT for efficiency — avoids loading the entire transaction history
+     * into memory when only a summary view is needed (e.g., Dashboard).
+     */
+    fun getRecentTransactionsFlow(limit: Int): Flow<List<TransactionEntity>> =
+        transactionDao.getRecentTransactionsFlow(limit)
+
     suspend fun getTransactions(): List<TransactionEntity> = transactionDao.getTransactions()
 
     fun getTransactionsForAccountFlow(accountId: Long): Flow<List<TransactionEntity>> =

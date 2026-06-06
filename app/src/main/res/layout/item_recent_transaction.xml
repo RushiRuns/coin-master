@@ -10,27 +10,29 @@
     android:paddingBottom="12dp"
     android:background="?android:attr/selectableItemBackground">
 
-    <!-- Transaction Category Color Dot or Icon Indicator -->
-    <View
+    <!-- Transaction Category Color Dot (MaterialCardView circle to survive programmatic color changes) -->
+    <com.google.android.material.card.MaterialCardView
         android:id="@+id/view_type_dot"
         android:layout_width="12dp"
         android:layout_height="12dp"
-        android:background="@color/secondary"
-        android:backgroundTint="@color/secondary"
+        app:cardCornerRadius="6dp"
+        app:cardElevation="0dp"
+        app:strokeWidth="0dp"
+        app:cardBackgroundColor="@color/secondary"
         app:layout_constraintTop_toTopOf="@id/tv_transaction_title"
         app:layout_constraintBottom_toBottomOf="@id/tv_transaction_title"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <!-- Transaction Title -->
+    <!-- Transaction Title (Body 1) -->
     <TextView
         android:id="@+id/tv_transaction_title"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="12dp"
+        android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:text="Groceries"
         android:textColor="@color/text_primary"
-        android:textSize="15sp"
+        android:textSize="16sp"
         android:textStyle="bold"
         android:ellipsize="end"
         android:maxLines="1"
@@ -38,12 +40,12 @@
         app:layout_constraintStart_toEndOf="@id/view_type_dot"
         app:layout_constraintEnd_toStartOf="@id/tv_transaction_amount" />
 
-    <!-- Transaction Subtitle (Note, Account names) -->
+    <!-- Transaction Subtitle (Caption) -->
     <TextView
         android:id="@+id/tv_transaction_subtitle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="12dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="2dp"
         android:layout_marginEnd="16dp"
         android:text="Bank Account - Weekly food run"
@@ -55,29 +57,29 @@
         app:layout_constraintStart_toEndOf="@id/view_type_dot"
         app:layout_constraintEnd_toStartOf="@id/tv_transaction_amount" />
 
-    <!-- Transaction Date -->
+    <!-- Transaction Date (Caption) -->
     <TextView
         android:id="@+id/tv_transaction_date"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="12dp"
-        android:layout_marginTop="1dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="2dp"
         android:layout_marginEnd="16dp"
         android:text="Jun 06, 2026"
         android:textColor="@color/text_secondary"
-        android:textSize="11sp"
+        android:textSize="12sp"
         app:layout_constraintTop_toBottomOf="@id/tv_transaction_subtitle"
         app:layout_constraintStart_toEndOf="@id/view_type_dot"
         app:layout_constraintEnd_toStartOf="@id/tv_transaction_amount" />
 
-    <!-- Transaction Amount -->
+    <!-- Transaction Amount (Body 1) -->
     <TextView
         android:id="@+id/tv_transaction_amount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="- ₹500.00"
         android:textColor="@color/error"
-        android:textSize="15sp"
+        android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"

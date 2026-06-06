@@ -104,7 +104,7 @@ class HomeViewModelTest {
         
         every { budgetRepository.getEnvelopesWithAllocationsFlow(monthId) } returns flowOf(testEnvelopes)
         every { budgetRepository.getCategoriesFlow() } returns flowOf(testCategories)
-        every { transactionRepository.getTransactionsFlow() } returns flowOf(testTransactions)
+        every { transactionRepository.getRecentTransactionsFlow(7) } returns flowOf(testTransactions)
         every { getNetWorthUseCase(testAccounts) } returns 60000L
 
         viewModel = HomeViewModel(

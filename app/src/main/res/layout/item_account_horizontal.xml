@@ -3,13 +3,15 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="160dp"
-    android:layout_height="100dp"
+    android:layout_height="96dp"
     android:layout_marginStart="8dp"
     android:layout_marginEnd="8dp"
     android:layout_marginTop="8dp"
     android:layout_marginBottom="8dp"
-    app:cardCornerRadius="12dp"
-    app:cardElevation="2dp">
+    app:cardCornerRadius="4dp"
+    app:cardElevation="1dp"
+    app:strokeWidth="1dp"
+    app:strokeColor="@color/divider">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -26,7 +28,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 
-        <!-- Account Name -->
+        <!-- Account Name (Subtitle 2) -->
         <TextView
             android:id="@+id/tv_account_name"
             android:layout_width="0dp"
@@ -42,7 +44,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 
-        <!-- Account Type -->
+        <!-- Account Type (Caption) -->
         <TextView
             android:id="@+id/tv_account_type"
             android:layout_width="0dp"
@@ -51,12 +53,12 @@
             android:maxLines="1"
             android:text="Bank"
             android:textColor="@color/text_secondary"
-            android:textSize="11sp"
+            android:textSize="12sp"
             app:layout_constraintTop_toBottomOf="@id/tv_account_name"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 
-        <!-- Account Balance -->
+        <!-- Account Balance (Subtitle 2) -->
         <TextView
             android:id="@+id/tv_account_balance"
             android:layout_width="0dp"
@@ -66,7 +68,7 @@
             android:maxLines="1"
             android:text="₹ 0.00"
             android:textColor="@color/text_primary"
-            android:textSize="15sp"
+            android:textSize="14sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"

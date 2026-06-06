@@ -1,24 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Brand Colors -->
-    <color name="primary">#0F9D58</color> <!-- Slate Green -->
-    <color name="primary_variant">#0B8043</color>
-    <color name="secondary">#4285F4</color> <!-- Slate Blue -->
-    <color name="secondary_variant">#3367D6</color>
+    <!-- Brand Colors (Strict MD2 Palette) -->
+    <color name="primary">#1B5E20</color> <!-- Green 900 -->
+    <color name="primary_variant">#003300</color> <!-- Darkened Primary -->
+    <color name="secondary">#1565C0</color> <!-- Blue 800 -->
+    <color name="secondary_variant">#003C8F</color> <!-- Darkened Secondary -->
     
     <!-- UI Element Colors -->
-    <color name="background">#F8F9FA</color>
+    <color name="background">#EEEEEE</color>
     <color name="surface">#FFFFFF</color>
-    <color name="error">#D93025</color>
-    <color name="text_primary">#202124</color>
-    <color name="text_secondary">#5F6368</color>
-    <color name="divider">#DADCE0</color>
-    <color name="light_gray">#E8EAED</color>
+    <color name="error">#B00020</color> <!-- MD2 Spec Error Red -->
+    <color name="text_primary">#212121</color> <!-- High-emphasis (87%) -->
+    <color name="text_secondary">#757575</color> <!-- Medium-emphasis (60%) -->
+    <color name="divider">#CCCCCC</color> <!-- MD2 divider -->
+    <color name="light_gray">#EEEEEE</color>
     <color name="white">#FFFFFFFF</color>
     <color name="black">#FF000000</color>
     
-    <!-- Indicator/Chart Colors -->
-    <color name="color_needs">#0F9D58</color>
-    <color name="color_wants">#F4B400</color>
-    <color name="color_savings">#4285F4</color>
+    <!-- Indicator/Chart Colors (Aligned with Palette) -->
+    <color name="color_needs">#1B5E20</color> <!-- Primary Green -->
+    <color name="color_wants">#F57C00</color> <!-- Amber 700 -->
+    <color name="color_savings">#1565C0</color> <!-- Secondary Blue -->
+    
+    <!-- Semantic Colors -->
+    <color name="color_positive">#2E7D32</color> <!-- Income -->
+    <color name="color_negative">#C62828</color> <!-- Expense -->
 </resources>

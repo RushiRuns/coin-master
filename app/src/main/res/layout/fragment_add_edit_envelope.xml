@@ -1,285 +1,310 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView
+<androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fillViewport="true"
-    android:background="#F8F9FA">
+    android:background="@color/background">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <!-- Top App Bar -->
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/app_bar_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="24dp">
+        android:layout_height="wrap_content">
 
-        <TextView
-            android:id="@+id/tv_title"
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorSurface"
+            app:navigationIcon="@drawable/ic_arrow_back"
+            app:navigationContentDescription="Back">
+
+            <!-- Title is dynamically modified by Kotlin code via tv_title ID -->
+            <TextView
+                android:id="@+id/tv_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Customize Envelope"
+                android:textColor="@color/text_primary"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+        </com.google.android.material.appbar.MaterialToolbar>
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <!-- Scrollable content -->
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Customize Envelope"
-            android:textColor="@color/text_primary"
-            android:textSize="24sp"
-            android:textStyle="bold"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:padding="16dp">
 
-        <!-- Name Input -->
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/til_envelope_name"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:hint="Envelope Name"
-            app:layout_constraintTop_toBottomOf="@id/tv_title">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/et_envelope_name"
+            <!-- Name Input -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/til_envelope_name"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textPersonName"
-                android:textColor="@color/text_primary" />
-        </com.google.android.material.textfield.TextInputLayout>
+                android:hint="Envelope Name"
+                app:layout_constraintTop_toTopOf="parent">
 
-        <!-- Bucket Selection (Dropdown/Spinner) -->
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/til_bucket_selection"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:hint="Budget Bucket Type"
-            app:layout_constraintTop_toBottomOf="@id/til_envelope_name">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_envelope_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPersonName"
+                    android:textColor="@color/text_primary" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-            <AutoCompleteTextView
-                android:id="@+id/actv_bucket_type"
+            <!-- Bucket Selection -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/til_bucket_selection"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="none"
-                android:textColor="@color/text_primary" />
-        </com.google.android.material.textfield.TextInputLayout>
+                android:layout_marginTop="16dp"
+                android:hint="Budget Bucket Type"
+                app:layout_constraintTop_toBottomOf="@id/til_envelope_name">
 
-        <!-- Color Preset Label -->
-        <TextView
-            android:id="@+id/tv_color_presets_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:text="Select Presets Theme"
-            android:textColor="@color/text_primary"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            app:layout_constraintTop_toBottomOf="@id/til_bucket_selection"
-            app:layout_constraintStart_toStartOf="parent" />
+                <AutoCompleteTextView
+                    android:id="@+id/actv_bucket_type"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="none"
+                    android:textColor="@color/text_primary" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-        <!-- Simple Grid of Color Presets -->
-        <GridLayout
-            android:id="@+id/grid_color_presets"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:columnCount="4"
-            android:rowCount="2"
-            android:alignmentMode="alignMargins"
-            android:columnOrderPreserved="false"
-            app:layout_constraintTop_toBottomOf="@id/tv_color_presets_label">
+            <!-- Color Preset Label -->
+            <TextView
+                android:id="@+id/tv_color_presets_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:text="Select Color Preset"
+                android:textColor="@color/text_primary"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintTop_toBottomOf="@id/til_bucket_selection"
+                app:layout_constraintStart_toStartOf="parent" />
 
-            <View
-                android:id="@+id/color_1"
-                android:layout_width="48dp"
+            <!-- Simple Grid of Color Presets -->
+            <GridLayout
+                android:id="@+id/grid_color_presets"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:columnCount="4"
+                android:rowCount="2"
+                android:alignmentMode="alignMargins"
+                android:columnOrderPreserved="false"
+                app:layout_constraintTop_toBottomOf="@id/tv_color_presets_label">
+
+                <View
+                    android:id="@+id/color_1"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_margin="8dp"
+                    android:background="#E57373"
+                    android:contentDescription="Color E57373" />
+
+                <View
+                    android:id="@+id/color_2"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_margin="8dp"
+                    android:background="#81C784"
+                    android:contentDescription="Color 81C784" />
+
+                <View
+                    android:id="@+id/color_3"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_margin="8dp"
+                    android:background="#64B5F6"
+                    android:contentDescription="Color 64B5F6" />
+
+                <View
+                    android:id="@+id/color_4"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_margin="8dp"
+                    android:background="#FFD54F"
+                    android:contentDescription="Color FFD54F" />
+
+                <View
+                    android:id="@+id/color_5"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_margin="8dp"
+                    android:background="#BA68C8"
+                    android:contentDescription="Color BA68C8" />
+
+                <View
+                    android:id="@+id/color_6"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_margin="8dp"
+                    android:background="#4DB6AC"
+                    android:contentDescription="Color 4DB6AC" />
+
+                <View
+                    android:id="@+id/color_7"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_margin="8dp"
+                    android:background="#4DD0E1"
+                    android:contentDescription="Color 4DD0E1" />
+
+                <View
+                    android:id="@+id/color_8"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_margin="8dp"
+                    android:background="#FF8A65"
+                    android:contentDescription="Color FF8A65" />
+            </GridLayout>
+
+            <!-- Icon Preset Label -->
+            <TextView
+                android:id="@+id/tv_icon_presets_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:text="Select Preset Icon"
+                android:textColor="@color/text_primary"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintTop_toBottomOf="@id/grid_color_presets"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <!-- Simple Grid of Icon Presets (uses our new vector drawables) -->
+            <GridLayout
+                android:id="@+id/grid_icon_presets"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:columnCount="4"
+                android:rowCount="2"
+                android:alignmentMode="alignMargins"
+                android:columnOrderPreserved="false"
+                app:layout_constraintTop_toBottomOf="@id/tv_icon_presets_label">
+
+                <ImageView
+                    android:id="@+id/icon_rent"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_margin="8dp"
+                    android:padding="8dp"
+                    android:src="@drawable/ic_home_outline"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:contentDescription="Rent Icon"
+                    app:tint="@color/text_secondary" />
+
+                <ImageView
+                    android:id="@+id/icon_groceries"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_margin="8dp"
+                    android:padding="8dp"
+                    android:src="@drawable/ic_restaurant"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:contentDescription="Groceries Icon"
+                    app:tint="@color/text_secondary" />
+
+                <ImageView
+                    android:id="@+id/icon_utilities"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_margin="8dp"
+                    android:padding="8dp"
+                    android:src="@drawable/ic_bolt"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:contentDescription="Utilities Icon"
+                    app:tint="@color/text_secondary" />
+
+                <ImageView
+                    android:id="@+id/icon_dining"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_margin="8dp"
+                    android:padding="8dp"
+                    android:src="@drawable/ic_restaurant"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:contentDescription="Dining Icon"
+                    app:tint="@color/text_secondary" />
+
+                <ImageView
+                    android:id="@+id/icon_entertainment"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_margin="8dp"
+                    android:padding="8dp"
+                    android:src="@drawable/ic_movie"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:contentDescription="Entertainment Icon"
+                    app:tint="@color/text_secondary" />
+
+                <ImageView
+                    android:id="@+id/icon_shopping"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_margin="8dp"
+                    android:padding="8dp"
+                    android:src="@drawable/ic_shopping_cart"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:contentDescription="Shopping Icon"
+                    app:tint="@color/text_secondary" />
+
+                <ImageView
+                    android:id="@+id/icon_savings"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_margin="8dp"
+                    android:padding="8dp"
+                    android:src="@drawable/ic_savings"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:contentDescription="Savings Icon"
+                    app:tint="@color/text_secondary" />
+
+                <ImageView
+                    android:id="@+id/icon_emergency"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_margin="8dp"
+                    android:padding="8dp"
+                    android:src="@drawable/ic_local_hospital"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:contentDescription="Emergency Icon"
+                    app:tint="@color/text_secondary" />
+            </GridLayout>
+
+            <!-- Actions -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_save_category"
+                android:layout_width="match_parent"
                 android:layout_height="48dp"
-                android:layout_margin="8dp"
-                android:background="#E57373"
-                android:contentDescription="Color E57373" />
+                android:layout_marginTop="24dp"
+                android:text="Save Envelope"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                app:cornerRadius="4dp"
+                app:layout_constraintTop_toBottomOf="@id/grid_icon_presets" />
 
-            <View
-                android:id="@+id/color_2"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:layout_margin="8dp"
-                android:background="#81C784"
-                android:contentDescription="Color 81C784" />
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_delete_category"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="Delete Envelope"
+                android:textColor="@color/error"
+                app:layout_constraintTop_toBottomOf="@id/btn_save_category" />
 
-            <View
-                android:id="@+id/color_3"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:layout_margin="8dp"
-                android:background="#64B5F6"
-                android:contentDescription="Color 64B5F6" />
-
-            <View
-                android:id="@+id/color_4"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:layout_margin="8dp"
-                android:background="#FFD54F"
-                android:contentDescription="Color FFD54F" />
-
-            <View
-                android:id="@+id/color_5"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:layout_margin="8dp"
-                android:background="#BA68C8"
-                android:contentDescription="Color BA68C8" />
-
-            <View
-                android:id="@+id/color_6"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:layout_margin="8dp"
-                android:background="#4DB6AC"
-                android:contentDescription="Color 4DB6AC" />
-
-            <View
-                android:id="@+id/color_7"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:layout_margin="8dp"
-                android:background="#4DD0E1"
-                android:contentDescription="Color 4DD0E1" />
-
-            <View
-                android:id="@+id/color_8"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:layout_margin="8dp"
-                android:background="#FF8A65"
-                android:contentDescription="Color FF8A65" />
-        </GridLayout>
-
-        <!-- Icon Preset Label -->
-        <TextView
-            android:id="@+id/tv_icon_presets_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:text="Select Preset Icon"
-            android:textColor="@color/text_primary"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            app:layout_constraintTop_toBottomOf="@id/grid_color_presets"
-            app:layout_constraintStart_toStartOf="parent" />
-
-        <!-- Simple Grid of Icon Presets (uses standard system drawables as visuals) -->
-        <GridLayout
-            android:id="@+id/grid_icon_presets"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:columnCount="4"
-            android:rowCount="2"
-            android:alignmentMode="alignMargins"
-            android:columnOrderPreserved="false"
-            app:layout_constraintTop_toBottomOf="@id/tv_icon_presets_label">
-
-            <ImageView
-                android:id="@+id/icon_rent"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:layout_margin="8dp"
-                android:padding="8dp"
-                android:src="@android:drawable/ic_menu_today"
-                android:background="?android:attr/selectableItemBackground"
-                android:contentDescription="Rent Icon"
-                app:tint="@color/text_secondary" />
-
-            <ImageView
-                android:id="@+id/icon_groceries"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:layout_margin="8dp"
-                android:padding="8dp"
-                android:src="@android:drawable/ic_menu_gallery"
-                android:background="?android:attr/selectableItemBackground"
-                android:contentDescription="Groceries Icon"
-                app:tint="@color/text_secondary" />
-
-            <ImageView
-                android:id="@+id/icon_utilities"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:layout_margin="8dp"
-                android:padding="8dp"
-                android:src="@android:drawable/ic_menu_info_details"
-                android:background="?android:attr/selectableItemBackground"
-                android:contentDescription="Utilities Icon"
-                app:tint="@color/text_secondary" />
-
-            <ImageView
-                android:id="@+id/icon_dining"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:layout_margin="8dp"
-                android:padding="8dp"
-                android:src="@android:drawable/ic_menu_compass"
-                android:background="?android:attr/selectableItemBackground"
-                android:contentDescription="Dining Icon"
-                app:tint="@color/text_secondary" />
-
-            <ImageView
-                android:id="@+id/icon_entertainment"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:layout_margin="8dp"
-                android:padding="8dp"
-                android:src="@android:drawable/ic_menu_slideshow"
-                android:background="?android:attr/selectableItemBackground"
-                android:contentDescription="Entertainment Icon"
-                app:tint="@color/text_secondary" />
-
-            <ImageView
-                android:id="@+id/icon_shopping"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:layout_margin="8dp"
-                android:padding="8dp"
-                android:src="@android:drawable/ic_menu_view"
-                android:background="?android:attr/selectableItemBackground"
-                android:contentDescription="Shopping Icon"
-                app:tint="@color/text_secondary" />
-
-            <ImageView
-                android:id="@+id/icon_savings"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:layout_margin="8dp"
-                android:padding="8dp"
-                android:src="@android:drawable/ic_menu_save"
-                android:background="?android:attr/selectableItemBackground"
-                android:contentDescription="Savings Icon"
-                app:tint="@color/text_secondary" />
-
-            <ImageView
-                android:id="@+id/icon_emergency"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:layout_margin="8dp"
-                android:padding="8dp"
-                android:src="@android:drawable/ic_menu_help"
-                android:background="?android:attr/selectableItemBackground"
-                android:contentDescription="Emergency Icon"
-                app:tint="@color/text_secondary" />
-        </GridLayout>
-
-        <!-- Actions -->
-        <Button
-            android:id="@+id/btn_save_category"
-            android:layout_width="match_parent"
-            android:layout_height="54dp"
-            android:layout_marginTop="32dp"
-            android:text="Save Envelope"
-            app:layout_constraintTop_toBottomOf="@id/grid_icon_presets" />
-
-        <Button
-            android:id="@+id/btn_delete_category"
-            style="@style/Widget.MaterialComponents.Button.TextButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="Delete Envelope"
-            android:textColor="@color/error"
-            app:layout_constraintTop_toBottomOf="@id/btn_save_category" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-</androidx.core.widget.NestedScrollView>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

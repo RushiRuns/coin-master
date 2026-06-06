@@ -37,6 +37,9 @@ class HomeFragment : Fragment() {
     private lateinit var accountsAdapter: AccountsHorizontalAdapter
     private lateinit var transactionsAdapter: RecentTransactionsAdapter
 
+    /** Guards the one-shot entry animation for the pie chart. */
+    private var isFirstChartLoad = true
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -184,7 +187,14 @@ class HomeFragment : Fragment() {
         }
 
         binding.pieChart.data = PieData(dataSet)
-        binding.pieChart.invalidate()
+        // Only animate on the very first load — subsequent reactive updates
+        // should not re-trigger the spin animation (T058 performance fix).
+        if (isFirstChartLoad) {
+            isFirstChartLoad = false
+            binding.pieChart.animateY(800)
+        } else {
+            binding.pieChart.invalidate()
+        }
     }
 
     private fun setupFAB() {

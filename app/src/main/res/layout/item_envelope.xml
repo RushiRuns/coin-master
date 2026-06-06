@@ -24,19 +24,19 @@
         android:id="@+id/iv_envelope_icon"
         android:layout_width="24dp"
         android:layout_height="24dp"
-        android:layout_marginStart="12dp"
-        android:src="@android:drawable/ic_menu_help"
+        android:layout_marginStart="16dp"
+        android:src="@drawable/ic_category"
         app:tint="@color/text_secondary"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@id/view_envelope_color" />
 
-    <!-- Category Name -->
+    <!-- Category Name (Subtitle 1) -->
     <TextView
         android:id="@+id/tv_envelope_name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="12dp"
+        android:layout_marginStart="16dp"
         android:text="Groceries"
         android:textColor="@color/text_primary"
         android:textSize="16sp"
@@ -45,12 +45,12 @@
         app:layout_constraintStart_toEndOf="@id/iv_envelope_icon"
         app:layout_constraintEnd_toStartOf="@id/layout_allocation_click" />
 
-    <!-- Spent breakdown indicator -->
+    <!-- Spent breakdown indicator (Caption) -->
     <TextView
         android:id="@+id/tv_envelope_spent"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="12dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="2dp"
         android:text="Spent: ₹0.00"
         android:textColor="@color/text_secondary"
@@ -59,11 +59,11 @@
         app:layout_constraintStart_toEndOf="@id/iv_envelope_icon"
         app:layout_constraintEnd_toStartOf="@id/layout_allocation_click" />
 
-    <!-- Clickable Allocation Input Box -->
+    <!-- Clickable Allocation Input Box (48dp min touch target) -->
     <LinearLayout
         android:id="@+id/layout_allocation_click"
         android:layout_width="100dp"
-        android:layout_height="36dp"
+        android:layout_height="48dp"
         android:background="@drawable/bg_allocation_box"
         android:orientation="horizontal"
         android:gravity="center"
@@ -84,14 +84,15 @@
             android:singleLine="true" />
     </LinearLayout>
 
-    <!-- Category Metadata Edit Button -->
+    <!-- Category Metadata Edit Button (48dp touch target) -->
     <ImageButton
         android:id="@+id/btn_edit_envelope"
-        android:layout_width="36dp"
-        android:layout_height="36dp"
-        android:layout_marginStart="4dp"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="0dp"
+        android:padding="12dp"
         android:background="?android:attr/selectableItemBackgroundBorderless"
-        android:src="@android:drawable/ic_menu_edit"
+        android:src="@drawable/ic_edit"
         android:contentDescription="Edit Envelope"
         app:tint="@color/text_secondary"
         app:layout_constraintTop_toTopOf="parent"

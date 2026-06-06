@@ -153,10 +153,10 @@
 
 **Purpose**: Finalizing quality and production readiness
 
-- [ ] T056 [P] Verify accessibility: all touch targets ≥ 48dp as per Principle VI
-- [ ] T057 [P] Configure ProGuard/R8 rules for release builds in `app/proguard-rules.pro`
-- [ ] T058 [P] Perform final performance audit: verify Dashboard load < 2s on mid-range emulators
-- [ ] T059 [P] Conduct final code review for Constitution compliance (Principles I-XI)
+- [x] T056 [P] Verify accessibility: all touch targets ≥ 48dp as per Principle VI
+- [x] T057 [P] Configure ProGuard/R8 rules for release builds in `app/proguard-rules.pro`
+- [x] T058 [P] Perform final performance audit: verify Dashboard load < 2s on mid-range emulators
+- [x] T059 [P] Conduct final code review for Constitution compliance (Principles I-XI)
 
 ---
 

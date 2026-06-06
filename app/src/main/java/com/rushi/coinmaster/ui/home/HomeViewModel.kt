@@ -65,16 +65,17 @@ class HomeViewModel @Inject constructor(
     // Flow for current month envelopes with allocations/spent amounts
     private val envelopesFlow = budgetRepository.getEnvelopesWithAllocationsFlow(currentMonthId)
 
-    // Flow for recent transactions mapped with details
+    // Flow for recent transactions mapped with details.
+    // Uses SQL LIMIT 7 at the DB level (not .take(7) in memory) for performance.
     private val recentTransactionsFlow = combine(
-        transactionRepository.getTransactionsFlow(),
+        transactionRepository.getRecentTransactionsFlow(7),
         accountRepository.getAccountsFlow(),
         budgetRepository.getCategoriesFlow()
     ) { transactions, accounts, categories ->
         val accountMap = accounts.associateBy { it.id }
         val categoryMap = categories.associateBy { it.id }
 
-        transactions.take(7).map { t ->
+        transactions.map { t ->
             TransactionDisplayItem(
                 id = t.id,
                 amountPaise = t.amountPaise,

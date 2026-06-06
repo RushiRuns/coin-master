@@ -11,6 +11,9 @@ interface TransactionDao {
     @Query("SELECT * FROM transactions WHERE is_deleted = 0 ORDER BY date DESC")
     fun getTransactionsFlow(): Flow<List<TransactionEntity>>
 
+    @Query("SELECT * FROM transactions WHERE is_deleted = 0 ORDER BY date DESC LIMIT :limit")
+    fun getRecentTransactionsFlow(limit: Int): Flow<List<TransactionEntity>>
+
     @Query("SELECT * FROM transactions WHERE is_deleted = 0 ORDER BY date DESC")
     suspend fun getTransactions(): List<TransactionEntity>
 
