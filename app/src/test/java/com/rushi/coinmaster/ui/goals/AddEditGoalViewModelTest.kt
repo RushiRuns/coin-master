@@ -21,6 +21,7 @@ class AddEditGoalViewModelTest {
 
     private val testDispatcher = StandardTestDispatcher()
 
+    private val context: android.content.Context = mockk(relaxed = true)
     private val sinkingFundRepository: SinkingFundRepository = mockk(relaxed = true)
     private val budgetRepository: BudgetRepository = mockk(relaxed = true)
 
@@ -34,7 +35,7 @@ class AddEditGoalViewModelTest {
     fun setUp() {
         Dispatchers.setMain(testDispatcher)
         every { budgetRepository.getCategoriesFlow() } returns flowOf(savingsCats)
-        viewModel = AddEditGoalViewModel(sinkingFundRepository, budgetRepository)
+        viewModel = AddEditGoalViewModel(context, sinkingFundRepository, budgetRepository)
     }
 
     @After

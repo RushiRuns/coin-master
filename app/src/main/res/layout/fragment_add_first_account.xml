@@ -57,7 +57,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Account Name"
+                    android:text="@string/label_account_name"
                     android:textSize="16sp"
                     android:textStyle="bold"
                     android:textColor="@color/text_primary" />
@@ -103,14 +103,14 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="none"
-                        android:text="Bank Account" />
+                        android:text="@string/acc_type_bank" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="24dp"
-                    android:text="Opening Balance"
+                    android:text="@string/label_opening_balance"
                     android:textSize="16sp"
                     android:textStyle="bold"
                     android:textColor="@color/text_primary" />
@@ -128,7 +128,7 @@
                         android:id="@+id/et_balance"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="₹ 0.00"
+                        android:hint="@string/placeholder_rupees_zero"
                         android:inputType="numberDecimal"
                         android:maxLines="1" />
                 </com.google.android.material.textfield.TextInputLayout>

@@ -19,7 +19,7 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorSurface"
-            app:title="Accounts"
+            app:title="@string/title_accounts"
             app:titleTextColor="@color/text_primary" />
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -52,7 +52,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Net Worth"
+                    android:text="@string/label_net_worth_short"
                     android:textColor="@color/white"
                     android:textSize="12sp"
                     android:alpha="0.8" />
@@ -97,6 +97,6 @@
         android:src="@drawable/ic_add"
         app:tint="@color/white"
         app:backgroundTint="@color/primary"
-        android:contentDescription="Add Account" />
+        android:contentDescription="@string/cd_add_account" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

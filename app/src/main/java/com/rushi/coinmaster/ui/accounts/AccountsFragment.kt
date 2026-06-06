@@ -47,8 +47,8 @@ class AccountsFragment : Fragment() {
             },
             onDeleteClick = { account ->
                 viewModel.deleteAccount(account)
-                Snackbar.make(binding.root, "Account deleted: ${account.name}", Snackbar.LENGTH_LONG)
-                    .setAction("UNDO") {
+                Snackbar.make(binding.root, getString(R.string.action_account_deleted, account.name), Snackbar.LENGTH_LONG)
+                    .setAction(getString(R.string.action_undo)) {
                         viewModel.restoreAccount(account)
                     }
                     .setActionTextColor(resources.getColor(R.color.secondary, null))

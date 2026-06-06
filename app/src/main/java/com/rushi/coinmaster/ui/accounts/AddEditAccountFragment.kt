@@ -25,26 +25,9 @@ class AddEditAccountFragment : Fragment() {
     private val viewModel: AccountsViewModel by viewModels()
     private val args: AddEditAccountFragmentArgs by navArgs()
 
-    private val accountTypesList = listOf(
-        Pair("Bank Account", AccountType.BANK_ACCOUNT),
-        Pair("Cash", AccountType.CASH),
-        Pair("Credit Card", AccountType.CREDIT_CARD),
-        Pair("Investments", AccountType.INVESTMENTS)
-    )
-
-    private val colorsList = listOf(
-        Pair("Green", "#0F9D58"),
-        Pair("Blue", "#4285F4"),
-        Pair("Red", "#DB4437"),
-        Pair("Yellow", "#F4B400")
-    )
-
-    private val iconsList = listOf(
-        Pair("Bank", "ic_bank"),
-        Pair("Wallet", "ic_cash"),
-        Pair("Card", "ic_card"),
-        Pair("SIP/Invest", "ic_invest")
-    )
+    private lateinit var accountTypesList: List<Pair<String, AccountType>>
+    private lateinit var colorsList: List<Pair<String, String>>
+    private lateinit var iconsList: List<Pair<String, String>>
 
     private var selectedType = AccountType.BANK_ACCOUNT
     private var selectedColorHex = "#4285F4"
@@ -62,13 +45,35 @@ class AddEditAccountFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // Dynamically initialize localized dropdown lists
+        accountTypesList = listOf(
+            Pair(getString(R.string.acc_type_bank), AccountType.BANK_ACCOUNT),
+            Pair(getString(R.string.acc_type_cash), AccountType.CASH),
+            Pair(getString(R.string.acc_type_card), AccountType.CREDIT_CARD),
+            Pair(getString(R.string.acc_type_invest), AccountType.INVESTMENTS)
+        )
+
+        colorsList = listOf(
+            Pair(getString(R.string.color_green), "#0F9D58"),
+            Pair(getString(R.string.color_blue), "#4285F4"),
+            Pair(getString(R.string.color_red), "#DB4437"),
+            Pair(getString(R.string.color_yellow), "#F4B400")
+        )
+
+        iconsList = listOf(
+            Pair(getString(R.string.icon_bank), "ic_bank"),
+            Pair(getString(R.string.icon_wallet), "ic_cash"),
+            Pair(getString(R.string.icon_card), "ic_card"),
+            Pair(getString(R.string.icon_invest), "ic_invest")
+        )
+
         val accountId = args.accountId
         val isEditMode = accountId > 0L
 
         setupExposedDropdowns()
 
         if (isEditMode) {
-            binding.tvTitle.text = "Edit Account"
+            binding.tvTitle.text = getString(R.string.title_edit_account)
             // Hide opening balance fields in Edit Mode to enforce audit integrity
             binding.tvBalanceLabel.visibility = View.GONE
             binding.tilBalance.visibility = View.GONE
@@ -80,20 +85,20 @@ class AddEditAccountFragment : Fragment() {
                     binding.etAccountName.setText(account.name)
                     
                     selectedType = account.type
-                    val typeName = accountTypesList.find { it.second == account.type }?.first ?: "Bank Account"
+                    val typeName = accountTypesList.find { it.second == account.type }?.first ?: getString(R.string.acc_type_bank)
                     binding.actvAccountType.setText(typeName, false)
-
+ 
                     selectedColorHex = account.colorHex
-                    val colorName = colorsList.find { it.second == account.colorHex }?.first ?: "Blue"
+                    val colorName = colorsList.find { it.second == account.colorHex }?.first ?: getString(R.string.color_blue)
                     binding.actvColor.setText(colorName, false)
-
+ 
                     selectedIconName = account.iconName
-                    val iconName = iconsList.find { it.second == account.iconName }?.first ?: "Bank"
+                    val iconName = iconsList.find { it.second == account.iconName }?.first ?: getString(R.string.icon_bank)
                     binding.actvIcon.setText(iconName, false)
                 }
             }
         } else {
-            binding.tvTitle.text = "Add Account"
+            binding.tvTitle.text = getString(R.string.title_add_account)
             binding.tvBalanceLabel.visibility = View.VISIBLE
             binding.tilBalance.visibility = View.VISIBLE
         }
@@ -145,7 +150,7 @@ class AddEditAccountFragment : Fragment() {
     private fun validateForm(isEditMode: Boolean): Boolean {
         var isValid = true
         if (binding.etAccountName.text.toString().trim().isEmpty()) {
-            binding.tilAccountName.error = "Name cannot be empty"
+            binding.tilAccountName.error = getString(R.string.ob_error_name_empty)
             isValid = false
         } else {
             binding.tilAccountName.error = null
@@ -154,7 +159,7 @@ class AddEditAccountFragment : Fragment() {
         if (!isEditMode) {
             val balance = binding.etBalance.text.toString().trim().toDoubleOrNull()
             if (balance == null || balance < 0.0) {
-                binding.tilBalance.error = "Please enter a valid positive opening balance"
+                binding.tilBalance.error = getString(R.string.ob_error_balance_invalid)
                 isValid = false
             } else {
                 binding.tilBalance.error = null

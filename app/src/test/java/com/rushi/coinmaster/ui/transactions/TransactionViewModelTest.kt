@@ -25,6 +25,7 @@ class TransactionViewModelTest {
 
     private val testDispatcher = StandardTestDispatcher()
 
+    private val context: android.content.Context = mockk(relaxed = true)
     private val accountRepository: AccountRepository = mockk(relaxed = true)
     private val budgetRepository: BudgetRepository = mockk(relaxed = true)
     private val addTransactionUseCase: AddTransactionUseCase = mockk()
@@ -44,7 +45,15 @@ class TransactionViewModelTest {
         every { accountRepository.getAccountsFlow() } returns flowOf(testAccounts)
         every { budgetRepository.getCategoriesFlow() } returns flowOf(testCategories)
 
-        viewModel = TransactionViewModel(accountRepository, budgetRepository, addTransactionUseCase)
+        every { context.getString(com.rushi.coinmaster.R.string.error_amount_empty) } returns "Amount cannot be empty."
+        every { context.getString(com.rushi.coinmaster.R.string.error_amount_must_be_greater_than_zero) } returns "Amount must be greater than zero."
+        every { context.getString(com.rushi.coinmaster.R.string.error_source_account_required) } returns "Please select a source account."
+        every { context.getString(com.rushi.coinmaster.R.string.error_category_required) } returns "Please select a category."
+        every { context.getString(com.rushi.coinmaster.R.string.error_dest_account_required) } returns "Please select a destination account."
+        every { context.getString(com.rushi.coinmaster.R.string.error_same_accounts) } returns "Source and destination accounts must be different."
+        every { context.getString(com.rushi.coinmaster.R.string.error_transaction_save_failed) } returns "Failed to save transaction."
+
+        viewModel = TransactionViewModel(context, accountRepository, budgetRepository, addTransactionUseCase)
     }
 
     @After

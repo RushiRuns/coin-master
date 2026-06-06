@@ -7,7 +7,10 @@ import com.rushi.coinmaster.data.local.entity.SinkingFundEntity
 import com.rushi.coinmaster.data.local.model.BucketType
 import com.rushi.coinmaster.data.repository.BudgetRepository
 import com.rushi.coinmaster.data.repository.SinkingFundRepository
+import android.content.Context
+import com.rushi.coinmaster.R
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -27,6 +30,7 @@ sealed class AddEditGoalEvent {
 
 @HiltViewModel
 class AddEditGoalViewModel @Inject constructor(
+    @ApplicationContext private val context: Context,
     private val sinkingFundRepository: SinkingFundRepository,
     private val budgetRepository: BudgetRepository
 ) : ViewModel() {
@@ -69,11 +73,11 @@ class AddEditGoalViewModel @Inject constructor(
     ) {
         val trimmedName = name.trim()
         if (trimmedName.isEmpty()) {
-            emitError("Goal name cannot be empty")
+            emitError(context.getString(R.string.error_goal_name_empty))
             return
         }
         if (targetAmountPaise <= 0L) {
-            emitError("Target amount must be greater than zero")
+            emitError(context.getString(R.string.error_target_amount_must_be_greater_than_zero))
             return
         }
         if (targetDate <= System.currentTimeMillis()) {
@@ -106,7 +110,7 @@ class AddEditGoalViewModel @Inject constructor(
                     }
                 } else {
                     if (selectedCategoryId == null || selectedCategoryId <= 0L) {
-                        emitError("Please select a budget envelope")
+                        emitError(context.getString(R.string.error_no_category))
                         return@launch
                     }
                     selectedCategoryId
@@ -130,7 +134,7 @@ class AddEditGoalViewModel @Inject constructor(
                 }
                 _eventFlow.emit(AddEditGoalEvent.Success)
             } catch (e: Exception) {
-                emitError(e.message ?: "An error occurred while saving the goal")
+                emitError(e.message ?: context.getString(R.string.error_save_goal_failed))
             }
         }
     }

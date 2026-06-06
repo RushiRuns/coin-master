@@ -18,14 +18,14 @@
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorSurface"
             app:navigationIcon="@drawable/ic_arrow_back"
-            app:navigationContentDescription="Back">
+            app:navigationContentDescription="@string/btn_previous">
 
             <!-- Title is dynamically modified by Kotlin code via tv_title ID -->
             <TextView
                 android:id="@+id/tv_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Add Account"
+                android:text="@string/title_add_account"
                 android:textColor="@color/text_primary"
                 android:textSize="20sp"
                 android:textStyle="bold" />
@@ -65,7 +65,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Account Name"
+                        android:text="@string/label_account_name"
                         android:textSize="16sp"
                         android:textStyle="bold"
                         android:textColor="@color/text_primary" />
@@ -83,7 +83,7 @@
                             android:id="@+id/et_account_name"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="e.g. My Savings, Cash Wallet"
+                            android:hint="@string/hint_account_name_example"
                             android:inputType="text"
                             android:maxLines="1" />
                     </com.google.android.material.textfield.TextInputLayout>
@@ -92,7 +92,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
-                        android:text="Account Type"
+                        android:text="@string/ob_label_account_type"
                         android:textSize="16sp"
                         android:textStyle="bold"
                         android:textColor="@color/text_primary" />
@@ -111,7 +111,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:inputType="none"
-                            android:text="Bank Account" />
+                            android:text="@string/acc_type_bank" />
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <TextView
@@ -119,7 +119,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
-                        android:text="Opening Balance"
+                        android:text="@string/label_opening_balance"
                         android:textSize="16sp"
                         android:textStyle="bold"
                         android:textColor="@color/text_primary" />
@@ -137,7 +137,7 @@
                             android:id="@+id/et_balance"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="₹ 0.00"
+                            android:hint="@string/placeholder_rupees_zero"
                             android:inputType="numberDecimal"
                             android:maxLines="1" />
                     </com.google.android.material.textfield.TextInputLayout>
@@ -146,7 +146,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
-                        android:text="Brand Color"
+                        android:text="@string/label_brand_color"
                         android:textSize="16sp"
                         android:textStyle="bold"
                         android:textColor="@color/text_primary" />
@@ -165,14 +165,14 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:inputType="none"
-                            android:text="Green" />
+                            android:text="@string/color_green" />
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
-                        android:text="Display Icon"
+                        android:text="@string/label_display_icon"
                         android:textSize="16sp"
                         android:textStyle="bold"
                         android:textColor="@color/text_primary" />
@@ -191,7 +191,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:inputType="none"
-                            android:text="Bank" />
+                            android:text="@string/icon_bank" />
                     </com.google.android.material.textfield.TextInputLayout>
 
                 </LinearLayout>
@@ -202,7 +202,7 @@
                 android:layout_width="0dp"
                 android:layout_height="48dp"
                 android:layout_marginTop="16dp"
-                android:text="Save Account"
+                android:text="@string/btn_save_account"
                 android:textSize="14sp"
                 android:textStyle="bold"
                 app:cornerRadius="4dp"

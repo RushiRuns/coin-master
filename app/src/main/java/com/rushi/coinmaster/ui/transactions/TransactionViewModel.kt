@@ -9,8 +9,11 @@ import com.rushi.coinmaster.data.local.model.TransactionType
 import com.rushi.coinmaster.data.repository.AccountRepository
 import com.rushi.coinmaster.data.repository.BudgetRepository
 import com.rushi.coinmaster.domain.usecase.AddTransactionUseCase
+import android.content.Context
+import com.rushi.coinmaster.R
 import com.rushi.coinmaster.util.MoneyMath
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -22,6 +25,7 @@ sealed class TransactionUiEvent {
 
 @HiltViewModel
 class TransactionViewModel @Inject constructor(
+    @ApplicationContext private val context: Context,
     private val accountRepository: AccountRepository,
     private val budgetRepository: BudgetRepository,
     private val addTransactionUseCase: AddTransactionUseCase
@@ -47,33 +51,33 @@ class TransactionViewModel @Inject constructor(
     ) {
         viewModelScope.launch {
             if (amountStr.isBlank()) {
-                _uiEvent.emit(TransactionUiEvent.Error("Amount cannot be empty."))
+                _uiEvent.emit(TransactionUiEvent.Error(context.getString(R.string.error_amount_empty)))
                 return@launch
             }
 
             val amountPaise = MoneyMath.rupeesToPaise(amountStr)
             if (amountPaise <= 0L) {
-                _uiEvent.emit(TransactionUiEvent.Error("Amount must be greater than zero."))
+                _uiEvent.emit(TransactionUiEvent.Error(context.getString(R.string.error_amount_must_be_greater_than_zero)))
                 return@launch
             }
 
             if (accountId == 0L) {
-                _uiEvent.emit(TransactionUiEvent.Error("Please select a source account."))
+                _uiEvent.emit(TransactionUiEvent.Error(context.getString(R.string.error_source_account_required)))
                 return@launch
             }
 
             if (type == TransactionType.EXPENSE && categoryId == null) {
-                _uiEvent.emit(TransactionUiEvent.Error("Please select a category."))
+                _uiEvent.emit(TransactionUiEvent.Error(context.getString(R.string.error_category_required)))
                 return@launch
             }
 
             if (type == TransactionType.TRANSFER) {
                 if (transferToAccountId == null || transferToAccountId == 0L) {
-                    _uiEvent.emit(TransactionUiEvent.Error("Please select a destination account."))
+                    _uiEvent.emit(TransactionUiEvent.Error(context.getString(R.string.error_dest_account_required)))
                     return@launch
                 }
                 if (accountId == transferToAccountId) {
-                    _uiEvent.emit(TransactionUiEvent.Error("Source and destination accounts must be different."))
+                    _uiEvent.emit(TransactionUiEvent.Error(context.getString(R.string.error_same_accounts)))
                     return@launch
                 }
             }
@@ -93,7 +97,7 @@ class TransactionViewModel @Inject constructor(
                     _uiEvent.emit(TransactionUiEvent.Success)
                 },
                 onFailure = { error ->
-                    _uiEvent.emit(TransactionUiEvent.Error(error.message ?: "Failed to save transaction."))
+                    _uiEvent.emit(TransactionUiEvent.Error(error.message ?: context.getString(R.string.error_transaction_save_failed)))
                 }
             )
         }

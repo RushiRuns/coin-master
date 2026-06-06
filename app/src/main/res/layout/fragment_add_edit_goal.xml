@@ -18,14 +18,14 @@
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorSurface"
             app:navigationIcon="@drawable/ic_arrow_back"
-            app:navigationContentDescription="Back">
+            app:navigationContentDescription="@string/btn_previous">
 
             <!-- Title is dynamically modified by Kotlin code via tv_title ID -->
             <TextView
                 android:id="@+id/tv_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Add Savings Goal"
+                android:text="@string/title_add_savings_goal"
                 android:textColor="@color/text_primary"
                 android:textSize="20sp"
                 android:textStyle="bold" />
@@ -52,7 +52,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
-                android:hint="Goal Name (e.g. MacBook Pro)">
+                android:hint="@string/hint_goal_name_example">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et_goal_name"
@@ -69,7 +69,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
-                android:hint="Target Amount (₹)">
+                android:hint="@string/label_target_amount">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et_target_amount"
@@ -86,7 +86,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="24dp"
-                android:hint="Target Month &amp; Year">
+                android:hint="@string/hint_target_month_year">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et_target_date"
@@ -117,7 +117,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Budget Category Link"
+                        android:text="@string/label_budget_category_link"
                         android:textColor="@color/text_primary"
                         android:textSize="16sp"
                         android:textStyle="bold" />
@@ -126,7 +126,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
-                        android:text="All goals reside in the Savings bucket as an envelope."
+                        android:text="@string/text_goals_envelope_desc"
                         android:textColor="@color/text_secondary"
                         android:textSize="12sp" />
 
@@ -136,7 +136,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="12dp"
-                        android:text="Create new Savings envelope automatically"
+                        android:text="@string/label_create_savings_envelope_automatically"
                         android:checked="true"
                         app:useMaterialThemeColors="true" />
 
@@ -152,7 +152,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Select Existing Savings Envelope:"
+                            android:text="@string/label_select_existing_envelope"
                             android:textColor="@color/text_primary"
                             android:textSize="14sp"
                             android:layout_marginBottom="4dp" />

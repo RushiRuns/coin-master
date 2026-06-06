@@ -18,8 +18,8 @@
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorSurface"
             app:navigationIcon="@drawable/ic_arrow_back"
-            app:navigationContentDescription="Back"
-            app:title="Monthly Budget Setup"
+            app:navigationContentDescription="@string/btn_previous"
+            app:title="@string/title_monthly_budget_setup"
             app:titleTextColor="@color/text_primary" />
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -58,7 +58,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Month: June 2026"
+                        android:text="@string/placeholder_june_2026"
                         android:textColor="@color/text_primary"
                         android:textSize="16sp"
                         android:textStyle="bold" />
@@ -69,7 +69,7 @@
                         style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Change"
+                        android:text="@string/btn_change"
                         app:cornerRadius="4dp" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
@@ -81,7 +81,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:hint="Monthly Income (₹)"
+                android:hint="@string/hint_monthly_income_rupees"
                 app:layout_constraintTop_toBottomOf="@id/card_date_selection">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -98,7 +98,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
-                android:text="Bucket Split Percentages"
+                android:text="@string/label_bucket_split_percentages"
                 android:textColor="@color/text_primary"
                 android:textSize="16sp"
                 android:textStyle="bold"
@@ -109,7 +109,7 @@
                 android:id="@+id/tv_percentage_sum"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Total: 100%"
+                android:text="@string/placeholder_total_percent"
                 android:textColor="@color/text_secondary"
                 android:textSize="14sp"
                 app:layout_constraintTop_toTopOf="@id/tv_split_label"
@@ -132,7 +132,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:layout_marginEnd="8dp"
-                    android:hint="Needs %">
+                    android:hint="@string/hint_needs_percent">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/et_needs_percent"
@@ -152,7 +152,7 @@
                     android:layout_weight="1"
                     android:layout_marginStart="4dp"
                     android:layout_marginEnd="4dp"
-                    android:hint="Wants %">
+                    android:hint="@string/hint_wants_percent">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/et_wants_percent"
@@ -171,7 +171,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:layout_marginStart="8dp"
-                    android:hint="Savings %">
+                    android:hint="@string/hint_savings_percent">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/et_savings_percent"
@@ -190,7 +190,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
-                android:text="Split Target Calculations"
+                android:text="@string/label_split_target_calculations"
                 android:textColor="@color/text_primary"
                 android:textSize="16sp"
                 android:textStyle="bold"
@@ -223,7 +223,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Needs Target:"
+                            android:text="@string/label_needs_target"
                             android:textColor="@color/text_secondary"
                             android:textSize="14sp" />
 
@@ -257,7 +257,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Wants Target:"
+                            android:text="@string/label_wants_target"
                             android:textColor="@color/text_secondary"
                             android:textSize="14sp" />
 
@@ -290,7 +290,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Savings Target (Includes remainder):"
+                            android:text="@string/label_savings_target"
                             android:textColor="@color/text_secondary"
                             android:textSize="14sp" />
 
@@ -313,7 +313,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:layout_marginTop="24dp"
-                android:text="Save Setup"
+                android:text="@string/btn_save_setup"
                 android:textSize="14sp"
                 android:textStyle="bold"
                 app:cornerRadius="4dp"

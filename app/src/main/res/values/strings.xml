@@ -159,4 +159,118 @@
     <string name="theme_light">Light</string>
     <string name="theme_dark">Dark</string>
     <string name="theme_system">System Default</string>
+
+    <!-- New Layout & Code Strings -->
+    <string name="title_add_account">Add Account</string>
+    <string name="title_edit_account">Edit Account</string>
+    <string name="label_account_name">Account Name</string>
+    <string name="label_opening_balance">Opening Balance</string>
+    <string name="label_brand_color">Brand Color</string>
+    <string name="label_display_icon">Display Icon</string>
+    <string name="btn_save_account">Save Account</string>
+    <string name="title_customize_envelope">Customize Envelope</string>
+    <string name="label_select_color">Select Color Preset</string>
+    <string name="label_select_icon">Select Preset Icon</string>
+    <string name="btn_save_envelope">Save Envelope</string>
+    <string name="btn_delete_envelope">Delete Envelope</string>
+    <string name="label_budget_category_link">Budget Category Link</string>
+    <string name="text_goals_envelope_desc">All goals reside in the Savings bucket as an envelope.</string>
+    <string name="label_select_existing_envelope">Select Existing Savings Envelope:</string>
+    <string name="btn_save_transaction">Save Transaction</string>
+    <string name="label_expense_breakdown">Expense Breakdown</string>
+    <string name="btn_change">Change</string>
+    <string name="label_bucket_split_percentages">Bucket Split Percentages</string>
+    <string name="label_split_target_calculations">Split Target Calculations</string>
+    <string name="label_needs_target">Needs Target:</string>
+    <string name="label_wants_target">Wants Target:</string>
+    <string name="label_savings_target">Savings Target (Includes remainder):</string>
+    <string name="btn_save_setup">Save Setup</string>
+    <string name="error_setup_save_failed">Error saving budget setup.</string>
+    <string name="error_invalid_year">Please enter a valid year (2000-2100)</string>
+    <string name="error_income_empty">Income cannot be empty.</string>
+    <string name="error_percentages_total">Percentages must sum to exactly 100%.</string>
+    <string name="error_amount_empty">Amount cannot be empty.</string>
+    <string name="error_source_account_required">Please select a source account.</string>
+    <string name="error_category_required">Please select a category.</string>
+    <string name="error_dest_account_required">Please select a destination account.</string>
+    <string name="error_same_accounts">Source and destination accounts must be different.</string>
+    <string name="error_transaction_save_failed">Failed to save transaction.</string>
+    <string name="placeholder_june_2026">June 2026</string>
+    <string name="placeholder_declared_income">Declared Income: ₹0.00</string>
+    <string name="placeholder_total_percent">Total: 100%</string>
+    <string name="placeholder_cash_wallet">Cash Wallet</string>
+    <string name="placeholder_bank_account">Bank Account</string>
+    <string name="placeholder_needs_percent">Needs (50%)</string>
+    <string name="placeholder_wants_percent">Wants (30%)</string>
+    <string name="placeholder_savings_percent">Savings (20%)</string>
+    <string name="error_envelope_name_empty">Envelope name cannot be empty.</string>
+    <string name="text_setup_saved_success">Budget setup saved successfully!</string>
+
+    <!-- Color Preset Names -->
+    <string name="color_green">Green</string>
+    <string name="color_blue">Blue</string>
+    <string name="color_red">Red</string>
+    <string name="color_yellow">Yellow</string>
+
+    <!-- Icon Preset Names -->
+    <string name="icon_bank">Bank</string>
+    <string name="icon_wallet">Wallet</string>
+    <string name="icon_card">Card</string>
+    <string name="icon_invest">SIP/Invest</string>
+
+    <!-- Month Setup Additional Strings -->
+    <string name="label_month_format">Month: %1$s %2$d</string>
+    <string name="label_total_percent_format">Total: %1$d%%</string>
+    <string name="dialog_select_budget_month">Select Budget Month</string>
+    <string name="btn_select">Select</string>
+
+    <!-- Budget Activation Errors -->
+    <string name="error_invalid_allocation_format">Invalid allocation amount format.</string>
+    <string name="error_cannot_activate_unallocated">Cannot activate budget: %1$s is still unallocated.</string>
+    <string name="error_cannot_activate_over_allocated">Cannot activate budget: %1$s is over-allocated.</string>
+    <string name="error_amount_must_be_greater_than_zero">Amount must be greater than zero.</string>
+
+    <!-- Goal Validation Errors -->
+    <string name="error_target_amount_must_be_greater_than_zero">Target amount must be greater than zero.</string>
+    <string name="error_save_goal_failed">An error occurred while saving the goal.</string>
+
+    <!-- Account Details Hints & Placeholders -->
+    <string name="hint_account_name_example">e.g. My Savings, Cash Wallet</string>
+    <string name="placeholder_rupees_zero">₹ 0.00</string>
+
+    <!-- Envelope Details Hints -->
+    <string name="hint_envelope_name">Envelope Name</string>
+    <string name="hint_budget_bucket_type">Budget Bucket Type</string>
+
+    <!-- Goal Setup Screen Strings -->
+    <string name="title_add_savings_goal">Add Savings Goal</string>
+    <string name="hint_goal_name_example">Goal Name (e.g. MacBook Pro)</string>
+    <string name="hint_target_month_year">Target Month &amp; Year</string>
+    <string name="label_create_savings_envelope_automatically">Create new Savings envelope automatically</string>
+
+    <!-- Transaction Screen Additional Strings -->
+    <string name="title_record_transaction">Record Transaction</string>
+    <string name="label_amount_rupees">Amount (₹)</string>
+    <string name="hint_transaction_type">Transaction Type</string>
+    <string name="hint_source_account">Source Account</string>
+    <string name="hint_destination_account">Destination Account</string>
+    <string name="hint_category_envelope">Category (Envelope)</string>
+
+    <!-- Budget Screen Additional Strings -->
+    <string name="cd_previous_month">Previous Month</string>
+    <string name="cd_next_month">Next Month</string>
+    <string name="placeholder_left_to_budget">₹0.00 Left to Budget</string>
+    <string name="btn_add_needs_envelope">+ Add Envelope to Needs</string>
+    <string name="btn_add_wants_envelope">+ Add Envelope to Wants</string>
+    <string name="btn_add_savings_envelope">+ Add Envelope to Savings</string>
+
+    <!-- Home Dashboard Additional Strings -->
+    <string name="placeholder_budget_health_summary">₹0 spent of ₹0 budgeted</string>
+
+    <!-- Month Setup Screen Additional Strings -->
+    <string name="title_monthly_budget_setup">Monthly Budget Setup</string>
+    <string name="hint_monthly_income_rupees">Monthly Income (₹)</string>
+    <string name="hint_needs_percent">Needs %</string>
+    <string name="hint_wants_percent">Wants %</string>
+    <string name="hint_savings_percent">Savings %</string>
 </resources>

@@ -18,14 +18,14 @@
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorSurface"
             app:navigationIcon="@drawable/ic_arrow_back"
-            app:navigationContentDescription="Back">
+            app:navigationContentDescription="@string/btn_previous">
 
             <!-- Title is dynamically modified by Kotlin code via tv_title ID -->
             <TextView
                 android:id="@+id/tv_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Customize Envelope"
+                android:text="@string/title_customize_envelope"
                 android:textColor="@color/text_primary"
                 android:textSize="20sp"
                 android:textStyle="bold" />
@@ -50,7 +50,7 @@
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Envelope Name"
+                android:hint="@string/hint_envelope_name"
                 app:layout_constraintTop_toTopOf="parent">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -68,7 +68,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:hint="Budget Bucket Type"
+                android:hint="@string/hint_budget_bucket_type"
                 app:layout_constraintTop_toBottomOf="@id/til_envelope_name">
 
                 <AutoCompleteTextView
@@ -85,7 +85,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
-                android:text="Select Color Preset"
+                android:text="@string/label_select_color"
                 android:textColor="@color/text_primary"
                 android:textSize="16sp"
                 android:textStyle="bold"
@@ -175,7 +175,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
-                android:text="Select Preset Icon"
+                android:text="@string/label_select_icon"
                 android:textColor="@color/text_primary"
                 android:textSize="16sp"
                 android:textStyle="bold"
@@ -289,7 +289,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:layout_marginTop="24dp"
-                android:text="Save Envelope"
+                android:text="@string/btn_save_envelope"
                 android:textSize="14sp"
                 android:textStyle="bold"
                 app:cornerRadius="4dp"
@@ -301,7 +301,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:text="Delete Envelope"
+                android:text="@string/btn_delete_envelope"
                 android:textColor="@color/error"
                 app:layout_constraintTop_toBottomOf="@id/btn_save_category" />
 

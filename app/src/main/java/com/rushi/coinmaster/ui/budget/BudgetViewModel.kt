@@ -14,8 +14,11 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import android.content.Context
 import java.util.Calendar
 import javax.inject.Inject
+import com.rushi.coinmaster.R
+import dagger.hilt.android.qualifiers.ApplicationContext
 
 sealed class BudgetUiEvent {
     data class Error(val message: String) : BudgetUiEvent()
@@ -26,6 +29,7 @@ sealed class BudgetUiEvent {
 @OptIn(ExperimentalCoroutinesApi::class)
 @HiltViewModel
 class BudgetViewModel @Inject constructor(
+    @ApplicationContext private val context: Context,
     private val budgetRepository: BudgetRepository,
     private val validateZeroBalanceUseCase: ValidateZeroBalanceUseCase
 ) : ViewModel() {
@@ -93,7 +97,7 @@ class BudgetViewModel @Inject constructor(
                 val amountPaise = MoneyMath.rupeesToPaise(amountStr)
                 budgetRepository.saveAllocation(_selectedMonthId.value, categoryId, amountPaise)
             } catch (e: Exception) {
-                _uiEvent.emit(BudgetUiEvent.Error("Invalid allocation amount format."))
+                _uiEvent.emit(BudgetUiEvent.Error(context.getString(R.string.error_invalid_allocation_format)))
             }
         }
     }
@@ -104,11 +108,11 @@ class BudgetViewModel @Inject constructor(
             val validation = unallocatedState.value
             if (!validation.isValid) {
                 val absoluteDiff = Math.abs(validation.differencePaise)
-                val diffStr = String.format("%.2f", absoluteDiff / 100.0)
+                val diffStr = "₹" + String.format("%.2f", absoluteDiff / 100.0)
                 val msg = if (validation.differencePaise > 0L) {
-                    "Cannot activate budget: ₹$diffStr is still unallocated."
+                    context.getString(R.string.error_cannot_activate_unallocated, diffStr)
                 } else {
-                    "Cannot activate budget: ₹$diffStr is over-allocated."
+                    context.getString(R.string.error_cannot_activate_over_allocated, diffStr)
                 }
                 _uiEvent.emit(BudgetUiEvent.Error(msg))
                 return@launch
@@ -148,7 +152,7 @@ class BudgetViewModel @Inject constructor(
                 budgetRepository.insertBudgetMonth(budgetMonth)
                 _uiEvent.emit(BudgetUiEvent.SuccessSave)
             } catch (e: Exception) {
-                _uiEvent.emit(BudgetUiEvent.Error("Error saving budget setup."))
+                _uiEvent.emit(BudgetUiEvent.Error(context.getString(R.string.error_setup_save_failed)))
             }
         }
     }
@@ -161,7 +165,7 @@ class BudgetViewModel @Inject constructor(
     fun saveCategory(id: Long, name: String, bucketType: BucketType, colorHex: String, iconName: String) {
         viewModelScope.launch {
             if (name.isBlank()) {
-                _uiEvent.emit(BudgetUiEvent.Error("Envelope name cannot be empty."))
+                _uiEvent.emit(BudgetUiEvent.Error(context.getString(R.string.error_envelope_name_empty)))
                 return@launch
             }
             val category = if (id == 0L) {

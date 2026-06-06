@@ -160,4 +160,118 @@
     <string name="theme_light">लाइट (Light)</string>
     <string name="theme_dark">डार्क (Dark)</string>
     <string name="theme_system">सिस्टम डिफॉल्ट (System Default)</string>
+
+    <!-- New Layout & Code Strings -->
+    <string name="title_add_account">खाता जोड़ें</string>
+    <string name="title_edit_account">खाता संपादित करें</string>
+    <string name="label_account_name">खाते का नाम</string>
+    <string name="label_opening_balance">प्रारंभिक शेष</string>
+    <string name="label_brand_color">ब्रांड का रंग</string>
+    <string name="label_display_icon">प्रदर्शित आइकन</string>
+    <string name="btn_save_account">खाता सहेजें</string>
+    <string name="title_customize_envelope">लिफाफा कस्टमाइज़ करें</string>
+    <string name="label_select_color">रंग प्रीसेट चुनें</string>
+    <string name="label_select_icon">चिन्ह प्रीसेट चुनें</string>
+    <string name="btn_save_envelope">लिफाफा सहेजें</string>
+    <string name="btn_delete_envelope">लिफाफा हटाएँ</string>
+    <string name="label_budget_category_link">बजट श्रेणी लिंक</string>
+    <string name="text_goals_envelope_desc">सभी लक्ष्य बचत बकेट में एक लिफाफे के रूप में रहते हैं।</string>
+    <string name="label_select_existing_envelope">मौजूदा बचत लिफाफा चुनें:</string>
+    <string name="btn_save_transaction">लेनदेन सहेजें</string>
+    <string name="label_expense_breakdown">खर्च का विवरण</string>
+    <string name="btn_change">बदलें</string>
+    <string name="label_bucket_split_percentages">बकेट विभाजन प्रतिशत</string>
+    <string name="label_split_target_calculations">विभाजन लक्ष्य गणना</string>
+    <string name="label_needs_target">आवश्यकता लक्ष्य:</string>
+    <string name="label_wants_target">चाहत लक्ष्य:</string>
+    <string name="label_savings_target">बचत लक्ष्य (शेष राशि सहित):</string>
+    <string name="btn_save_setup">सेटअप सहेजें</string>
+    <string name="error_setup_save_failed">बजट सेटअप सहेजने में त्रुटि।</string>
+    <string name="error_invalid_year">कृपया एक वैध वर्ष दर्ज करें (2000-2100)</string>
+    <string name="error_income_empty">आय खाली नहीं हो सकती।</string>
+    <string name="error_percentages_total">प्रतिशत का योग बिल्कुल 100% होना चाहिए।</string>
+    <string name="error_amount_empty">राशि खाली नहीं हो सकती।</string>
+    <string name="error_source_account_required">कृपया एक स्रोत खाता चुनें।</string>
+    <string name="error_category_required">कृपया एक श्रेणी चुनें।</string>
+    <string name="error_dest_account_required">कृपया एक गंतव्य खाता चुनें।</string>
+    <string name="error_same_accounts">स्रोत और गंतव्य खाते भिन्न होने चाहिए।</string>
+    <string name="error_transaction_save_failed">लेनदेन सहेजने में विफल।</string>
+    <string name="placeholder_june_2026">जून २०२६</string>
+    <string name="placeholder_declared_income">घोषित आय: ₹०.००</string>
+    <string name="placeholder_total_percent">कुल: १००%</string>
+    <string name="placeholder_cash_wallet">कैश वॉलेट</string>
+    <string name="placeholder_bank_account">बैंक खाता</string>
+    <string name="placeholder_needs_percent">आवश्यकताएं (50%)</string>
+    <string name="placeholder_wants_percent">चाहतें (30%)</string>
+    <string name="placeholder_savings_percent">बचत (20%)</string>
+    <string name="error_envelope_name_empty">लिफाफे का नाम खाली नहीं हो सकता।</string>
+    <string name="text_setup_saved_success">बजट सेटअप सफलतापूर्वक सहेजा गया!</string>
+
+    <!-- Color Preset Names -->
+    <string name="color_green">हरा (Green)</string>
+    <string name="color_blue">नीला (Blue)</string>
+    <string name="color_red">लाल (Red)</string>
+    <string name="color_yellow">पीला (Yellow)</string>
+
+    <!-- Icon Preset Names -->
+    <string name="icon_bank">बैंक (Bank)</string>
+    <string name="icon_wallet">वॉलेट (Wallet)</string>
+    <string name="icon_card">कार्ड (Card)</string>
+    <string name="icon_invest">निवेश (SIP/Invest)</string>
+
+    <!-- Month Setup Additional Strings -->
+    <string name="label_month_format">महीना: %1$s %2$d</string>
+    <string name="label_total_percent_format">कुल: %1$d%%</string>
+    <string name="dialog_select_budget_month">बजट महीना चुनें</string>
+    <string name="btn_select">चुनें</string>
+
+    <!-- Budget Activation Errors -->
+    <string name="error_invalid_allocation_format">अवैध आवंटन राशि प्रारूप।</string>
+    <string name="error_cannot_activate_unallocated">बजट सक्रिय नहीं किया जा सकता: %1$s अभी भी आवंटित नहीं है।</string>
+    <string name="error_cannot_activate_over_allocated">बजट सक्रिय नहीं किया जा सकता: %1$s अधिक आवंटित है।</string>
+    <string name="error_amount_must_be_greater_than_zero">राशि शून्य से अधिक होनी चाहिए।</string>
+
+    <!-- Goal Validation Errors -->
+    <string name="error_target_amount_must_be_greater_than_zero">लक्ष्य राशि शून्य से अधिक होनी चाहिए।</string>
+    <string name="error_save_goal_failed">लक्ष्य सहेजते समय एक त्रुटि हुई।</string>
+
+    <!-- Account Details Hints & Placeholders -->
+    <string name="hint_account_name_example">जैसे कि मेरी बचत, कैश वॉलेट</string>
+    <string name="placeholder_rupees_zero">₹ 0.00</string>
+
+    <!-- Envelope Details Hints -->
+    <string name="hint_envelope_name">लिफाफे का नाम</string>
+    <string name="hint_budget_bucket_type">बजट बकेट प्रकार</string>
+
+    <!-- Goal Setup Screen Strings -->
+    <string name="title_add_savings_goal">बचत लक्ष्य जोड़ें</string>
+    <string name="hint_goal_name_example">लक्ष्य का नाम (जैसे मैकबुक प्रो)</string>
+    <string name="hint_target_month_year">लक्ष्य महीना और वर्ष</string>
+    <string name="label_create_savings_envelope_automatically">बचत लिफाफा स्वचालित रूप से बनाएं</string>
+
+    <!-- Transaction Screen Additional Strings -->
+    <string name="title_record_transaction">लेनदेन रिकॉर्ड करें</string>
+    <string name="label_amount_rupees">राशि (₹)</string>
+    <string name="hint_transaction_type">लेनदेन का प्रकार</string>
+    <string name="hint_source_account">स्रोत खाता</string>
+    <string name="hint_destination_account">गंतव्य खाता</string>
+    <string name="hint_category_envelope">श्रेणी (लिफाफा)</string>
+
+    <!-- Budget Screen Additional Strings -->
+    <string name="cd_previous_month">पिछला महीना</string>
+    <string name="cd_next_month">अगला महीना</string>
+    <string name="placeholder_left_to_budget">₹0.00 बजट में शेष</string>
+    <string name="btn_add_needs_envelope">+ आवश्यकताओं में लिफाफा जोड़ें</string>
+    <string name="btn_add_wants_envelope">+ चाहतों में लिफाफा जोड़ें</string>
+    <string name="btn_add_savings_envelope">+ बचत में लिफाफा जोड़ें</string>
+
+    <!-- Home Dashboard Additional Strings -->
+    <string name="placeholder_budget_health_summary">₹0 खर्च किया गया (₹0 बजट में से)</string>
+
+    <!-- Month Setup Screen Additional Strings -->
+    <string name="title_monthly_budget_setup">मासिक बजट सेटअप</string>
+    <string name="hint_monthly_income_rupees">मासिक आय (₹)</string>
+    <string name="hint_needs_percent">आवश्यकताएं %</string>
+    <string name="hint_wants_percent">चाहतें %</string>
+    <string name="hint_savings_percent">बचत %</string>
 </resources>

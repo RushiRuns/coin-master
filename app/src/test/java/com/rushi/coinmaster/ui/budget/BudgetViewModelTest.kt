@@ -31,6 +31,7 @@ class BudgetViewModelTest {
 
     private val testDispatcher = StandardTestDispatcher()
 
+    private val context: android.content.Context = mockk(relaxed = true)
     private val budgetRepository: BudgetRepository = mockk(relaxed = true)
     private val validateZeroBalanceUseCase = ValidateZeroBalanceUseCase()
 
@@ -76,7 +77,7 @@ class BudgetViewModelTest {
         every { budgetRepository.getBudgetMonthsFlow() } returns MutableStateFlow(emptyList())
         every { budgetRepository.getEnvelopesWithAllocationsFlow(any()) } returns MutableStateFlow(emptyList())
         every { budgetRepository.getCategoriesFlow() } returns MutableStateFlow(emptyList())
-        viewModel = BudgetViewModel(budgetRepository, validateZeroBalanceUseCase)
+        viewModel = BudgetViewModel(context, budgetRepository, validateZeroBalanceUseCase)
     }
 
     @After
@@ -125,7 +126,7 @@ class BudgetViewModelTest {
         every { budgetRepository.getBudgetMonthsFlow() } returns MutableStateFlow(listOf(balancedMonth))
         every { budgetRepository.getEnvelopesWithAllocationsFlow(any()) } returns MutableStateFlow(unbalancedEnvelopes)
 
-        viewModel = BudgetViewModel(budgetRepository, validateZeroBalanceUseCase)
+        viewModel = BudgetViewModel(context, budgetRepository, validateZeroBalanceUseCase)
         viewModel.selectMonth(202601)
 
         // Activate state flows to populate budgetMonthState and unallocatedState
@@ -145,7 +146,7 @@ class BudgetViewModelTest {
         every { budgetRepository.getBudgetMonthsFlow() } returns MutableStateFlow(listOf(balancedMonth))
         every { budgetRepository.getEnvelopesWithAllocationsFlow(any()) } returns MutableStateFlow(balancedEnvelopes)
 
-        viewModel = BudgetViewModel(budgetRepository, validateZeroBalanceUseCase)
+        viewModel = BudgetViewModel(context, budgetRepository, validateZeroBalanceUseCase)
         viewModel.selectMonth(202601)
 
         backgroundScope.launch(UnconfinedTestDispatcher(testScheduler)) { viewModel.budgetMonthState.collect {} }
@@ -162,7 +163,7 @@ class BudgetViewModelTest {
     @Test
     fun `activateBudgetMonth does nothing when budgetMonthState is null`() = runTest {
         // Default setUp has empty flow, so budgetMonthState.value == null
-        viewModel = BudgetViewModel(budgetRepository, validateZeroBalanceUseCase)
+        viewModel = BudgetViewModel(context, budgetRepository, validateZeroBalanceUseCase)
 
         backgroundScope.launch(UnconfinedTestDispatcher(testScheduler)) { viewModel.budgetMonthState.collect {} }
         testScheduler.advanceUntilIdle()
@@ -180,7 +181,7 @@ class BudgetViewModelTest {
         every { budgetRepository.getBudgetMonthsFlow() } returns MutableStateFlow(listOf(balancedMonth))
         every { budgetRepository.getEnvelopesWithAllocationsFlow(any()) } returns MutableStateFlow(balancedEnvelopes)
 
-        viewModel = BudgetViewModel(budgetRepository, validateZeroBalanceUseCase)
+        viewModel = BudgetViewModel(context, budgetRepository, validateZeroBalanceUseCase)
         viewModel.selectMonth(202601)
 
         // Collect unallocatedState
@@ -202,7 +203,7 @@ class BudgetViewModelTest {
         every { budgetRepository.getBudgetMonthsFlow() } returns MutableStateFlow(listOf(balancedMonth))
         every { budgetRepository.getEnvelopesWithAllocationsFlow(any()) } returns MutableStateFlow(unbalancedEnvelopes)
 
-        viewModel = BudgetViewModel(budgetRepository, validateZeroBalanceUseCase)
+        viewModel = BudgetViewModel(context, budgetRepository, validateZeroBalanceUseCase)
         viewModel.selectMonth(202601)
 
         var validation = viewModel.unallocatedState.first()

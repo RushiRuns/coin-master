@@ -34,7 +34,7 @@ class AddTransactionFragment : Fragment() {
     private var accountsList: List<AccountEntity> = emptyList()
     private var categoriesList: List<CategoryEntity> = emptyList()
 
-    private val types = listOf("Expense", "Income", "Transfer")
+    private lateinit var types: List<String>
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -85,7 +85,7 @@ class AddTransactionFragment : Fragment() {
                     viewModel.uiEvent.collect { event ->
                         when (event) {
                             is TransactionUiEvent.Success -> {
-                                Toast.makeText(requireContext(), "Transaction recorded!", Toast.LENGTH_SHORT).show()
+                                Toast.makeText(requireContext(), getString(R.string.text_transaction_success), Toast.LENGTH_SHORT).show()
                                 findNavController().popBackStack()
                             }
                             is TransactionUiEvent.Error -> {
@@ -107,10 +107,15 @@ class AddTransactionFragment : Fragment() {
     }
 
     private fun setupTypeDropdown() {
+        types = listOf(
+            getString(R.string.type_expense),
+            getString(R.string.type_income),
+            getString(R.string.type_transfer)
+        )
         val typeAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, types)
         binding.actvType.setAdapter(typeAdapter)
-        binding.actvType.setText("Expense", false)
-        updateDropdownVisibility("Expense")
+        binding.actvType.setText(getString(R.string.type_expense), false)
+        updateDropdownVisibility(getString(R.string.type_expense))
 
         binding.actvType.setOnItemClickListener { _, _, position, _ ->
             val selected = types[position]
@@ -120,15 +125,15 @@ class AddTransactionFragment : Fragment() {
 
     private fun updateDropdownVisibility(typeStr: String) {
         when (typeStr) {
-            "Expense" -> {
+            getString(R.string.type_expense) -> {
                 binding.tilCategory.visibility = View.VISIBLE
                 binding.tilTransferToAccount.visibility = View.GONE
             }
-            "Income" -> {
+            getString(R.string.type_income) -> {
                 binding.tilCategory.visibility = View.GONE
                 binding.tilTransferToAccount.visibility = View.GONE
             }
-            "Transfer" -> {
+            getString(R.string.type_transfer) -> {
                 binding.tilCategory.visibility = View.GONE
                 binding.tilTransferToAccount.visibility = View.VISIBLE
             }
@@ -169,9 +174,9 @@ class AddTransactionFragment : Fragment() {
         val amountStr = binding.etAmount.text.toString()
         val typeStr = binding.actvType.text.toString()
         val type = when (typeStr) {
-            "Expense" -> TransactionType.EXPENSE
-            "Income" -> TransactionType.INCOME
-            "Transfer" -> TransactionType.TRANSFER
+            getString(R.string.type_expense) -> TransactionType.EXPENSE
+            getString(R.string.type_income) -> TransactionType.INCOME
+            getString(R.string.type_transfer) -> TransactionType.TRANSFER
             else -> TransactionType.EXPENSE
         }
 

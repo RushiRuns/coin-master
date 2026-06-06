@@ -134,7 +134,7 @@ class BudgetFragment : Fragment() {
                     viewModel.uiEvent.collect { event ->
                         when (event) {
                             is BudgetUiEvent.SuccessActivation -> {
-                                Toast.makeText(requireContext(), "Budget activated successfully!", Toast.LENGTH_SHORT).show()
+                                Toast.makeText(requireContext(), getString(R.string.text_budget_success), Toast.LENGTH_SHORT).show()
                             }
                             is BudgetUiEvent.Error -> {
                                 Toast.makeText(requireContext(), event.message, Toast.LENGTH_LONG).show()
@@ -158,12 +158,12 @@ class BudgetFragment : Fragment() {
         val languageCode = LocaleHelper.getLanguage(requireContext())
 
         if (month == null) {
-            binding.tvDeclaredIncome.text = "Declared Income: ₹0.00"
-            binding.tvUnallocatedStatus.text = "Setup Required"
+            binding.tvDeclaredIncome.text = getString(R.string.placeholder_declared_income)
+            binding.tvUnallocatedStatus.text = getString(R.string.text_setup_required)
             binding.tvUnallocatedStatus.setTextColor(ContextCompat.getColor(requireContext(), R.color.text_secondary))
-            binding.tvStatusHelper.text = "Please set up your budget details first."
+            binding.tvStatusHelper.text = getString(R.string.text_setup_helper)
             binding.btnActivateBudget.isEnabled = false
-            binding.btnActivateBudget.text = "Activate Budget"
+            binding.btnActivateBudget.text = getString(R.string.btn_activate_budget)
 
             binding.tvNeedsRatio.text = "₹0 / ₹0"
             binding.tvWantsRatio.text = "₹0 / ₹0"
@@ -182,30 +182,30 @@ class BudgetFragment : Fragment() {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.unallocatedState.collect { validation ->
                     if (month.isActive) {
-                        binding.tvUnallocatedStatus.text = "Budget Balanced"
+                        binding.tvUnallocatedStatus.text = getString(R.string.text_budget_balanced)
                         binding.tvUnallocatedStatus.setTextColor(resources.getColor(android.R.color.holo_green_dark, null))
-                        binding.tvStatusHelper.text = "Budget is active."
+                        binding.tvStatusHelper.text = getString(R.string.text_budget_active)
                         binding.btnActivateBudget.isEnabled = false
-                        binding.btnActivateBudget.text = "Activated"
+                        binding.btnActivateBudget.text = getString(R.string.btn_activated)
                     } else {
-                        binding.btnActivateBudget.text = "Activate Budget"
+                        binding.btnActivateBudget.text = getString(R.string.btn_activate_budget)
                         when {
                             validation.isValid -> {
-                                binding.tvUnallocatedStatus.text = "All Rupee(s) Allocated!"
+                                binding.tvUnallocatedStatus.text = getString(R.string.text_all_allocated)
                                 binding.tvUnallocatedStatus.setTextColor(resources.getColor(android.R.color.holo_green_dark, null))
-                                binding.tvStatusHelper.text = "Your budget is balanced and ready."
+                                binding.tvStatusHelper.text = getString(R.string.text_budget_ready)
                                 binding.btnActivateBudget.isEnabled = true
                             }
                             validation.differencePaise > 0L -> {
-                                binding.tvUnallocatedStatus.text = "${CurrencyFormatter.format(validation.differencePaise, languageCode)} Left to Budget"
+                                binding.tvUnallocatedStatus.text = getString(R.string.text_left_to_budget, CurrencyFormatter.format(validation.differencePaise, languageCode))
                                 binding.tvUnallocatedStatus.setTextColor(ContextCompat.getColor(requireContext(), R.color.primary))
-                                binding.tvStatusHelper.text = "ZBB requires unallocated balance to be zero."
+                                binding.tvStatusHelper.text = getString(R.string.text_zbb_rule)
                                 binding.btnActivateBudget.isEnabled = false
                             }
                             else -> {
-                                binding.tvUnallocatedStatus.text = "${CurrencyFormatter.format(Math.abs(validation.differencePaise), languageCode)} Over-allocated"
+                                binding.tvUnallocatedStatus.text = getString(R.string.text_over_allocated, CurrencyFormatter.format(Math.abs(validation.differencePaise), languageCode))
                                 binding.tvUnallocatedStatus.setTextColor(ContextCompat.getColor(requireContext(), R.color.error))
-                                binding.tvStatusHelper.text = "You have allocated more than your income."
+                                binding.tvStatusHelper.text = getString(R.string.text_over_allocated_info)
                                 binding.btnActivateBudget.isEnabled = false
                             }
                         }
@@ -247,13 +247,13 @@ class BudgetFragment : Fragment() {
             itemBinding.tvEnvelopeName.text = envelope.categoryName
             itemBinding.viewEnvelopeColor.setBackgroundColor(Color.parseColor(envelope.colorHex))
             itemBinding.ivEnvelopeIcon.setImageResource(getIconDrawableResId(envelope.iconName))
-            itemBinding.tvEnvelopeSpent.text = "Spent: " + CurrencyFormatter.format(envelope.spentAmountPaise, languageCode)
+            itemBinding.tvEnvelopeSpent.text = getString(R.string.text_spent_prefix, CurrencyFormatter.format(envelope.spentAmountPaise, languageCode))
             itemBinding.tvAllocatedAmount.text = CurrencyFormatter.format(envelope.allocatedAmountPaise, languageCode)
 
             // Click to Edit Allocation
             itemBinding.layoutAllocationClick.setOnClickListener {
                 if (viewModel.budgetMonthState.value?.isActive == true) {
-                    Toast.makeText(requireContext(), "Cannot modify allocations for an active budget.", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), getString(R.string.text_cannot_modify_active), Toast.LENGTH_SHORT).show()
                 } else {
                     showAllocationDialog(envelope)
                 }
@@ -301,14 +301,14 @@ class BudgetFragment : Fragment() {
         container.addView(input)
 
         AlertDialog.Builder(requireContext())
-            .setTitle("Allocate Budget")
-            .setMessage("Enter allocation for ${envelope.categoryName}:")
+            .setTitle(getString(R.string.text_allocate_budget))
+            .setMessage(getString(R.string.text_enter_allocation, envelope.categoryName))
             .setView(container)
-            .setPositiveButton("Save") { _, _ ->
+            .setPositiveButton(getString(R.string.btn_save)) { _, _ ->
                 val amountStr = input.text.toString()
                 viewModel.saveAllocation(envelope.categoryId, amountStr)
             }
-            .setNegativeButton("Cancel", null)
+            .setNegativeButton(getString(R.string.btn_cancel), null)
             .show()
     }
 

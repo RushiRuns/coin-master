@@ -125,8 +125,9 @@ class MonthSetupFragment : Fragment() {
     }
 
     private fun updateDateLabel() {
-        val monthName = DateFormatSymbols().months[activeMonth - 1]
-        binding.tvSelectedDateLabel.text = "Month: $monthName $activeYear"
+        val languageCode = LocaleHelper.getLanguage(requireContext())
+        val monthName = DateFormatSymbols(java.util.Locale(languageCode)).months[activeMonth - 1]
+        binding.tvSelectedDateLabel.text = getString(R.string.label_month_format, monthName, activeYear)
     }
 
     private fun updateSplitCalculations() {
@@ -146,7 +147,7 @@ class MonthSetupFragment : Fragment() {
         val savingsP = savingsStr.toIntOrNull() ?: 0
 
         val total = needsP + wantsP + savingsP
-        binding.tvPercentageSum.text = "Total: $total%"
+        binding.tvPercentageSum.text = getString(R.string.label_total_percent_format, total)
         if (total == 100) {
             binding.tvPercentageSum.setTextColor(resources.getColor(android.R.color.holo_green_dark, null))
         } else {
@@ -166,7 +167,8 @@ class MonthSetupFragment : Fragment() {
         val etYear = dialogView.findViewById<EditText>(R.id.et_year)
 
         // Populate Month Spinner
-        val months = DateFormatSymbols().months
+        val languageCode = LocaleHelper.getLanguage(requireContext())
+        val months = DateFormatSymbols(java.util.Locale(languageCode)).months
         val spinnerAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, months)
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spinnerMonth.adapter = spinnerAdapter
@@ -175,9 +177,9 @@ class MonthSetupFragment : Fragment() {
         etYear.setText(activeYear.toString())
 
         AlertDialog.Builder(requireContext())
-            .setTitle("Select Budget Month")
+            .setTitle(getString(R.string.dialog_select_budget_month))
             .setView(dialogView)
-            .setPositiveButton("Select") { _, _ ->
+            .setPositiveButton(getString(R.string.btn_select)) { _, _ ->
                 val selectedMonth = spinnerMonth.selectedItemPosition + 1
                 val selectedYear = etYear.text.toString().toIntOrNull() ?: activeYear
                 if (selectedYear in 2000..2100) {
@@ -187,10 +189,10 @@ class MonthSetupFragment : Fragment() {
                     updateDateLabel()
                     updateSplitCalculations()
                 } else {
-                    Toast.makeText(requireContext(), "Please enter a valid year (2000-2100)", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), getString(R.string.error_invalid_year), Toast.LENGTH_SHORT).show()
                 }
             }
-            .setNegativeButton("Cancel", null)
+            .setNegativeButton(getString(R.string.btn_cancel), null)
             .show()
     }
 
@@ -201,7 +203,7 @@ class MonthSetupFragment : Fragment() {
         val savingsStr = binding.etSavingsPercent.text.toString()
 
         if (incomeStr.isBlank()) {
-            Toast.makeText(requireContext(), "Income cannot be empty.", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), getString(R.string.error_income_empty), Toast.LENGTH_SHORT).show()
             return
         }
 
@@ -210,7 +212,7 @@ class MonthSetupFragment : Fragment() {
         val savingsP = savingsStr.toIntOrNull() ?: 0
 
         if (needsP + wantsP + savingsP != 100) {
-            Toast.makeText(requireContext(), "Percentages must sum to exactly 100%.", Toast.LENGTH_LONG).show()
+            Toast.makeText(requireContext(), getString(R.string.error_percentages_total), Toast.LENGTH_LONG).show()
             return
         }
 

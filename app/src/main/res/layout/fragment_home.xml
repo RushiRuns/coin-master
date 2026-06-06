@@ -19,7 +19,7 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorSurface"
-            app:title="Dashboard"
+            app:title="@string/label_dashboard"
             app:titleTextColor="@color/text_primary" />
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -133,7 +133,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
-                        android:text="₹0 spent of ₹0 budgeted"
+                        android:text="@string/placeholder_budget_health_summary"
                         android:textColor="@color/text_secondary"
                         android:textSize="12sp" />
 
@@ -171,7 +171,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Expense Breakdown"
+                        android:text="@string/label_expense_breakdown"
                         android:textColor="@color/text_primary"
                         android:textSize="16sp"
                         android:textStyle="bold" />
@@ -272,7 +272,7 @@
         android:layout_gravity="bottom|end"
         android:layout_margin="16dp"
         android:src="@drawable/ic_add"
-        android:contentDescription="Add Transaction"
+        android:contentDescription="@string/cd_add_transaction"
         app:backgroundTint="@color/secondary"
         app:tint="@color/white" />
 
