@@ -1,0 +1,35 @@
+package com.rushi.coinmaster.ui.settings
+
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.rushi.coinmaster.data.preferences.AppPreferences
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
+import javax.inject.Inject
+
+@HiltViewModel
+class SettingsViewModel @Inject constructor(
+    private val appPreferences: AppPreferences
+) : ViewModel() {
+
+    /** The currently persisted language code (e.g. "en", "hi", "mr"). */
+    val currentLanguage: StateFlow<String> = appPreferences.appLanguage
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5000),
+            initialValue = "en"
+        )
+
+    /**
+     * Persists the selected language to DataStore.
+     * The caller (SettingsFragment) is responsible for applying the locale to the Activity.
+     */
+    fun setLanguage(languageCode: String) {
+        viewModelScope.launch {
+            appPreferences.setAppLanguage(languageCode)
+        }
+    }
+}

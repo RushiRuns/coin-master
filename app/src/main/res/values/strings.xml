@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">Coin Master</string>
-    
+
     <!-- Onboarding Step 1 -->
     <string name="ob_welcome_title">Welcome to Coin Master</string>
     <string name="ob_welcome_desc">Let\'s get your profile set up so you can take control of your money.</string>
@@ -8,7 +8,7 @@
     <string name="ob_hint_name">Your Name</string>
     <string name="ob_label_currency">Select Preferred Currency</string>
     <string name="ob_error_name_empty">Name cannot be empty</string>
-    
+
     <!-- Onboarding Step 2 -->
     <string name="ob_account_title">Create Your First Account</string>
     <string name="ob_account_desc">All zero-based budgets start with tracking where your money resides.</string>
@@ -17,20 +17,23 @@
     <string name="ob_label_account_type">Account Type</string>
     <string name="ob_error_acc_name_empty">Account name cannot be empty</string>
     <string name="ob_error_balance_invalid">Please enter a valid balance</string>
-    
+
     <!-- Onboarding Step 3 -->
     <string name="ob_income_title">Declare Monthly Income</string>
     <string name="ob_income_desc">How much income do you expect to receive this month? We will split this into Needs, Wants, and Savings envelopes.</string>
     <string name="ob_hint_income">Expected Monthly Income</string>
     <string name="ob_info_zbb">Zero-Based Budgeting rules dictate that you must give every rupee a job before the month starts.</string>
     <string name="ob_error_income_invalid">Monthly income must be greater than zero</string>
-    
-    <!-- Navigation & Common -->
+
+    <!-- Navigation &amp; Common -->
     <string name="btn_next">Next</string>
     <string name="btn_previous">Back</string>
     <string name="btn_get_started">Get Started</string>
     <string name="btn_complete">Complete Setup</string>
-    
+    <string name="btn_save">Save</string>
+    <string name="btn_cancel">Cancel</string>
+    <string name="btn_ok">OK</string>
+
     <!-- Account Types -->
     <string name="acc_type_cash">Cash</string>
     <string name="acc_type_bank">Bank Account</string>
@@ -41,6 +44,7 @@
     <string name="title_home">Home</string>
     <string name="title_accounts">Accounts</string>
     <string name="title_budget">Budget</string>
+    <string name="title_settings">Settings</string>
     <string name="label_net_worth">Total Net Worth</string>
     <string name="label_budget_health">Monthly Budget Health</string>
     <string name="label_recent_activity">Recent Activity</string>
@@ -52,4 +56,69 @@
     <string name="text_transfer_desc">Transfer from %1$s to %2$s</string>
     <string name="text_income_desc">Income into %1$s</string>
     <string name="text_expense_desc">Expense from %1$s</string>
+    <string name="label_dashboard">Dashboard</string>
+
+    <!-- Accounts Screen -->
+    <string name="label_net_worth_short">Net Worth</string>
+    <string name="cd_add_account">Add Account</string>
+    <string name="cd_add_transaction">Add Transaction</string>
+    <string name="cd_delete_account">Delete Account</string>
+    <string name="action_account_deleted">Account deleted: %1$s</string>
+    <string name="action_undo">UNDO</string>
+
+    <!-- Budget Screen -->
+    <string name="label_needs">Needs</string>
+    <string name="label_wants">Wants</string>
+    <string name="label_savings">Savings</string>
+    <string name="label_declared_income">Declared Income: %1$s</string>
+    <string name="btn_setup_month">Adjust Setup</string>
+    <string name="btn_activate_budget">Activate Budget</string>
+    <string name="btn_activated">Activated</string>
+    <string name="text_setup_required">Setup Required</string>
+    <string name="text_setup_helper">Please set up your budget details first.</string>
+    <string name="text_budget_balanced">Budget Balanced</string>
+    <string name="text_budget_active">Budget is active.</string>
+    <string name="text_budget_success">Budget activated successfully!</string>
+    <string name="text_all_allocated">All Rupee(s) Allocated!</string>
+    <string name="text_budget_ready">Your budget is balanced and ready.</string>
+    <string name="text_left_to_budget">%1$s Left to Budget</string>
+    <string name="text_zbb_rule">ZBB requires unallocated balance to be zero.</string>
+    <string name="text_over_allocated">%1$s Over-allocated</string>
+    <string name="text_over_allocated_info">You have allocated more than your income.</string>
+    <string name="text_cannot_modify_active">Cannot modify allocations for an active budget.</string>
+    <string name="text_allocate_budget">Allocate Budget</string>
+    <string name="text_enter_allocation">Enter allocation for %1$s:</string>
+    <string name="text_spent_prefix">Spent: %1$s</string>
+
+    <!-- Envelope/Category Bucket Types -->
+    <string name="bucket_needs">Needs (50%)</string>
+    <string name="bucket_wants">Wants (30%)</string>
+    <string name="bucket_savings">Savings (20%)</string>
+
+    <!-- Transaction Screen -->
+    <string name="title_add_transaction">Add Transaction</string>
+    <string name="label_amount">Amount</string>
+    <string name="label_type">Type</string>
+    <string name="label_account">Account</string>
+    <string name="label_transfer_to">Transfer To Account</string>
+    <string name="label_category">Category</string>
+    <string name="label_date">Date</string>
+    <string name="label_note">Note (Optional)</string>
+    <string name="text_transaction_success">Transaction recorded!</string>
+    <string name="type_expense">Expense</string>
+    <string name="type_income">Income</string>
+    <string name="type_transfer">Transfer</string>
+    <string name="type_correction">Correction</string>
+
+    <!-- Settings Screen -->
+    <string name="label_language">App Language</string>
+    <string name="lang_english">English</string>
+    <string name="lang_hindi">हिन्दी (Hindi)</string>
+    <string name="lang_marathi">मराठी (Marathi)</string>
+    <string name="label_language_hint">Select Language</string>
+    <string name="text_language_restart_note">Language changed. The app will refresh to apply the new language.</string>
+    <string name="label_currency_format">Currency Format</string>
+    <string name="label_app_version">App Version</string>
+    <string name="label_about">About</string>
+    <string name="text_about_desc">Coin Master is a fully offline, zero-based personal budget planner built for Indian users.</string>
 </resources>

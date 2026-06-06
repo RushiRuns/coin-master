@@ -130,10 +130,10 @@
 
 **Independent Test**: Change language in Settings to Hindi; verify all labels and currency formatting update immediately.
 
-- [ ] T049 [US21] Populate `strings.xml` and create `values-hi/strings.xml`, `values-mr/strings.xml`
-- [ ] T050 [US21] Implement `SettingsViewModel` and `SettingsFragment` for language selection
-- [ ] T051 [US21] Integrate `LocaleHelper.applyLocale()` in `MainActivity` and `SettingsFragment`
-- [ ] T052 [US21] Verify Indian numbering system (Lakh/Crore) in Hindi/Marathi locales
+- [x] T049 [US21] Populate `strings.xml` and create `values-hi/strings.xml`, `values-mr/strings.xml`
+- [x] T050 [US21] Implement `SettingsViewModel` and `SettingsFragment` for language selection
+- [x] T051 [US21] Integrate `LocaleHelper.applyLocale()` in `MainActivity` and `SettingsFragment`
+- [x] T052 [US21] Verify Indian numbering system (Lakh/Crore) in Hindi/Marathi locales
 
 ---
 

@@ -102,4 +102,10 @@
         android:label="AddTransactionFragment"
         tools:layout="@layout/fragment_add_transaction" />
 
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.rushi.coinmaster.ui.settings.SettingsFragment"
+        android:label="SettingsFragment"
+        tools:layout="@layout/fragment_settings" />
+
 </navigation>

@@ -41,7 +41,11 @@ class MainActivity : AppCompatActivity() {
         binding.bottomNavigation.setupWithNavController(navController)
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
-            if (destination.id == R.id.homeFragment || destination.id == R.id.accountsFragment || destination.id == R.id.budgetFragment) {
+            if (destination.id == R.id.homeFragment
+                || destination.id == R.id.accountsFragment
+                || destination.id == R.id.budgetFragment
+                || destination.id == R.id.settingsFragment
+            ) {
                 binding.bottomNavigation.visibility = View.VISIBLE
             } else {
                 binding.bottomNavigation.visibility = View.GONE

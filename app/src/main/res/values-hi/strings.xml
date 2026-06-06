@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Coin Master</string>
+
+    <!-- Onboarding Step 1 -->
+    <string name="ob_welcome_title">Coin Master में आपका स्वागत है</string>
+    <string name="ob_welcome_desc">चलिए आपकी प्रोफ़ाइल सेट करते हैं ताकि आप अपने पैसों पर नियंत्रण रख सकें।</string>
+    <string name="ob_label_name">हम आपको क्या बुलाएँ?</string>
+    <string name="ob_hint_name">आपका नाम</string>
+    <string name="ob_label_currency">पसंदीदा मुद्रा चुनें</string>
+    <string name="ob_error_name_empty">नाम खाली नहीं हो सकता</string>
+
+    <!-- Onboarding Step 2 -->
+    <string name="ob_account_title">अपना पहला खाता बनाएँ</string>
+    <string name="ob_account_desc">शून्य-आधारित बजट की शुरुआत यह जानने से होती है कि आपका पैसा कहाँ है।</string>
+    <string name="ob_hint_account_name">खाते का नाम (जैसे बैंक, नकद)</string>
+    <string name="ob_hint_opening_balance">प्रारंभिक शेष</string>
+    <string name="ob_label_account_type">खाते का प्रकार</string>
+    <string name="ob_error_acc_name_empty">खाते का नाम खाली नहीं हो सकता</string>
+    <string name="ob_error_balance_invalid">कृपया एक वैध शेष दर्ज करें</string>
+
+    <!-- Onboarding Step 3 -->
+    <string name="ob_income_title">मासिक आय घोषित करें</string>
+    <string name="ob_income_desc">इस महीने आप कितनी आय की उम्मीद करते हैं? हम इसे ज़रूरतें, इच्छाएँ और बचत में विभाजित करेंगे।</string>
+    <string name="ob_hint_income">अपेक्षित मासिक आय</string>
+    <string name="ob_info_zbb">शून्य-आधारित बजटिंग के नियमों के अनुसार हर रुपए को एक काम सौंपना ज़रूरी है।</string>
+    <string name="ob_error_income_invalid">मासिक आय शून्य से अधिक होनी चाहिए</string>
+
+    <!-- Navigation & Common -->
+    <string name="btn_next">आगे</string>
+    <string name="btn_previous">वापस</string>
+    <string name="btn_get_started">शुरू करें</string>
+    <string name="btn_complete">सेटअप पूरा करें</string>
+    <string name="btn_save">सहेजें</string>
+    <string name="btn_cancel">रद्द करें</string>
+    <string name="btn_ok">ठीक है</string>
+
+    <!-- Account Types -->
+    <string name="acc_type_cash">नकद</string>
+    <string name="acc_type_bank">बैंक खाता</string>
+    <string name="acc_type_card">क्रेडिट कार्ड</string>
+    <string name="acc_type_invest">निवेश</string>
+
+    <!-- Dashboard/Home UI -->
+    <string name="title_home">होम</string>
+    <string name="title_accounts">खाते</string>
+    <string name="title_budget">बजट</string>
+    <string name="title_settings">सेटिंग</string>
+    <string name="label_net_worth">कुल संपत्ति</string>
+    <string name="label_budget_health">मासिक बजट स्वास्थ्य</string>
+    <string name="label_recent_activity">हालिया गतिविधि</string>
+    <string name="text_budget_health_summary">%2$s में से %1$s खर्च</string>
+    <string name="text_budget_health_no_budget">इस महीने के लिए कोई बजट नहीं बनाया गया।</string>
+    <string name="text_chart_placeholder">विवरण देखने के लिए किसी भाग पर टैप करें</string>
+    <string name="text_chart_details">%1$s: %3$s में से %2$s खर्च</string>
+    <string name="text_no_transactions">कोई हालिया लेन-देन नहीं</string>
+    <string name="text_transfer_desc">%1$s से %2$s को स्थानांतरण</string>
+    <string name="text_income_desc">%1$s में आय</string>
+    <string name="text_expense_desc">%1$s से खर्च</string>
+    <string name="label_dashboard">डैशबोर्ड</string>
+
+    <!-- Accounts Screen -->
+    <string name="label_net_worth_short">कुल संपत्ति</string>
+    <string name="cd_add_account">खाता जोड़ें</string>
+    <string name="cd_add_transaction">लेन-देन जोड़ें</string>
+    <string name="cd_delete_account">खाता हटाएँ</string>
+    <string name="action_account_deleted">खाता हटाया गया: %1$s</string>
+    <string name="action_undo">पूर्ववत करें</string>
+
+    <!-- Budget Screen -->
+    <string name="label_needs">ज़रूरतें</string>
+    <string name="label_wants">इच्छाएँ</string>
+    <string name="label_savings">बचत</string>
+    <string name="label_declared_income">घोषित आय: %1$s</string>
+    <string name="btn_setup_month">सेटअप बदलें</string>
+    <string name="btn_activate_budget">बजट सक्रिय करें</string>
+    <string name="btn_activated">सक्रिय</string>
+    <string name="text_setup_required">सेटअप आवश्यक</string>
+    <string name="text_setup_helper">कृपया पहले अपना बजट विवरण सेट करें।</string>
+    <string name="text_budget_balanced">बजट संतुलित</string>
+    <string name="text_budget_active">बजट सक्रिय है।</string>
+    <string name="text_budget_success">बजट सफलतापूर्वक सक्रिय हुआ!</string>
+    <string name="text_all_allocated">सभी रुपये आवंटित!</string>
+    <string name="text_budget_ready">आपका बजट संतुलित और तैयार है।</string>
+    <string name="text_left_to_budget">%1$s बजट करना बाकी</string>
+    <string name="text_zbb_rule">ZBB के लिए अनआवंटित शेष शून्य होना चाहिए।</string>
+    <string name="text_over_allocated">%1$s अधिक आवंटित</string>
+    <string name="text_over_allocated_info">आपने अपनी आय से अधिक आवंटित किया है।</string>
+    <string name="text_cannot_modify_active">सक्रिय बजट के लिए आवंटन संशोधित नहीं किया जा सकता।</string>
+    <string name="text_allocate_budget">बजट आवंटित करें</string>
+    <string name="text_enter_allocation">%1$s के लिए आवंटन दर्ज करें:</string>
+    <string name="text_spent_prefix">खर्च: %1$s</string>
+
+    <!-- Envelope/Category Bucket Types -->
+    <string name="bucket_needs">ज़रूरतें (50%)</string>
+    <string name="bucket_wants">इच्छाएँ (30%)</string>
+    <string name="bucket_savings">बचत (20%)</string>
+
+    <!-- Transaction Screen -->
+    <string name="title_add_transaction">लेन-देन जोड़ें</string>
+    <string name="label_amount">राशि</string>
+    <string name="label_type">प्रकार</string>
+    <string name="label_account">खाता</string>
+    <string name="label_transfer_to">इस खाते में स्थानांतरित करें</string>
+    <string name="label_category">श्रेणी</string>
+    <string name="label_date">दिनांक</string>
+    <string name="label_note">नोट (वैकल्पिक)</string>
+    <string name="text_transaction_success">लेन-देन दर्ज हो गया!</string>
+    <string name="type_expense">खर्च</string>
+    <string name="type_income">आय</string>
+    <string name="type_transfer">स्थानांतरण</string>
+    <string name="type_correction">सुधार</string>
+
+    <!-- Settings Screen -->
+    <string name="label_language">ऐप भाषा</string>
+    <string name="lang_english">English</string>
+    <string name="lang_hindi">हिन्दी (Hindi)</string>
+    <string name="lang_marathi">मराठी (Marathi)</string>
+    <string name="label_language_hint">भाषा चुनें</string>
+    <string name="text_language_restart_note">भाषा बदल गई। नई भाषा लागू करने के लिए ऐप रीफ्रेश होगा।</string>
+    <string name="label_currency_format">मुद्रा प्रारूप</string>
+    <string name="label_app_version">ऐप संस्करण</string>
+    <string name="label_about">के बारे में</string>
+    <string name="text_about_desc">Coin Master एक पूरी तरह ऑफलाइन, शून्य-आधारित व्यक्तिगत बजट प्लानर है जो भारतीय उपयोगकर्ताओं के लिए बनाया गया है।</string>
+</resources>
