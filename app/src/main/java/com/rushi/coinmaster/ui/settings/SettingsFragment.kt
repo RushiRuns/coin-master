@@ -55,6 +55,17 @@ class SettingsFragment : Fragment() {
             }
         }
 
+        // Observe saved theme and sync radio buttons
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.currentTheme.collect { theme ->
+                    isInitializing = true
+                    syncThemeRadioButtons(theme)
+                    isInitializing = false
+                }
+            }
+        }
+
         // Listen for radio button changes by the user
         binding.radioGroupLanguage.setOnCheckedChangeListener { _, checkedId ->
             if (isInitializing) return@setOnCheckedChangeListener
@@ -81,6 +92,21 @@ class SettingsFragment : Fragment() {
             //    fully (re-inflates all views, re-reads resources).
             requireActivity().recreate()
         }
+
+        // Listen for theme changes by the user
+        binding.radioGroupTheme.setOnCheckedChangeListener { _, checkedId ->
+            if (isInitializing) return@setOnCheckedChangeListener
+
+            val newTheme = when (checkedId) {
+                R.id.radio_theme_light -> "light"
+                R.id.radio_theme_dark  -> "dark"
+                else                   -> "system"
+            }
+
+            if (newTheme == viewModel.currentTheme.value) return@setOnCheckedChangeListener
+
+            viewModel.setTheme(newTheme)
+        }
     }
 
     private fun syncRadioButtons(langCode: String) {
@@ -90,6 +116,15 @@ class SettingsFragment : Fragment() {
             else -> R.id.radio_english
         }
         binding.radioGroupLanguage.check(radioId)
+    }
+
+    private fun syncThemeRadioButtons(theme: String) {
+        val radioId = when (theme) {
+            "light" -> R.id.radio_theme_light
+            "dark"  -> R.id.radio_theme_dark
+            else    -> R.id.radio_theme_system
+        }
+        binding.radioGroupTheme.check(radioId)
     }
 
     private fun updateCurrencyPreview(langCode: String) {

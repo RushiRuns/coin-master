@@ -23,6 +23,14 @@ class SettingsViewModel @Inject constructor(
             initialValue = "en"
         )
 
+    /** The currently persisted theme (e.g. "light", "dark", "system"). */
+    val currentTheme: StateFlow<String> = appPreferences.appTheme
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5000),
+            initialValue = "system"
+        )
+
     /**
      * Persists the selected language to DataStore.
      * The caller (SettingsFragment) is responsible for applying the locale to the Activity.
@@ -30,6 +38,15 @@ class SettingsViewModel @Inject constructor(
     fun setLanguage(languageCode: String) {
         viewModelScope.launch {
             appPreferences.setAppLanguage(languageCode)
+        }
+    }
+
+    /**
+     * Persists the selected theme to DataStore.
+     */
+    fun setTheme(theme: String) {
+        viewModelScope.launch {
+            appPreferences.setAppTheme(theme)
         }
     }
 }

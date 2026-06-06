@@ -154,4 +154,10 @@
     <string name="label_goal_target">का %1$s</string>
     <string name="label_goal_target_date">लक्ष्य: %1$s</string>
     <string name="label_monthly_savings_needed">मासिक आवश्यक बचत: %1$s/महीना</string>
+
+    <!-- Theme Selection -->
+    <string name="label_app_theme">ऐप थीम</string>
+    <string name="theme_light">लाइट (Light)</string>
+    <string name="theme_dark">डार्क (Dark)</string>
+    <string name="theme_system">सिस्टम डिफॉल्ट (System Default)</string>
 </resources>

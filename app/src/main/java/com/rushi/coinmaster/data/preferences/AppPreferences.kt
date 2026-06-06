@@ -19,6 +19,7 @@ class AppPreferences @Inject constructor(
         private val KEY_USER_NAME = stringPreferencesKey("user_name")
         private val KEY_PREFERRED_CURRENCY = stringPreferencesKey("preferred_currency")
         private val KEY_APP_LANGUAGE = stringPreferencesKey("app_language")
+        private val KEY_APP_THEME = stringPreferencesKey("app_theme")
     }
 
     val isOnboardingComplete: Flow<Boolean> = dataStore.data.map { preferences ->
@@ -58,6 +59,16 @@ class AppPreferences @Inject constructor(
     suspend fun setAppLanguage(language: String) {
         dataStore.edit { preferences ->
             preferences[KEY_APP_LANGUAGE] = language
+        }
+    }
+
+    val appTheme: Flow<String> = dataStore.data.map { preferences ->
+        preferences[KEY_APP_THEME] ?: "system"
+    }
+
+    suspend fun setAppTheme(theme: String) {
+        dataStore.edit { preferences ->
+            preferences[KEY_APP_THEME] = theme
         }
     }
 }

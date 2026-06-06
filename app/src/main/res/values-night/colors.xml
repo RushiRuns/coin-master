@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Brand Colors (Desaturated MD2 Dark Palette) -->
+    <color name="primary">#81C784</color> <!-- Green 300 -->
+    <color name="primary_variant">#1B5E20</color> <!-- Green 900 -->
+    <color name="secondary">#90CAF9</color> <!-- Blue 200 -->
+    <color name="secondary_variant">#1565C0</color> <!-- Blue 800 -->
+    
+    <!-- UI Element Colors -->
+    <color name="background">#121212</color> <!-- Standard Dark Background -->
+    <color name="surface">#1E1E1E</color> <!-- Elevated Dark Surface -->
+    <color name="error">#CF6679</color> <!-- MD2 Spec Dark Error Red -->
+    <color name="text_primary">#DEFFFFFF</color> <!-- High-emphasis (87% white) -->
+    <color name="text_secondary">#99FFFFFF</color> <!-- Medium-emphasis (60% white) -->
+    <color name="divider">#2C2C2C</color> <!-- Subtle dark theme divider/outline -->
+    <color name="light_gray">#2C2C2C</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="black">#FF000000</color>
+    
+    <!-- Indicator/Chart Colors (Desaturated) -->
+    <color name="color_needs">#81C784</color>
+    <color name="color_wants">#FFB74D</color> <!-- Orange 300 -->
+    <color name="color_savings">#90CAF9</color>
+    
+    <!-- Semantic Colors -->
+    <color name="color_positive">#81C784</color>
+    <color name="color_negative">#E57373</color> <!-- Red 300 -->
+</resources>

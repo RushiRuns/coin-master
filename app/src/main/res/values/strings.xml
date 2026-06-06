@@ -153,4 +153,10 @@
     <string name="label_goal_target">of %1$s</string>
     <string name="label_goal_target_date">Target: %1$s</string>
     <string name="label_monthly_savings_needed">Monthly savings needed: %1$s/month</string>
+
+    <!-- Theme Selection -->
+    <string name="label_app_theme">App Theme</string>
+    <string name="theme_light">Light</string>
+    <string name="theme_dark">Dark</string>
+    <string name="theme_system">System Default</string>
 </resources>

@@ -4,6 +4,7 @@ import android.content.Context
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -62,6 +63,22 @@ class MainActivity : AppCompatActivity() {
                         graph.setStartDestination(R.id.onboardingFragment)
                     }
                     navController.graph = graph
+                }
+            }
+        }
+
+        // Apply theme dynamically
+        lifecycleScope.launch {
+            lifecycle.repeatOnLifecycle(Lifecycle.State.CREATED) {
+                appPreferences.appTheme.collect { theme ->
+                    val mode = when (theme) {
+                        "light" -> AppCompatDelegate.MODE_NIGHT_NO
+                        "dark" -> AppCompatDelegate.MODE_NIGHT_YES
+                        else -> AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
+                    }
+                    if (AppCompatDelegate.getDefaultNightMode() != mode) {
+                        AppCompatDelegate.setDefaultNightMode(mode)
+                    }
                 }
             }
         }
