@@ -143,9 +143,9 @@
 
 **Independent Test**: Create ₹12,000 goal for 12 months away; verify ₹1,000 monthly contribution is displayed.
 
-- [ ] T053 [US12] Implement `SinkingFundRepository` and `ComputeSinkingFundMonthlyContributionUseCase`
-- [ ] T054 [US12] Implement `GoalsViewModel` and `GoalsFragment` with progress cards
-- [ ] T055 [US12] Create `AddEditGoalFragment` with target date and amount inputs
+- [x] T053 [US12] Implement `SinkingFundRepository` and `ComputeSinkingFundMonthlyContributionUseCase`
+- [x] T054 [US12] Implement `GoalsViewModel` and `GoalsFragment` with progress cards
+- [x] T055 [US12] Create `AddEditGoalFragment` with target date and amount inputs
 
 ---
 

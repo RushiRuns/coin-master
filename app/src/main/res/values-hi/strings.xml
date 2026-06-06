@@ -122,4 +122,36 @@
     <string name="label_app_version">ऐप संस्करण</string>
     <string name="label_about">के बारे में</string>
     <string name="text_about_desc">Coin Master एक पूरी तरह ऑफलाइन, शून्य-आधारित व्यक्तिगत बजट प्लानर है जो भारतीय उपयोगकर्ताओं के लिए बनाया गया है।</string>
+
+    <!-- Goals / Sinking Funds Screen -->
+    <string name="title_goals">मेरे लक्ष्य</string>
+    <string name="title_savings_goals">बचत लक्ष्य</string>
+    <string name="title_add_goal">लक्ष्य जोड़ें</string>
+    <string name="title_edit_goal">लक्ष्य संपादित करें</string>
+    <string name="label_goal_name">लक्ष्य का नाम</string>
+    <string name="label_target_amount">लक्ष्य राशि (₹)</string>
+    <string name="label_target_date">लक्ष्य का महीना</string>
+    <string name="label_auto_create_category">बचत श्रेणी स्वतः बनाएं</string>
+    <string name="label_select_category">मौजूदा श्रेणी से लिंक करें</string>
+    <string name="text_goal_saved">लक्ष्य सहेज लिया गया!</string>
+    <string name="text_no_goals">अभी तक कोई लक्ष्य नहीं है। अपना पहला बचत लक्ष्य जोड़ें!</string>
+    <string name="text_no_goals_desc">सिंकिंग फंड आपको बड़ी, आने वाली खरीदारियों के लिए धीरे-धीरे बचत करने में मदद करते हैं।</string>
+    <string name="text_monthly_contribution">हर महीने %1$s बचाएं</string>
+    <string name="text_goal_progress">%2$s में से %1$s सहेजा गया</string>
+    <string name="cd_add_goal">लक्ष्य जोड़ें</string>
+    <string name="cd_edit_goal">लक्ष्य संपादित करें</string>
+    <string name="cd_delete_goal">लक्ष्य हटाएँ</string>
+    <string name="error_goal_name_empty">लक्ष्य का नाम खाली नहीं हो सकता</string>
+    <string name="error_invalid_amount">कृपया एक वैध राशि दर्ज करें</string>
+    <string name="error_target_date_required">कृपया लक्ष्य का महीना चुनें</string>
+    <string name="error_no_category">कृपया एक श्रेणी चुनें या स्वतः निर्माण सक्षम करें</string>
+    <string name="action_goal_deleted">लक्ष्य हटाया गया: %1$s</string>
+    <string name="btn_manage_goals">बचत लक्ष्य प्रबंधित करें</string>
+    <string name="dialog_delete_goal_title">लक्ष्य हटाएं</string>
+    <string name="dialog_delete_goal_message">क्या आप वाकई लक्ष्य \"%1$s\" को हटाना चाहते हैं? इससे जुड़े हुए बजट लिफाफे भी हट जाएंगे।</string>
+    <string name="btn_delete">हटाएं</string>
+    <string name="label_envelope_prefix">लिफाफा: %1$s</string>
+    <string name="label_goal_target">का %1$s</string>
+    <string name="label_goal_target_date">लक्ष्य: %1$s</string>
+    <string name="label_monthly_savings_needed">मासिक आवश्यक बचत: %1$s/महीना</string>
 </resources>

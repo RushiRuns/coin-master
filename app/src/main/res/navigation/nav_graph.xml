@@ -68,6 +68,9 @@
         <action
             android:id="@+id/action_budgetFragment_to_addTransactionFragment"
             app:destination="@id/addTransactionFragment" />
+        <action
+            android:id="@+id/action_budgetFragment_to_goalsFragment"
+            app:destination="@id/goalsFragment" />
     </fragment>
 
     <fragment
@@ -107,5 +110,26 @@
         android:name="com.rushi.coinmaster.ui.settings.SettingsFragment"
         android:label="SettingsFragment"
         tools:layout="@layout/fragment_settings" />
+
+    <fragment
+        android:id="@+id/goalsFragment"
+        android:name="com.rushi.coinmaster.ui.goals.GoalsFragment"
+        android:label="GoalsFragment"
+        tools:layout="@layout/fragment_goals">
+        <action
+            android:id="@+id/action_goalsFragment_to_addEditGoalFragment"
+            app:destination="@id/addEditGoalFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/addEditGoalFragment"
+        android:name="com.rushi.coinmaster.ui.goals.AddEditGoalFragment"
+        android:label="AddEditGoalFragment"
+        tools:layout="@layout/fragment_add_edit_goal">
+        <argument
+            android:name="goalId"
+            app:argType="long"
+            android:defaultValue="0L" />
+    </fragment>
 
 </navigation>

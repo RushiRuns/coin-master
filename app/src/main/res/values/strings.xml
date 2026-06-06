@@ -121,4 +121,36 @@
     <string name="label_app_version">App Version</string>
     <string name="label_about">About</string>
     <string name="text_about_desc">Coin Master is a fully offline, zero-based personal budget planner built for Indian users.</string>
+
+    <!-- Goals / Sinking Funds Screen -->
+    <string name="title_goals">My Goals</string>
+    <string name="title_savings_goals">Savings Goals</string>
+    <string name="title_add_goal">Add Goal</string>
+    <string name="title_edit_goal">Edit Goal</string>
+    <string name="label_goal_name">Goal Name</string>
+    <string name="label_target_amount">Target Amount (₹)</string>
+    <string name="label_target_date">Target Month</string>
+    <string name="label_auto_create_category">Auto-create savings category</string>
+    <string name="label_select_category">Link to Existing Category</string>
+    <string name="text_goal_saved">Goal saved!</string>
+    <string name="text_no_goals">No goals yet. Add your first savings goal!</string>
+    <string name="text_no_goals_desc">Sinking funds help you save for big, upcoming purchases step-by-step.</string>
+    <string name="text_monthly_contribution">Save %1$s/month</string>
+    <string name="text_goal_progress">%1$s of %2$s saved</string>
+    <string name="cd_add_goal">Add Goal</string>
+    <string name="cd_edit_goal">Edit Goal</string>
+    <string name="cd_delete_goal">Delete Goal</string>
+    <string name="error_goal_name_empty">Goal name cannot be empty</string>
+    <string name="error_invalid_amount">Please enter a valid amount</string>
+    <string name="error_target_date_required">Please select a target month</string>
+    <string name="error_no_category">Please select a category or enable auto-create</string>
+    <string name="action_goal_deleted">Goal deleted: %1$s</string>
+    <string name="btn_manage_goals">Manage Savings Goals</string>
+    <string name="dialog_delete_goal_title">Delete Goal</string>
+    <string name="dialog_delete_goal_message">Are you sure you want to delete the goal \"%1$s\"? This will also delete any linked budget categories.</string>
+    <string name="btn_delete">Delete</string>
+    <string name="label_envelope_prefix">Envelope: %1$s</string>
+    <string name="label_goal_target">of %1$s</string>
+    <string name="label_goal_target_date">Target: %1$s</string>
+    <string name="label_monthly_savings_needed">Monthly savings needed: %1$s/month</string>
 </resources>

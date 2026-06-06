@@ -343,6 +343,15 @@
                     android:layout_marginTop="8dp"
                     android:text="+ Add Envelope to Savings"
                     android:textColor="#FF9100" />
+
+                <Button
+                    android:id="@+id/btn_manage_goals"
+                    style="@style/Widget.MaterialComponents.Button.TextButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:text="@string/btn_manage_goals"
+                    android:textColor="#FF9100" />
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 

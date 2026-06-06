@@ -99,6 +99,11 @@ class BudgetFragment : Fragment() {
             findNavController().navigate(action)
         }
 
+        binding.btnManageGoals.setOnClickListener {
+            val action = BudgetFragmentDirections.actionBudgetFragmentToGoalsFragment()
+            findNavController().navigate(action)
+        }
+
         binding.fabAddTransaction.setOnClickListener {
             val action = BudgetFragmentDirections.actionBudgetFragmentToAddTransactionFragment()
             findNavController().navigate(action)

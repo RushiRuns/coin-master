@@ -122,4 +122,36 @@
     <string name="label_app_version">अॅप आवृत्ती</string>
     <string name="label_about">याबद्दल</string>
     <string name="text_about_desc">Coin Master हे भारतीय वापरकर्त्यांसाठी बनवलेले पूर्णपणे ऑफलाइन, शून्य-आधारित वैयक्तिक बजेट प्लॅनर आहे।</string>
+
+    <!-- Goals / Sinking Funds Screen -->
+    <string name="title_goals">माझे ध्येय</string>
+    <string name="title_savings_goals">बचत ध्येय</string>
+    <string name="title_add_goal">ध्येय जोडा</string>
+    <string name="title_edit_goal">ध्येय संपादित करा</string>
+    <string name="label_goal_name">ध्येयाचे नाव</string>
+    <string name="label_target_amount">ध्येय रक्कम (₹)</string>
+    <string name="label_target_date">ध्येय महिना</string>
+    <string name="label_auto_create_category">बचत श्रेणी स्वयंचलितपणे तयार करा</string>
+    <string name="label_select_category">विद्यमान श्रेणीशी जोडा</string>
+    <string name="text_goal_saved">ध्येय जतन केले!</string>
+    <string name="text_no_goals">अद्याप कोणतेही ध्येय नाही. तुमचे पहिले बचत ध्येय जोडा!</string>
+    <string name="text_no_goals_desc">सिंकिंग फंड आपल्याला मोठ्या, आगामी खरेदीसाठी हळूहळू बचत करण्यास मदत करतात।</string>
+    <string name="text_monthly_contribution">दरमहा %1$s वाचवा</string>
+    <string name="text_goal_progress">%2$s पैकी %1$s वाचवले</string>
+    <string name="cd_add_goal">ध्येय जोडा</string>
+    <string name="cd_edit_goal">ध्येय संपादित करा</string>
+    <string name="cd_delete_goal">ध्येय हटवा</string>
+    <string name="error_goal_name_empty">ध्येयाचे नाव रिकामे असू शकत नाही</string>
+    <string name="error_invalid_amount">कृपया वैध रक्कम प्रविष्ट करा</string>
+    <string name="error_target_date_required">कृपया ध्येय महिना निवडा</string>
+    <string name="error_no_category">कृपया एखादी श्रेणी निवडा किंवा स्वयंचलित निर्मिती सक्षम करा</string>
+    <string name="action_goal_deleted">ध्येय हटवले: %1$s</string>
+    <string name="btn_manage_goals">बचत ध्येय व्यवस्थापित करा</string>
+    <string name="dialog_delete_goal_title">ध्येय हटवा</string>
+    <string name="dialog_delete_goal_message">तुम्हाला नक्की \"%1$s\" हे ध्येय हटवायचे आहे का? यामुळे संबंधित बजेट लिफाफे देखील हटवले जातील।</string>
+    <string name="btn_delete">हटवा</string>
+    <string name="label_envelope_prefix">लिफाफा: %1$s</string>
+    <string name="label_goal_target">पैकी %1$s</string>
+    <string name="label_goal_target_date">ध्येय: %1$s</string>
+    <string name="label_monthly_savings_needed">मासिक आवश्यक बचत: %1$s/महिना</string>
 </resources>
