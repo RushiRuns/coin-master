@@ -101,12 +101,12 @@
 
 **Independent Test**: Add ₹500 expense from Bank for Groceries; verify Bank balance decreases and Groceries spent increases.
 
-- [ ] T038 [US4] Implement `TransactionRepository` with `@Transaction` atomic write logic in `app/src/main/java/com/rushi/coinmaster/data/repository/TransactionRepository.kt`
-- [ ] T039 [US4] Implement `AddTransactionUseCase` coupling account and transaction updates
-- [ ] T040 [US4] Implement `TransactionViewModel` with form validation in `app/src/main/java/com/rushi/coinmaster/ui/transactions/TransactionViewModel.kt`
-- [ ] T041 [US4] Create `AddTransactionFragment` with amount, type, account, and category selection
-- [ ] T042 [US4] Implement `Transfer` logic between two accounts (no envelope impact)
-- [ ] T043 [P] [US4] Integration test `TransactionRepository` ensuring atomic balance updates
+- [x] T038 [US4] Implement `TransactionRepository` with `@Transaction` atomic write logic in `app/src/main/java/com/rushi/coinmaster/data/repository/TransactionRepository.kt`
+- [x] T039 [US4] Implement `AddTransactionUseCase` coupling account and transaction updates
+- [x] T040 [US4] Implement `TransactionViewModel` with form validation in `app/src/main/java/com/rushi/coinmaster/ui/transactions/TransactionViewModel.kt`
+- [x] T041 [US4] Create `AddTransactionFragment` with amount, type, account, and category selection
+- [x] T042 [US4] Implement `Transfer` logic between two accounts (no envelope impact)
+- [x] T043 [P] [US4] Integration test `TransactionRepository` ensuring atomic balance updates
 
 ---
 

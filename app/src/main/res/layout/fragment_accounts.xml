@@ -62,6 +62,20 @@
         app:layout_constraintEnd_toEndOf="parent"
         tools:listitem="@layout/item_account" />
 
+    <!-- Add Transaction FAB -->
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_add_transaction"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="88dp"
+        android:src="@android:drawable/ic_menu_edit"
+        app:tint="@color/white"
+        app:backgroundTint="@color/secondary"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:contentDescription="Add Transaction" />
+
     <!-- Add Account FAB -->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_add_account"

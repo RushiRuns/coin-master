@@ -36,4 +36,20 @@
     <string name="acc_type_bank">Bank Account</string>
     <string name="acc_type_card">Credit Card</string>
     <string name="acc_type_invest">Investments</string>
+
+    <!-- Dashboard/Home UI -->
+    <string name="title_home">Home</string>
+    <string name="title_accounts">Accounts</string>
+    <string name="title_budget">Budget</string>
+    <string name="label_net_worth">Total Net Worth</string>
+    <string name="label_budget_health">Monthly Budget Health</string>
+    <string name="label_recent_activity">Recent Activity</string>
+    <string name="text_budget_health_summary">%1$s spent of %2$s budgeted</string>
+    <string name="text_budget_health_no_budget">No budget set up for this month.</string>
+    <string name="text_chart_placeholder">Tap a segment to view details</string>
+    <string name="text_chart_details">%1$s: %2$s spent of %3$s budgeted</string>
+    <string name="text_no_transactions">No recent transactions</string>
+    <string name="text_transfer_desc">Transfer from %1$s to %2$s</string>
+    <string name="text_income_desc">Income into %1$s</string>
+    <string name="text_expense_desc">Expense from %1$s</string>
 </resources>

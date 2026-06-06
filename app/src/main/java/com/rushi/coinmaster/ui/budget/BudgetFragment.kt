@@ -99,6 +99,11 @@ class BudgetFragment : Fragment() {
             findNavController().navigate(action)
         }
 
+        binding.fabAddTransaction.setOnClickListener {
+            val action = BudgetFragmentDirections.actionBudgetFragmentToAddTransactionFragment()
+            findNavController().navigate(action)
+        }
+
         // Observe ViewModel flows
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {

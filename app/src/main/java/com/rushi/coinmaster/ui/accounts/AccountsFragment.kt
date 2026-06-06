@@ -63,6 +63,11 @@ class AccountsFragment : Fragment() {
             findNavController().navigate(action)
         }
 
+        binding.fabAddTransaction.setOnClickListener {
+            val action = AccountsFragmentDirections.actionAccountsFragmentToAddTransactionFragment()
+            findNavController().navigate(action)
+        }
+
         // Collect State Flow
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
