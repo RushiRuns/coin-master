@@ -18,6 +18,7 @@
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorSurface"
             app:navigationIcon="@drawable/ic_arrow_back"
+            app:navigationIconTint="?attr/colorOnSurface"
             app:navigationContentDescription="@string/btn_previous">
 
             <!-- Title is dynamically modified by Kotlin code via tv_title ID -->
@@ -168,31 +169,7 @@
                             android:text="@string/color_green" />
                     </com.google.android.material.textfield.TextInputLayout>
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp"
-                        android:text="@string/label_display_icon"
-                        android:textSize="16sp"
-                        android:textStyle="bold"
-                        android:textColor="@color/text_primary" />
 
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/til_icon"
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        app:boxStrokeColor="@color/primary"
-                        app:hintEnabled="false">
-
-                        <AutoCompleteTextView
-                            android:id="@+id/actv_icon"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:inputType="none"
-                            android:text="@string/icon_bank" />
-                    </com.google.android.material.textfield.TextInputLayout>
 
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>

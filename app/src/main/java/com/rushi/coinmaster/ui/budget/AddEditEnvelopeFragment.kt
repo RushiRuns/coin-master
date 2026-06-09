@@ -52,6 +52,10 @@ class AddEditEnvelopeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        binding.toolbar.setNavigationOnClickListener {
+            findNavController().popBackStack()
+        }
+
         setupBucketDropdown()
         setupColorSelection()
         setupIconSelection()

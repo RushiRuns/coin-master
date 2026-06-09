@@ -45,6 +45,10 @@ class AddEditGoalFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        binding.toolbar.setNavigationOnClickListener {
+            findNavController().popBackStack()
+        }
+
         val isEditing = args.goalId > 0L
 
         // Update header text based on mode

@@ -27,11 +27,9 @@ class AddEditAccountFragment : Fragment() {
 
     private lateinit var accountTypesList: List<Pair<String, AccountType>>
     private lateinit var colorsList: List<Pair<String, String>>
-    private lateinit var iconsList: List<Pair<String, String>>
 
     private var selectedType = AccountType.BANK_ACCOUNT
     private var selectedColorHex = "#4285F4"
-    private var selectedIconName = "ic_bank"
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -53,18 +51,15 @@ class AddEditAccountFragment : Fragment() {
             Pair(getString(R.string.acc_type_invest), AccountType.INVESTMENTS)
         )
 
+        binding.toolbar.setNavigationOnClickListener {
+            findNavController().popBackStack()
+        }
+
         colorsList = listOf(
             Pair(getString(R.string.color_green), "#0F9D58"),
             Pair(getString(R.string.color_blue), "#4285F4"),
             Pair(getString(R.string.color_red), "#DB4437"),
             Pair(getString(R.string.color_yellow), "#F4B400")
-        )
-
-        iconsList = listOf(
-            Pair(getString(R.string.icon_bank), "ic_bank"),
-            Pair(getString(R.string.icon_wallet), "ic_cash"),
-            Pair(getString(R.string.icon_card), "ic_card"),
-            Pair(getString(R.string.icon_invest), "ic_invest")
         )
 
         val accountId = args.accountId
@@ -91,10 +86,6 @@ class AddEditAccountFragment : Fragment() {
                     selectedColorHex = account.colorHex
                     val colorName = colorsList.find { it.second == account.colorHex }?.first ?: getString(R.string.color_blue)
                     binding.actvColor.setText(colorName, false)
- 
-                    selectedIconName = account.iconName
-                    val iconName = iconsList.find { it.second == account.iconName }?.first ?: getString(R.string.icon_bank)
-                    binding.actvIcon.setText(iconName, false)
                 }
             }
         } else {
@@ -114,7 +105,7 @@ class AddEditAccountFragment : Fragment() {
                     type = selectedType,
                     balanceStr = balanceStr,
                     colorHex = selectedColorHex,
-                    iconName = selectedIconName
+                    iconName = "ic_bank"
                 )
                 findNavController().popBackStack()
             }
@@ -138,13 +129,6 @@ class AddEditAccountFragment : Fragment() {
             selectedColorHex = colorsList[position].second
         }
 
-        // 3. Icons
-        val iconNames = iconsList.map { it.first }.toTypedArray()
-        val iconAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, iconNames)
-        binding.actvIcon.setAdapter(iconAdapter)
-        binding.actvIcon.setOnItemClickListener { _, _, position, _ ->
-            selectedIconName = iconsList[position].second
-        }
     }
 
     private fun validateForm(isEditMode: Boolean): Boolean {
