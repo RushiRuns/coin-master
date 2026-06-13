@@ -24,4 +24,11 @@
         <item name="colorError">@color/error</item>
         <item name="colorOnError">@color/black</item>
     </style>
+
+    <!-- Dialog theme for QuickRecordActivity (Dark) -->
+    <style name="Theme.CoinMaster.Dialog" parent="Theme.MaterialComponents.Dialog">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:backgroundDimEnabled">true</item>
+    </style>
 </resources>

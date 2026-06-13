@@ -274,4 +274,9 @@
     <string name="hint_needs_percent">गरजा %</string>
     <string name="hint_wants_percent">इच्छा %</string>
     <string name="hint_savings_percent">बचत %</string>
+
+    <!-- AppWidget Strings -->
+    <string name="widget_title">त्वरित खर्च</string>
+    <string name="widget_desc">तुमची एकूण संपत्ती, मासिक खर्च त्वरीत पहा आणि खर्च रेकॉर्ड करा।</string>
+    <string name="widget_btn_record">+ खर्च रेकॉर्ड करा</string>
 </resources>

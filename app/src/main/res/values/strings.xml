@@ -273,4 +273,9 @@
     <string name="hint_needs_percent">Needs %</string>
     <string name="hint_wants_percent">Wants %</string>
     <string name="hint_savings_percent">Savings %</string>
+
+    <!-- AppWidget Strings -->
+    <string name="widget_title">Quick Expense</string>
+    <string name="widget_desc">Quickly view your net worth, monthly spent and record an expense.</string>
+    <string name="widget_btn_record">+ Record Expense</string>
 </resources>

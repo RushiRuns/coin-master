@@ -17,6 +17,7 @@ class SettingsViewModelTest {
 
     private val testDispatcher = StandardTestDispatcher()
 
+    private val context: android.content.Context = mockk(relaxed = true)
     private val appPreferences: AppPreferences = mockk(relaxed = true)
 
     private lateinit var viewModel: SettingsViewModel
@@ -25,7 +26,7 @@ class SettingsViewModelTest {
     fun setUp() {
         Dispatchers.setMain(testDispatcher)
         every { appPreferences.appLanguage } returns flowOf("mr")
-        viewModel = SettingsViewModel(appPreferences)
+        viewModel = SettingsViewModel(context, appPreferences)
     }
 
     @After

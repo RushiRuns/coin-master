@@ -1,6 +1,7 @@
 package com.rushi.coinmaster
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
@@ -14,6 +15,7 @@ import com.rushi.coinmaster.data.preferences.AppPreferences
 import com.rushi.coinmaster.databinding.ActivityMainBinding
 import com.rushi.coinmaster.util.LocaleHelper
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -63,6 +65,7 @@ class MainActivity : AppCompatActivity() {
                         graph.setStartDestination(R.id.onboardingFragment)
                     }
                     navController.graph = graph
+
                 }
             }
         }
@@ -82,5 +85,10 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
+    }
+
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        setIntent(intent)
     }
 }

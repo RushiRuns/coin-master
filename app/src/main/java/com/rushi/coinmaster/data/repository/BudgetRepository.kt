@@ -1,5 +1,6 @@
 package com.rushi.coinmaster.data.repository
 
+import android.content.Context
 import com.rushi.coinmaster.data.local.dao.BudgetDao
 import com.rushi.coinmaster.data.local.dao.CategoryDao
 import com.rushi.coinmaster.data.local.entity.BudgetMonthEntity
@@ -7,12 +8,15 @@ import com.rushi.coinmaster.data.local.entity.CategoryEntity
 import com.rushi.coinmaster.data.local.entity.EnvelopeAllocationEntity
 import com.rushi.coinmaster.data.local.model.BucketType
 import com.rushi.coinmaster.data.local.model.EnvelopeWithAllocation
+import com.rushi.coinmaster.widget.WidgetUpdater
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
 class BudgetRepository @Inject constructor(
+    @ApplicationContext private val context: Context,
     private val budgetDao: BudgetDao,
     private val categoryDao: CategoryDao
 ) {
@@ -22,9 +26,15 @@ class BudgetRepository @Inject constructor(
 
     fun getBudgetMonthsFlow(): Flow<List<BudgetMonthEntity>> = budgetDao.getBudgetMonthsFlow()
 
-    suspend fun insertBudgetMonth(budgetMonth: BudgetMonthEntity) = budgetDao.insertBudgetMonth(budgetMonth)
+    suspend fun insertBudgetMonth(budgetMonth: BudgetMonthEntity) {
+        budgetDao.insertBudgetMonth(budgetMonth)
+        WidgetUpdater.updateWidget(context)
+    }
 
-    suspend fun updateBudgetMonth(budgetMonth: BudgetMonthEntity) = budgetDao.updateBudgetMonth(budgetMonth)
+    suspend fun updateBudgetMonth(budgetMonth: BudgetMonthEntity) {
+        budgetDao.updateBudgetMonth(budgetMonth)
+        WidgetUpdater.updateWidget(context)
+    }
 
     fun getEnvelopesWithAllocationsFlow(budgetMonthId: Int): Flow<List<EnvelopeWithAllocation>> {
         return budgetDao.getEnvelopesWithAllocationsFlow(budgetMonthId)
@@ -37,6 +47,7 @@ class BudgetRepository @Inject constructor(
             allocatedAmountPaise = allocatedAmountPaise
         )
         budgetDao.insertAllocation(allocation)
+        WidgetUpdater.updateWidget(context)
     }
 
     // Category CRUD helpers for AddEditEnvelope

@@ -274,4 +274,9 @@
     <string name="hint_needs_percent">आवश्यकताएं %</string>
     <string name="hint_wants_percent">चाहतें %</string>
     <string name="hint_savings_percent">बचत %</string>
+
+    <!-- AppWidget Strings -->
+    <string name="widget_title">त्वरित खर्च</string>
+    <string name="widget_desc">अपनी कुल संपत्ति, मासिक खर्च को तुरंत देखें और खर्च दर्ज करें।</string>
+    <string name="widget_btn_record">+ खर्च दर्ज करें</string>
 </resources>

@@ -63,8 +63,11 @@ class OnboardingFragment : Fragment() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.onboardingSuccess.collect {
-                    // Navigate to the home screen
-                    findNavController().navigate(R.id.action_onboardingFragment_to_homeFragment)
+                    val navController = findNavController()
+                    if (navController.currentDestination?.id == R.id.onboardingFragment) {
+                        // Navigate to the home screen
+                        navController.navigate(R.id.action_onboardingFragment_to_homeFragment)
+                    }
                 }
             }
         }
