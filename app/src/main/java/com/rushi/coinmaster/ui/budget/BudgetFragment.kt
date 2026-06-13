@@ -19,7 +19,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.rushi.coinmaster.R
-import com.rushi.coinmaster.data.local.entity.BudgetMonthEntity
+import com.rushi.coinmaster.data.local.entity.BudgetPeriodEntity
 import com.rushi.coinmaster.data.local.model.BucketType
 import com.rushi.coinmaster.data.local.model.EnvelopeWithAllocation
 import com.rushi.coinmaster.databinding.FragmentBudgetBinding
@@ -55,18 +55,19 @@ class BudgetFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Month Navigation
+        // Month/Period Navigation
         binding.btnPrevMonth.setOnClickListener {
-            viewModel.selectPreviousMonth()
+            viewModel.selectPreviousPeriod()
         }
 
         binding.btnNextMonth.setOnClickListener {
-            viewModel.selectNextMonth()
+            viewModel.selectNextPeriod()
         }
 
         // Adjust Setup Button
         binding.btnSetupMonth.setOnClickListener {
-            val action = BudgetFragmentDirections.actionBudgetFragmentToMonthSetupFragment(viewModel.selectedMonthId.value)
+            val periodId = viewModel.selectedPeriodId.value ?: 0
+            val action = BudgetFragmentDirections.actionBudgetFragmentToMonthSetupFragment(periodId)
             findNavController().navigate(action)
         }
 
@@ -84,7 +85,7 @@ class BudgetFragment : Fragment() {
 
         // Activate Budget Button
         binding.btnActivateBudget.setOnClickListener {
-            viewModel.activateBudgetMonth()
+            viewModel.activateBudgetPeriod()
         }
 
         // Add Envelopes Buttons
@@ -110,20 +111,13 @@ class BudgetFragment : Fragment() {
             findNavController().navigate(action)
         }
 
-        // Copy Previous Month Action
+        // Copy Previous Period Action
         binding.btnCopyPrevious.setOnClickListener {
-            val prevMonthId = viewModel.selectedMonthId.value
-            val year = prevMonthId / 100
-            val month = prevMonthId % 100
-            val prevYear = if (month == 1) year - 1 else year
-            val prevMonth = if (month == 1) 12 else month - 1
-            val monthName = DateFormatSymbols().months[prevMonth - 1]
-            
             AlertDialog.Builder(requireContext())
                 .setTitle("Copy Previous Budget")
-                .setMessage("Are you sure you want to copy allocations from $monthName $prevYear? This will overwrite any current allocations.")
+                .setMessage("Are you sure you want to copy allocations from the previous budget period? This will overwrite any current allocations.")
                 .setPositiveButton("Copy") { _, _ ->
-                    viewModel.copyAllocationsFromPreviousMonth()
+                    viewModel.copyAllocationsFromPreviousPeriod()
                 }
                 .setNegativeButton("Cancel", null)
                 .show()
@@ -133,20 +127,15 @@ class BudgetFragment : Fragment() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 launch {
-                    viewModel.selectedMonthId.collect { monthId ->
-                        updateMonthLabel(monthId)
+                    viewModel.budgetPeriodState.collect { period ->
+                        updatePeriodLabel(period)
+                        updateBudgetUi(period)
                     }
                 }
 
                 launch {
                     viewModel.showCopyPreviousState.collect { show ->
                         binding.cardCopyPrevious.visibility = if (show) View.VISIBLE else View.GONE
-                    }
-                }
-
-                launch {
-                    viewModel.budgetMonthState.collect { month ->
-                        updateBudgetUi(month)
                     }
                 }
 
@@ -173,17 +162,21 @@ class BudgetFragment : Fragment() {
         }
     }
 
-    private fun updateMonthLabel(monthId: Int) {
-        val year = monthId / 100
-        val month = monthId % 100
-        val monthName = DateFormatSymbols().months[month - 1]
-        binding.tvMonthYear.text = "$monthName $year"
+    private fun updatePeriodLabel(period: BudgetPeriodEntity?) {
+        if (period != null) {
+            val sdf = java.text.SimpleDateFormat("dd MMM yyyy", java.util.Locale.getDefault())
+            val startStr = sdf.format(period.startDate)
+            val endStr = sdf.format(period.endDate)
+            binding.tvMonthYear.text = "$startStr - $endStr"
+        } else {
+            binding.tvMonthYear.text = "No Budget Period"
+        }
     }
 
-    private fun updateBudgetUi(month: BudgetMonthEntity?) {
+    private fun updateBudgetUi(period: BudgetPeriodEntity?) {
         val languageCode = LocaleHelper.getLanguage(requireContext())
 
-        if (month == null) {
+        if (period == null) {
             binding.tvDeclaredIncome.text = getString(R.string.placeholder_declared_income)
             binding.tvUnallocatedStatus.text = getString(R.string.text_setup_required)
             binding.tvUnallocatedStatus.setTextColor(ContextCompat.getColor(requireContext(), R.color.text_secondary))
@@ -201,13 +194,13 @@ class BudgetFragment : Fragment() {
             return
         }
 
-        binding.tvDeclaredIncome.text = "Declared Income: ${CurrencyFormatter.format(month.incomePaise, languageCode)}"
+        binding.tvDeclaredIncome.text = "Declared Income: ${CurrencyFormatter.format(period.incomePaise, languageCode)}"
 
         // Observe unallocated state reactively
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.unallocatedState.collect { validation ->
-                    if (month.isActive) {
+                    if (period.isActive) {
                         binding.tvUnallocatedStatus.text = getString(R.string.text_budget_balanced)
                         binding.tvUnallocatedStatus.setTextColor(resources.getColor(android.R.color.holo_green_dark, null))
                         binding.tvStatusHelper.text = getString(R.string.text_budget_active)
@@ -241,7 +234,7 @@ class BudgetFragment : Fragment() {
         }
 
         // Update bucket split projections
-        val split = computeBucketSplitUseCase(month.incomePaise, month.needsPercent, month.wantsPercent, month.savingsPercent)
+        val split = computeBucketSplitUseCase(period.incomePaise, period.needsPercent, period.wantsPercent, period.savingsPercent)
         val envelopes = viewModel.envelopesState.value
         val needsAllocated = envelopes.filter { it.bucketType == BucketType.NEEDS }.sumOf { it.allocatedAmountPaise }
         val wantsAllocated = envelopes.filter { it.bucketType == BucketType.WANTS }.sumOf { it.allocatedAmountPaise }
@@ -281,7 +274,7 @@ class BudgetFragment : Fragment() {
 
             // Click to Edit Allocation (Inline)
             itemBinding.layoutAllocationClick.setOnClickListener {
-                if (viewModel.budgetMonthState.value?.isActive == true) {
+                if (viewModel.budgetPeriodState.value?.isActive == true) {
                     Toast.makeText(requireContext(), getString(R.string.text_cannot_modify_active), Toast.LENGTH_SHORT).show()
                 } else {
                     if (tvAllocated.visibility == View.VISIBLE) {
@@ -338,7 +331,7 @@ class BudgetFragment : Fragment() {
         }
 
         // Re-trigger progress bar and split logic updates since envelopes have re-rendered
-        viewModel.budgetMonthState.value?.let { updateBudgetUi(it) }
+        viewModel.budgetPeriodState.value?.let { updateBudgetUi(it) }
     }
 
     private fun showKeyboard(view: View) {

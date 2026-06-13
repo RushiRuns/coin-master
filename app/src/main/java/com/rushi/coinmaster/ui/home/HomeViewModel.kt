@@ -3,7 +3,7 @@ package com.rushi.coinmaster.ui.home
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.rushi.coinmaster.data.local.entity.AccountEntity
-import com.rushi.coinmaster.data.local.entity.BudgetMonthEntity
+import com.rushi.coinmaster.data.local.entity.BudgetPeriodEntity
 import com.rushi.coinmaster.data.local.model.EnvelopeWithAllocation
 import com.rushi.coinmaster.data.local.model.TransactionType
 import com.rushi.coinmaster.data.repository.AccountRepository
@@ -31,7 +31,7 @@ data class TransactionDisplayItem(
 data class HomeUiState(
     val netWorth: Long = 0L,
     val accounts: List<AccountEntity> = emptyList(),
-    val budgetMonth: BudgetMonthEntity? = null,
+    val budgetPeriod: BudgetPeriodEntity? = null,
     val envelopes: List<EnvelopeWithAllocation> = emptyList(),
     val recentTransactions: List<TransactionDisplayItem> = emptyList(),
     val totalSpentPaise: Long = 0L,
@@ -51,9 +51,6 @@ class HomeViewModel @Inject constructor(
     private val getNetWorthUseCase: GetNetWorthUseCase
 ) : ViewModel() {
 
-    private val calendar = Calendar.getInstance()
-    private val currentMonthId = calendar.get(Calendar.YEAR) * 100 + (calendar.get(Calendar.MONTH) + 1)
-
     private val _selectedCategoryId = MutableStateFlow<Long?>(null)
     val selectedCategoryId: StateFlow<Long?> = _selectedCategoryId.asStateFlow()
 
@@ -68,13 +65,20 @@ class HomeViewModel @Inject constructor(
         Pair(accounts, debts)
     }
     
-    // Flow for current budget month
-    private val budgetMonthFlow = budgetRepository.getBudgetMonthsFlow().map { months ->
-        months.find { it.id == currentMonthId }
+    // Flow for current budget period containing today's date
+    private val budgetPeriodFlow = budgetRepository.getBudgetPeriodsFlow().map { periods ->
+        val today = System.currentTimeMillis()
+        periods.find { today >= it.startDate && today <= it.endDate } ?: periods.firstOrNull()
     }
 
     // Flow for current month envelopes with allocations/spent amounts
-    private val envelopesFlow = budgetRepository.getEnvelopesWithAllocationsFlow(currentMonthId)
+    private val envelopesFlow = budgetPeriodFlow.flatMapLatest { period ->
+        if (period != null) {
+            budgetRepository.getEnvelopesWithAllocationsFlow(period.id)
+        } else {
+            flowOf(emptyList())
+        }
+    }
 
     // Flow for recent transactions mapped with details.
     // Uses SQL LIMIT 7 at the DB level (not .take(7) in memory) for performance.
@@ -104,11 +108,11 @@ class HomeViewModel @Inject constructor(
     // Expose all states combined into a single HomeUiState
     val uiState: StateFlow<HomeUiState> = combine(
         accountsAndDebtsFlow,
-        budgetMonthFlow,
+        budgetPeriodFlow,
         envelopesFlow,
         recentTransactionsFlow,
         _selectedCategoryId
-    ) { accountsAndDebts, budgetMonth, envelopes, recentTransactions, selectedCategoryId ->
+    ) { accountsAndDebts, budgetPeriod, envelopes, recentTransactions, selectedCategoryId ->
         val accounts = accountsAndDebts.first
         val debts = accountsAndDebts.second
         val netWorth = getNetWorthUseCase(accounts, debts)
@@ -130,7 +134,7 @@ class HomeViewModel @Inject constructor(
         HomeUiState(
             netWorth = netWorth,
             accounts = accounts,
-            budgetMonth = budgetMonth,
+            budgetPeriod = budgetPeriod,
             envelopes = envelopes,
             recentTransactions = recentTransactions,
             totalSpentPaise = totalSpent,

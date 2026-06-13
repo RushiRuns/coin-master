@@ -4,11 +4,11 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "budget_months")
-data class BudgetMonthEntity(
-    @PrimaryKey val id: Int, // YYYYMM format, e.g., 202606
-    val month: Int, // 1 - 12
-    val year: Int,
+@Entity(tableName = "budget_periods")
+data class BudgetPeriodEntity(
+    @PrimaryKey(autoGenerate = true) val id: Int = 0,
+    @ColumnInfo(name = "start_date") val startDate: Long, // Epoch millis (start of day)
+    @ColumnInfo(name = "end_date") val endDate: Long,     // Epoch millis (end of day)
     @ColumnInfo(name = "income_paise") val incomePaise: Long,
     @ColumnInfo(name = "needs_percent") val needsPercent: Int = 50,
     @ColumnInfo(name = "wants_percent") val wantsPercent: Int = 30,

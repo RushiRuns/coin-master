@@ -1,6 +1,5 @@
 package com.rushi.coinmaster.domain.usecase
 
-import com.rushi.coinmaster.data.local.entity.BudgetMonthEntity
 import com.rushi.coinmaster.data.local.entity.TransactionEntity
 import com.rushi.coinmaster.data.local.model.TransactionType
 import com.rushi.coinmaster.data.repository.AccountRepository
@@ -40,29 +39,11 @@ class AddTransactionUseCase @Inject constructor(
                 ?: return Result.failure(IllegalArgumentException("Destination account does not exist."))
         }
 
-        // 2. Budget Month checks
-        val calendar = Calendar.getInstance().apply { timeInMillis = transaction.date }
-        val year = calendar.get(Calendar.YEAR)
-        val month = calendar.get(Calendar.MONTH) + 1
-        val budgetMonthId = year * 100 + month
+        // 2. Budget Period checks
+        val budgetPeriod = budgetRepository.getOrCreateBudgetPeriodForDate(transaction.date)
 
-        val budgetMonth = budgetRepository.getBudgetMonth(budgetMonthId)
-        if (budgetMonth == null) {
-            val defaultBudgetMonth = BudgetMonthEntity(
-                id = budgetMonthId,
-                month = month,
-                year = year,
-                incomePaise = 0L,
-                needsPercent = 50,
-                wantsPercent = 30,
-                savingsPercent = 20,
-                isActive = false
-            )
-            budgetRepository.insertBudgetMonth(defaultBudgetMonth)
-        }
-
-        // 3. Save transaction with correct budget month ID set
-        val finalTransaction = transaction.copy(budgetMonthId = budgetMonthId)
+        // 3. Save transaction with correct budget period ID set
+        val finalTransaction = transaction.copy(budgetPeriodId = budgetPeriod.id)
         return try {
             val id = transactionRepository.insertTransaction(finalTransaction)
             Result.success(id)

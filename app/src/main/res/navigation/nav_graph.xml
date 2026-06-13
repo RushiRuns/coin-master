@@ -106,11 +106,11 @@
 
     <fragment
         android:id="@+id/monthSetupFragment"
-        android:name="com.rushi.coinmaster.ui.budget.MonthSetupFragment"
-        android:label="MonthSetupFragment"
+        android:name="com.rushi.coinmaster.ui.budget.BudgetPeriodSetupFragment"
+        android:label="BudgetPeriodSetupFragment"
         tools:layout="@layout/fragment_month_setup">
         <argument
-            android:name="budgetMonthId"
+            android:name="budgetPeriodId"
             app:argType="integer"
             android:defaultValue="0" />
     </fragment>

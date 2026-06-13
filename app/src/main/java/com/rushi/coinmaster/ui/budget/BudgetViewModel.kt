@@ -2,7 +2,7 @@ package com.rushi.coinmaster.ui.budget
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.rushi.coinmaster.data.local.entity.BudgetMonthEntity
+import com.rushi.coinmaster.data.local.entity.BudgetPeriodEntity
 import com.rushi.coinmaster.data.local.entity.CategoryEntity
 import com.rushi.coinmaster.data.local.model.BucketType
 import com.rushi.coinmaster.data.local.model.EnvelopeWithAllocation
@@ -34,36 +34,52 @@ class BudgetViewModel @Inject constructor(
     private val validateZeroBalanceUseCase: ValidateZeroBalanceUseCase
 ) : ViewModel() {
 
-    private val calendar = Calendar.getInstance()
-    private val defaultMonthId = calendar.get(Calendar.YEAR) * 100 + (calendar.get(Calendar.MONTH) + 1)
+    private val _selectedPeriodId = MutableStateFlow<Int?>(null)
+    val selectedPeriodId: StateFlow<Int?> = _selectedPeriodId.asStateFlow()
 
-    private val _selectedMonthId = MutableStateFlow(defaultMonthId)
-    val selectedMonthId: StateFlow<Int> = _selectedMonthId.asStateFlow()
-
-    // Reactively track the current budget month entity
-    val budgetMonthState: StateFlow<BudgetMonthEntity?> = _selectedMonthId.flatMapLatest { monthId ->
-        budgetRepository.getBudgetMonthsFlow().map { months ->
-            months.find { it.id == monthId }
+    // Reactively track the current budget period entity
+    val budgetPeriodState: StateFlow<BudgetPeriodEntity?> = _selectedPeriodId.flatMapLatest { periodId ->
+        if (periodId == null) {
+            flowOf(null)
+        } else {
+            budgetRepository.getBudgetPeriodsFlow().map { periods ->
+                periods.find { it.id == periodId }
+            }
         }
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), null)
 
-    // Reactively track categories combined with allocations/spent for the month
-    val envelopesState: StateFlow<List<EnvelopeWithAllocation>> = _selectedMonthId.flatMapLatest { monthId ->
-        budgetRepository.getEnvelopesWithAllocationsFlow(monthId)
+    // Reactively track categories combined with allocations/spent for the period
+    val envelopesState: StateFlow<List<EnvelopeWithAllocation>> = _selectedPeriodId.flatMapLatest { periodId ->
+        if (periodId == null) {
+            flowOf(emptyList())
+        } else {
+            budgetRepository.getEnvelopesWithAllocationsFlow(periodId)
+        }
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
 
-    val showCopyPreviousState: StateFlow<Boolean> = _selectedMonthId.flatMapLatest { monthId ->
-        val prevMonthId = getPreviousMonthId(monthId)
-        combine(
-            budgetMonthState,
-            envelopesState,
-            budgetRepository.hasAllocationsFlow(prevMonthId)
-        ) { month, envelopes, prevHasAllocations ->
-            if (month == null || month.isActive) {
-                false
-            } else {
-                val hasCurrentAllocations = envelopes.any { it.allocatedAmountPaise > 0L }
-                !hasCurrentAllocations && prevHasAllocations
+    val showCopyPreviousState: StateFlow<Boolean> = _selectedPeriodId.flatMapLatest { periodId ->
+        if (periodId == null) {
+            flowOf(false)
+        } else {
+            combine(
+                budgetPeriodState,
+                envelopesState,
+                budgetRepository.getBudgetPeriodsFlow()
+            ) { period, envelopes, periods ->
+                if (period == null || period.isActive) {
+                    false
+                } else {
+                    val sorted = periods.sortedBy { it.startDate }
+                    val currentIndex = sorted.indexOfFirst { it.id == periodId }
+                    if (currentIndex > 0) {
+                        val prevPeriod = sorted[currentIndex - 1]
+                        val hasCurrentAllocations = envelopes.any { it.allocatedAmountPaise > 0L }
+                        val prevHasAllocations = budgetRepository.hasAllocations(prevPeriod.id)
+                        !hasCurrentAllocations && prevHasAllocations
+                    } else {
+                        false
+                    }
+                }
             }
         }
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), false)
@@ -74,14 +90,14 @@ class BudgetViewModel @Inject constructor(
 
     // Reactively track live unallocated / validation state
     val unallocatedState: StateFlow<BudgetValidationResult> = combine(
-        budgetMonthState,
+        budgetPeriodState,
         envelopesState
-    ) { month, envelopes ->
-        if (month == null) {
+    ) { period, envelopes ->
+        if (period == null) {
             BudgetValidationResult(isValid = false, differencePaise = 0L)
         } else {
             val allocatedAmounts = envelopes.map { it.allocatedAmountPaise }
-            validateZeroBalanceUseCase(month.incomePaise, allocatedAmounts)
+            validateZeroBalanceUseCase(period.incomePaise, allocatedAmounts)
         }
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), BudgetValidationResult(false, 0L))
 
@@ -89,57 +105,70 @@ class BudgetViewModel @Inject constructor(
     private val _uiEvent = MutableSharedFlow<BudgetUiEvent>()
     val uiEvent: SharedFlow<BudgetUiEvent> = _uiEvent.asSharedFlow()
 
-    fun selectMonth(id: Int) {
-        _selectedMonthId.value = id
-    }
-
-    private fun getPreviousMonthId(monthId: Int): Int {
-        val year = monthId / 100
-        val month = monthId % 100
-        val prevYear = if (month == 1) year - 1 else year
-        val prevMonth = if (month == 1) 12 else month - 1
-        return prevYear * 100 + prevMonth
-    }
-
-    fun copyAllocationsFromPreviousMonth() {
+    init {
         viewModelScope.launch {
-            val currentMonthId = _selectedMonthId.value
-            val prevMonthId = getPreviousMonthId(currentMonthId)
-            budgetRepository.copyAllocations(prevMonthId, currentMonthId)
+            budgetRepository.getBudgetPeriodsFlow().collectLatest { periods ->
+                if (_selectedPeriodId.value == null && periods.isNotEmpty()) {
+                    val today = System.currentTimeMillis()
+                    val todayPeriod = periods.find { today >= it.startDate && today <= it.endDate }
+                    _selectedPeriodId.value = todayPeriod?.id ?: periods.first().id
+                }
+            }
         }
     }
 
-    fun selectPreviousMonth() {
-        val current = _selectedMonthId.value
-        val year = current / 100
-        val month = current % 100
-        val prevYear = if (month == 1) year - 1 else year
-        val prevMonth = if (month == 1) 12 else month - 1
-        _selectedMonthId.value = prevYear * 100 + prevMonth
+    fun selectPeriod(id: Int) {
+        _selectedPeriodId.value = id
     }
 
-    fun selectNextMonth() {
-        val current = _selectedMonthId.value
-        val year = current / 100
-        val month = current % 100
-        val nextYear = if (month == 12) year + 1 else year
-        val nextMonth = if (month == 12) 1 else month + 1
-        _selectedMonthId.value = nextYear * 100 + nextMonth
+    fun copyAllocationsFromPreviousPeriod() {
+        val currentId = _selectedPeriodId.value ?: return
+        viewModelScope.launch {
+            val periods = budgetRepository.getBudgetPeriods().sortedBy { it.startDate }
+            val currentIndex = periods.indexOfFirst { it.id == currentId }
+            if (currentIndex > 0) {
+                val prevPeriod = periods[currentIndex - 1]
+                budgetRepository.copyAllocations(prevPeriod.id, currentId)
+            }
+        }
+    }
+
+    fun selectPreviousPeriod() {
+        val currentId = _selectedPeriodId.value ?: return
+        viewModelScope.launch {
+            val periods = budgetRepository.getBudgetPeriods().sortedBy { it.startDate }
+            val currentIndex = periods.indexOfFirst { it.id == currentId }
+            if (currentIndex > 0) {
+                _selectedPeriodId.value = periods[currentIndex - 1].id
+            }
+        }
+    }
+
+    fun selectNextPeriod() {
+        val currentId = _selectedPeriodId.value ?: return
+        viewModelScope.launch {
+            val periods = budgetRepository.getBudgetPeriods().sortedBy { it.startDate }
+            val currentIndex = periods.indexOfFirst { it.id == currentId }
+            if (currentIndex != -1 && currentIndex < periods.lastIndex) {
+                _selectedPeriodId.value = periods[currentIndex + 1].id
+            }
+        }
     }
 
     fun saveAllocation(categoryId: Long, amountStr: String) {
+        val periodId = _selectedPeriodId.value ?: return
         viewModelScope.launch {
             try {
                 val amountPaise = MoneyMath.rupeesToPaise(amountStr)
-                budgetRepository.saveAllocation(_selectedMonthId.value, categoryId, amountPaise)
+                budgetRepository.saveAllocation(periodId, categoryId, amountPaise)
             } catch (e: Exception) {
                 _uiEvent.emit(BudgetUiEvent.Error(context.getString(R.string.error_invalid_allocation_format)))
             }
         }
     }
 
-    fun activateBudgetMonth() {
-        val month = budgetMonthState.value ?: return
+    fun activateBudgetPeriod() {
+        val period = budgetPeriodState.value ?: return
         viewModelScope.launch {
             val validation = unallocatedState.value
             if (!validation.isValid) {
@@ -153,15 +182,15 @@ class BudgetViewModel @Inject constructor(
                 _uiEvent.emit(BudgetUiEvent.Error(msg))
                 return@launch
             }
-            budgetRepository.updateBudgetMonth(month.copy(isActive = true))
+            budgetRepository.updateBudgetPeriod(period.copy(isActive = true))
             _uiEvent.emit(BudgetUiEvent.SuccessActivation)
         }
     }
 
-    fun setupBudgetMonth(
+    fun setupBudgetPeriod(
         id: Int,
-        month: Int,
-        year: Int,
+        startDate: Long,
+        endDate: Long,
         incomeStr: String,
         needsPercent: Int,
         wantsPercent: Int,
@@ -170,22 +199,42 @@ class BudgetViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 val incomePaise = MoneyMath.rupeesToPaise(incomeStr)
-                val existing = budgetRepository.getBudgetMonth(id)
-                val budgetMonth = existing?.copy(
+                
+                // Overlap checks
+                val overlapping = budgetRepository.getOverlappingPeriod(startDate, endDate, id)
+                if (overlapping != null) {
+                    _uiEvent.emit(BudgetUiEvent.Error("Budget period dates overlap with an existing period."))
+                    return@launch
+                }
+
+                val existing = if (id != 0) budgetRepository.getBudgetPeriod(id) else null
+                val budgetPeriod = existing?.copy(
+                    startDate = startDate,
+                    endDate = endDate,
                     incomePaise = incomePaise,
                     needsPercent = needsPercent,
                     wantsPercent = wantsPercent,
                     savingsPercent = savingsPercent
-                ) ?: BudgetMonthEntity(
-                    id = id,
-                    month = month,
-                    year = year,
+                ) ?: BudgetPeriodEntity(
+                    startDate = startDate,
+                    endDate = endDate,
                     incomePaise = incomePaise,
                     needsPercent = needsPercent,
                     wantsPercent = wantsPercent,
                     savingsPercent = savingsPercent
                 )
-                budgetRepository.insertBudgetMonth(budgetMonth)
+                
+                val savedId = if (id != 0) {
+                    budgetRepository.updateBudgetPeriod(budgetPeriod)
+                    id
+                } else {
+                    budgetRepository.insertBudgetPeriod(budgetPeriod).toInt()
+                }
+
+                // Recalculate transaction budget periods
+                budgetRepository.recalculateTransactionBudgetPeriods()
+                
+                _selectedPeriodId.value = savedId
                 _uiEvent.emit(BudgetUiEvent.SuccessSave)
             } catch (e: Exception) {
                 _uiEvent.emit(BudgetUiEvent.Error(context.getString(R.string.error_setup_save_failed)))
@@ -207,6 +256,7 @@ class BudgetViewModel @Inject constructor(
         initialAllocationPaise: Long? = null
     ) {
         viewModelScope.launch {
+            val periodId = _selectedPeriodId.value ?: 0
             if (name.isBlank()) {
                 _uiEvent.emit(BudgetUiEvent.Error(context.getString(R.string.error_envelope_name_empty)))
                 return@launch
@@ -239,8 +289,8 @@ class BudgetViewModel @Inject constructor(
             }
             if (id == 0L) {
                 val newId = budgetRepository.insertCategory(category)
-                if (initialAllocationPaise != null && initialAllocationPaise > 0L) {
-                    budgetRepository.saveAllocation(_selectedMonthId.value, newId, initialAllocationPaise)
+                if (periodId != 0 && initialAllocationPaise != null && initialAllocationPaise > 0L) {
+                    budgetRepository.saveAllocation(periodId, newId, initialAllocationPaise)
                 }
             } else {
                 budgetRepository.updateCategory(category)

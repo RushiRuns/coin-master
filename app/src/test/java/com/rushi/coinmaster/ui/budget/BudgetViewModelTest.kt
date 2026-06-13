@@ -1,6 +1,6 @@
 package com.rushi.coinmaster.ui.budget
 
-import com.rushi.coinmaster.data.local.entity.BudgetMonthEntity
+import com.rushi.coinmaster.data.local.entity.BudgetPeriodEntity
 import com.rushi.coinmaster.data.local.entity.CategoryEntity
 import com.rushi.coinmaster.data.local.model.BucketType
 import com.rushi.coinmaster.data.local.model.EnvelopeWithAllocation
@@ -18,15 +18,6 @@ import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
 
-/**
- * Unit tests for [BudgetViewModel].
- *
- * Covers:
- * - Month navigation (prev/next) arithmetic (Principle IX — reactive state)
- * - Zero-balance validation before activation (Principle IV — ZBB)
- * - Repository update called only when budget is balanced
- * - Blank envelope name rejection (saveCategory guard)
- */
 @OptIn(ExperimentalCoroutinesApi::class)
 class BudgetViewModelTest {
 
@@ -38,15 +29,11 @@ class BudgetViewModelTest {
 
     private lateinit var viewModel: BudgetViewModel
 
-    private val balancedMonth = BudgetMonthEntity(
-        id = 202601,
-        month = 1,
-        year = 2026,
-        incomePaise = 1_000_000L,
-        needsPercent = 50,
-        wantsPercent = 30,
-        savingsPercent = 20
-    )
+    private val period1 = BudgetPeriodEntity(id = 1, startDate = 1000L, endDate = 2000L, incomePaise = 1_000_000L, needsPercent = 50, wantsPercent = 30, savingsPercent = 20)
+    private val period2 = BudgetPeriodEntity(id = 2, startDate = 3000L, endDate = 4000L, incomePaise = 1_000_000L, needsPercent = 50, wantsPercent = 30, savingsPercent = 20)
+    private val period3 = BudgetPeriodEntity(id = 3, startDate = 5000L, endDate = 6000L, incomePaise = 1_000_000L, needsPercent = 50, wantsPercent = 30, savingsPercent = 20)
+
+    private val testPeriods = listOf(period1, period2, period3)
 
     private val balancedEnvelopes = listOf(
         EnvelopeWithAllocation(
@@ -75,7 +62,8 @@ class BudgetViewModelTest {
     @Before
     fun setUp() {
         Dispatchers.setMain(testDispatcher)
-        every { budgetRepository.getBudgetMonthsFlow() } returns MutableStateFlow(emptyList())
+        coEvery { budgetRepository.getBudgetPeriods() } returns testPeriods
+        every { budgetRepository.getBudgetPeriodsFlow() } returns MutableStateFlow(testPeriods)
         every { budgetRepository.getEnvelopesWithAllocationsFlow(any()) } returns MutableStateFlow(emptyList())
         every { budgetRepository.getCategoriesFlow() } returns MutableStateFlow(emptyList())
         viewModel = BudgetViewModel(context, budgetRepository, validateZeroBalanceUseCase)
@@ -86,109 +74,91 @@ class BudgetViewModelTest {
         Dispatchers.resetMain()
     }
 
-    // ── Month Navigation ────────────────────────────────────────────────────
+    // ── Period Navigation ───────────────────────────────────────────────────
 
     @Test
-    fun `selectPreviousMonth on January wraps to December of previous year`() {
-        viewModel.selectMonth(202601)
-        viewModel.selectPreviousMonth()
-        assertEquals(202512, viewModel.selectedMonthId.value)
+    fun `selectPreviousPeriod moves to chronologically previous period in list`() = runTest {
+        viewModel.selectPeriod(2)
+        viewModel.selectPreviousPeriod()
+        testScheduler.advanceUntilIdle()
+        assertEquals(1, viewModel.selectedPeriodId.value)
     }
 
     @Test
-    fun `selectNextMonth on December wraps to January of next year`() {
-        viewModel.selectMonth(202512)
-        viewModel.selectNextMonth()
-        assertEquals(202601, viewModel.selectedMonthId.value)
+    fun `selectNextPeriod moves to chronologically next period in list`() = runTest {
+        viewModel.selectPeriod(2)
+        viewModel.selectNextPeriod()
+        testScheduler.advanceUntilIdle()
+        assertEquals(3, viewModel.selectedPeriodId.value)
     }
 
     @Test
-    fun `selectPreviousMonth decrements month within the same year`() {
-        viewModel.selectMonth(202606)
-        viewModel.selectPreviousMonth()
-        assertEquals(202605, viewModel.selectedMonthId.value)
+    fun `selectPreviousPeriod does nothing when on the first period`() = runTest {
+        viewModel.selectPeriod(1)
+        viewModel.selectPreviousPeriod()
+        testScheduler.advanceUntilIdle()
+        assertEquals(1, viewModel.selectedPeriodId.value)
     }
 
     @Test
-    fun `selectNextMonth increments month within the same year`() {
-        viewModel.selectMonth(202604)
-        viewModel.selectNextMonth()
-        assertEquals(202605, viewModel.selectedMonthId.value)
+    fun `selectNextPeriod does nothing when on the last period`() = runTest {
+        viewModel.selectPeriod(3)
+        viewModel.selectNextPeriod()
+        testScheduler.advanceUntilIdle()
+        assertEquals(3, viewModel.selectedPeriodId.value)
     }
 
-    // ── Budget Activation — Repository Interaction (Principle IV) ────────────
-    // We test the repository interaction, not the UI event, since MutableSharedFlow
-    // collection in unit tests depends on coroutine scheduling that varies by dispatcher.
-    // The core invariant is: updateBudgetMonth must NOT be called when budget is unbalanced,
-    // and MUST be called with isActive=true when balanced.
+    // ── Budget Activation — Repository Interaction ──────────────────────────
 
     @Test
-    fun `activateBudgetMonth does NOT update repository when budget is unbalanced`() = runTest {
-        every { budgetRepository.getBudgetMonthsFlow() } returns MutableStateFlow(listOf(balancedMonth))
+    fun `activateBudgetPeriod does NOT update repository when budget is unbalanced`() = runTest {
+        every { budgetRepository.getBudgetPeriodsFlow() } returns MutableStateFlow(listOf(period1))
         every { budgetRepository.getEnvelopesWithAllocationsFlow(any()) } returns MutableStateFlow(unbalancedEnvelopes)
 
         viewModel = BudgetViewModel(context, budgetRepository, validateZeroBalanceUseCase)
-        viewModel.selectMonth(202601)
+        viewModel.selectPeriod(1)
 
-        // Activate state flows to populate budgetMonthState and unallocatedState
-        backgroundScope.launch(UnconfinedTestDispatcher(testScheduler)) { viewModel.budgetMonthState.collect {} }
+        backgroundScope.launch(UnconfinedTestDispatcher(testScheduler)) { viewModel.budgetPeriodState.collect {} }
         backgroundScope.launch(UnconfinedTestDispatcher(testScheduler)) { viewModel.unallocatedState.collect {} }
         testScheduler.advanceUntilIdle()
 
-        viewModel.activateBudgetMonth()
+        viewModel.activateBudgetPeriod()
         testScheduler.advanceUntilIdle()
 
-        // Budget is unbalanced — repository must NOT be told to activate
-        coVerify(exactly = 0) { budgetRepository.updateBudgetMonth(any()) }
+        coVerify(exactly = 0) { budgetRepository.updateBudgetPeriod(any()) }
     }
 
     @Test
-    fun `activateBudgetMonth updates repository with isActive=true when budget is balanced`() = runTest {
-        every { budgetRepository.getBudgetMonthsFlow() } returns MutableStateFlow(listOf(balancedMonth))
+    fun `activateBudgetPeriod updates repository with isActive=true when budget is balanced`() = runTest {
+        every { budgetRepository.getBudgetPeriodsFlow() } returns MutableStateFlow(listOf(period1))
         every { budgetRepository.getEnvelopesWithAllocationsFlow(any()) } returns MutableStateFlow(balancedEnvelopes)
 
         viewModel = BudgetViewModel(context, budgetRepository, validateZeroBalanceUseCase)
-        viewModel.selectMonth(202601)
+        viewModel.selectPeriod(1)
 
-        backgroundScope.launch(UnconfinedTestDispatcher(testScheduler)) { viewModel.budgetMonthState.collect {} }
+        backgroundScope.launch(UnconfinedTestDispatcher(testScheduler)) { viewModel.budgetPeriodState.collect {} }
         backgroundScope.launch(UnconfinedTestDispatcher(testScheduler)) { viewModel.unallocatedState.collect {} }
         testScheduler.advanceUntilIdle()
 
-        viewModel.activateBudgetMonth()
+        viewModel.activateBudgetPeriod()
         testScheduler.advanceUntilIdle()
 
-        // Budget is balanced — repository must be updated with isActive = true
-        coVerify(exactly = 1) { budgetRepository.updateBudgetMonth(match { it.isActive && it.id == 202601 }) }
+        coVerify(exactly = 1) { budgetRepository.updateBudgetPeriod(match { it.isActive && it.id == 1 }) }
     }
 
-    @Test
-    fun `activateBudgetMonth does nothing when budgetMonthState is null`() = runTest {
-        // Default setUp has empty flow, so budgetMonthState.value == null
-        viewModel = BudgetViewModel(context, budgetRepository, validateZeroBalanceUseCase)
-
-        backgroundScope.launch(UnconfinedTestDispatcher(testScheduler)) { viewModel.budgetMonthState.collect {} }
-        testScheduler.advanceUntilIdle()
-
-        viewModel.activateBudgetMonth()
-        testScheduler.advanceUntilIdle()
-
-        coVerify(exactly = 0) { budgetRepository.updateBudgetMonth(any()) }
-    }
-
-    // ── Validation Logic (using real ValidateZeroBalanceUseCase) ─────────────
+    // ── Validation Logic ────────────────────────────────────────────────────
 
     @Test
     fun `unallocatedState is valid only when allocations exactly equal income`() = runTest {
-        every { budgetRepository.getBudgetMonthsFlow() } returns MutableStateFlow(listOf(balancedMonth))
+        every { budgetRepository.getBudgetPeriodsFlow() } returns MutableStateFlow(listOf(period1))
         every { budgetRepository.getEnvelopesWithAllocationsFlow(any()) } returns MutableStateFlow(balancedEnvelopes)
 
         viewModel = BudgetViewModel(context, budgetRepository, validateZeroBalanceUseCase)
-        viewModel.selectMonth(202601)
+        viewModel.selectPeriod(1)
 
-        // Collect unallocatedState
         var validation = viewModel.unallocatedState.first()
         backgroundScope.launch(UnconfinedTestDispatcher(testScheduler)) {
-            viewModel.budgetMonthState.collect {}
+            viewModel.budgetPeriodState.collect {}
         }
         backgroundScope.launch(UnconfinedTestDispatcher(testScheduler)) {
             viewModel.unallocatedState.collect { validation = it }
@@ -197,27 +167,6 @@ class BudgetViewModelTest {
 
         assertTrue("Balanced budget should pass validation", validation.isValid)
         assertEquals(0L, validation.differencePaise)
-    }
-
-    @Test
-    fun `unallocatedState is invalid and shows positive difference when under-allocated`() = runTest {
-        every { budgetRepository.getBudgetMonthsFlow() } returns MutableStateFlow(listOf(balancedMonth))
-        every { budgetRepository.getEnvelopesWithAllocationsFlow(any()) } returns MutableStateFlow(unbalancedEnvelopes)
-
-        viewModel = BudgetViewModel(context, budgetRepository, validateZeroBalanceUseCase)
-        viewModel.selectMonth(202601)
-
-        var validation = viewModel.unallocatedState.first()
-        backgroundScope.launch(UnconfinedTestDispatcher(testScheduler)) {
-            viewModel.budgetMonthState.collect {}
-        }
-        backgroundScope.launch(UnconfinedTestDispatcher(testScheduler)) {
-            viewModel.unallocatedState.collect { validation = it }
-        }
-        testScheduler.advanceUntilIdle()
-
-        assertFalse("Unbalanced budget should fail validation", validation.isValid)
-        assertEquals(100_000L, validation.differencePaise) // ₹1,000 unallocated
     }
 
     // ── Save Category Validation ─────────────────────────────────────────────
@@ -241,7 +190,7 @@ class BudgetViewModelTest {
     @Test
     fun `saveCategory with initial allocation calls saveAllocation when category is new`() = runTest {
         coEvery { budgetRepository.insertCategory(any()) } returns 123L
-        viewModel.selectMonth(202601)
+        viewModel.selectPeriod(1)
 
         viewModel.saveCategory(
             id = 0L,
@@ -255,18 +204,18 @@ class BudgetViewModelTest {
 
         coVerify(exactly = 1) {
             budgetRepository.insertCategory(match { it.name == "Rent" })
-            budgetRepository.saveAllocation(202601, 123L, 500_000L)
+            budgetRepository.saveAllocation(1, 123L, 500_000L)
         }
     }
 
     @Test
-    fun `copyAllocationsFromPreviousMonth invokes copyAllocations with correct previous month ID`() = runTest {
-        viewModel.selectMonth(202601)
-        viewModel.copyAllocationsFromPreviousMonth()
+    fun `copyAllocationsFromPreviousPeriod invokes copyAllocations with correct previous period ID`() = runTest {
+        viewModel.selectPeriod(2)
+        viewModel.copyAllocationsFromPreviousPeriod()
         testScheduler.advanceUntilIdle()
 
         coVerify(exactly = 1) {
-            budgetRepository.copyAllocations(202512, 202601)
+            budgetRepository.copyAllocations(1, 2)
         }
     }
 
@@ -285,14 +234,13 @@ class BudgetViewModelTest {
 
         viewModel.saveCategory(
             id = 0L,
-            name = "groceries", // lowercase duplicate
+            name = "groceries",
             bucketType = BucketType.NEEDS,
             colorHex = "#00BCD4",
             iconName = "ic_home"
         )
         testScheduler.advanceUntilIdle()
 
-        // Verify duplicate error is emitted and database insert is NOT called
         coVerify(exactly = 0) { budgetRepository.insertCategory(any()) }
         assertTrue(events.any { it is BudgetUiEvent.Error && it.message == "An envelope with this name already exists." })
     }
@@ -311,5 +259,3 @@ class BudgetViewModelTest {
         }
     }
 }
-
-

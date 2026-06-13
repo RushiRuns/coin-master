@@ -1,15 +1,12 @@
 package com.rushi.coinmaster.ui.budget
 
-import android.app.AlertDialog
+import android.app.DatePickerDialog
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
-import android.widget.EditText
-import android.widget.Spinner
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -26,25 +23,28 @@ import com.rushi.coinmaster.util.LocaleHelper
 import com.rushi.coinmaster.util.MoneyMath
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
-import java.text.DateFormatSymbols
+import java.text.SimpleDateFormat
 import java.util.Calendar
+import java.util.Locale
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class MonthSetupFragment : Fragment() {
+class BudgetPeriodSetupFragment : Fragment() {
 
     private var _binding: FragmentMonthSetupBinding? = null
     private val binding get() = _binding!!
 
     private val viewModel: BudgetViewModel by activityViewModels()
-    private val args: MonthSetupFragmentArgs by navArgs()
+    private val args: BudgetPeriodSetupFragmentArgs by navArgs()
 
     @Inject
     lateinit var computeBucketSplitUseCase: ComputeBucketSplitUseCase
 
-    private var activeMonthId: Int = 0
-    private var activeYear: Int = 2026
-    private var activeMonth: Int = 6
+    private var activePeriodId: Int = 0
+    private var startDateVal: Long = 0L
+    private var endDateVal: Long = 0L
+
+    private val dateFormatter = SimpleDateFormat("dd MMM yyyy", Locale.getDefault())
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -58,31 +58,56 @@ class MonthSetupFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        binding.toolbar.title = "Budget Setup"
         binding.toolbar.setNavigationOnClickListener {
             requireActivity().onBackPressedDispatcher.onBackPressed()
         }
 
-        // Parse date from arguments
-        val calendar = Calendar.getInstance()
-        val currentMonthId = calendar.get(Calendar.YEAR) * 100 + (calendar.get(Calendar.MONTH) + 1)
-        activeMonthId = if (args.budgetMonthId != 0) args.budgetMonthId else currentMonthId
-        activeYear = activeMonthId / 100
-        activeMonth = activeMonthId % 100
+        activePeriodId = args.budgetPeriodId
 
-        updateDateLabel()
-
-        // Prefill values from existing budget month if available
+        // Observe values from existing budget period if available
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                val existing = viewModel.budgetMonthState.value
-                if (existing != null && existing.id == activeMonthId) {
+                val existing = viewModel.budgetPeriodState.value
+                if (existing != null && existing.id == activePeriodId) {
+                    startDateVal = existing.startDate
+                    endDateVal = existing.endDate
                     binding.etMonthlyIncome.setText(String.format("%.2f", existing.incomePaise / 100.0))
                     binding.etNeedsPercent.setText(existing.needsPercent.toString())
                     binding.etWantsPercent.setText(existing.wantsPercent.toString())
                     binding.etSavingsPercent.setText(existing.savingsPercent.toString())
+                    updateDateViews()
+                } else {
+                    // Seed default dates starting today and ending 1 month later if not initialized
+                    if (startDateVal == 0L) {
+                        val calendar = Calendar.getInstance()
+                        calendar.set(Calendar.HOUR_OF_DAY, 0)
+                        calendar.set(Calendar.MINUTE, 0)
+                        calendar.set(Calendar.SECOND, 0)
+                        calendar.set(Calendar.MILLISECOND, 0)
+                        startDateVal = calendar.timeInMillis
+
+                        calendar.add(Calendar.MONTH, 1)
+                        calendar.add(Calendar.DAY_OF_YEAR, -1)
+                        calendar.set(Calendar.HOUR_OF_DAY, 23)
+                        calendar.set(Calendar.MINUTE, 59)
+                        calendar.set(Calendar.SECOND, 59)
+                        calendar.set(Calendar.MILLISECOND, 999)
+                        endDateVal = calendar.timeInMillis
+                        updateDateViews()
+                    }
                 }
                 updateSplitCalculations()
             }
+        }
+
+        // Date selection click listeners
+        binding.btnSelectStartDate.setOnClickListener {
+            showDatePicker(true)
+        }
+
+        binding.btnSelectEndDate.setOnClickListener {
+            showDatePicker(false)
         }
 
         // Setup Text Change Listeners for real-time split calculations
@@ -98,11 +123,6 @@ class MonthSetupFragment : Fragment() {
         binding.etWantsPercent.addTextChangedListener(textWatcher)
         binding.etSavingsPercent.addTextChangedListener(textWatcher)
 
-        // Change Date Action
-        binding.btnChangeDate.setOnClickListener {
-            showMonthYearPickerDialog()
-        }
-
         // Save Setup Action
         binding.btnSaveSetup.setOnClickListener {
             saveBudgetSetup()
@@ -115,7 +135,7 @@ class MonthSetupFragment : Fragment() {
                     when (event) {
                         is BudgetUiEvent.SuccessSave -> {
                             Toast.makeText(requireContext(), "Budget setup saved successfully!", Toast.LENGTH_SHORT).show()
-                            viewModel.selectMonth(activeMonthId)
+                            viewModel.selectPeriod(viewModel.selectedPeriodId.value ?: activePeriodId)
                             findNavController().popBackStack()
                         }
                         is BudgetUiEvent.Error -> {
@@ -128,10 +148,40 @@ class MonthSetupFragment : Fragment() {
         }
     }
 
-    private fun updateDateLabel() {
-        val languageCode = LocaleHelper.getLanguage(requireContext())
-        val monthName = DateFormatSymbols(java.util.Locale(languageCode)).months[activeMonth - 1]
-        binding.tvSelectedDateLabel.text = getString(R.string.label_month_format, monthName, activeYear)
+    private fun updateDateViews() {
+        binding.tvStartDate.text = dateFormatter.format(startDateVal)
+        binding.tvEndDate.text = dateFormatter.format(endDateVal)
+    }
+
+    private fun showDatePicker(isStartDate: Boolean) {
+        val calendar = Calendar.getInstance()
+        calendar.timeInMillis = if (isStartDate) startDateVal else endDateVal
+
+        val year = calendar.get(Calendar.YEAR)
+        val month = calendar.get(Calendar.MONTH)
+        val day = calendar.get(Calendar.DAY_OF_MONTH)
+
+        DatePickerDialog(requireContext(), { _, selectedYear, selectedMonth, selectedDay ->
+            val resultCal = Calendar.getInstance()
+            resultCal.set(Calendar.YEAR, selectedYear)
+            resultCal.set(Calendar.MONTH, selectedMonth)
+            resultCal.set(Calendar.DAY_OF_MONTH, selectedDay)
+
+            if (isStartDate) {
+                resultCal.set(Calendar.HOUR_OF_DAY, 0)
+                resultCal.set(Calendar.MINUTE, 0)
+                resultCal.set(Calendar.SECOND, 0)
+                resultCal.set(Calendar.MILLISECOND, 0)
+                startDateVal = resultCal.timeInMillis
+            } else {
+                resultCal.set(Calendar.HOUR_OF_DAY, 23)
+                resultCal.set(Calendar.MINUTE, 59)
+                resultCal.set(Calendar.SECOND, 59)
+                resultCal.set(Calendar.MILLISECOND, 999)
+                endDateVal = resultCal.timeInMillis
+            }
+            updateDateViews()
+        }, year, month, day).show()
     }
 
     private fun updateSplitCalculations() {
@@ -165,46 +215,16 @@ class MonthSetupFragment : Fragment() {
         binding.tvSavingsTargetVal.text = CurrencyFormatter.format(split.savingsPaise, languageCode)
     }
 
-    private fun showMonthYearPickerDialog() {
-        val dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_month_year_picker, null)
-        val spinnerMonth = dialogView.findViewById<Spinner>(R.id.spinner_month)
-        val etYear = dialogView.findViewById<EditText>(R.id.et_year)
-
-        // Populate Month Spinner
-        val languageCode = LocaleHelper.getLanguage(requireContext())
-        val months = DateFormatSymbols(java.util.Locale(languageCode)).months
-        val spinnerAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, months)
-        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        spinnerMonth.adapter = spinnerAdapter
-        spinnerMonth.setSelection(activeMonth - 1)
-
-        etYear.setText(activeYear.toString())
-
-        AlertDialog.Builder(requireContext())
-            .setTitle(getString(R.string.dialog_select_budget_month))
-            .setView(dialogView)
-            .setPositiveButton(getString(R.string.btn_select)) { _, _ ->
-                val selectedMonth = spinnerMonth.selectedItemPosition + 1
-                val selectedYear = etYear.text.toString().toIntOrNull() ?: activeYear
-                if (selectedYear in 2000..2100) {
-                    activeMonth = selectedMonth
-                    activeYear = selectedYear
-                    activeMonthId = activeYear * 100 + activeMonth
-                    updateDateLabel()
-                    updateSplitCalculations()
-                } else {
-                    Toast.makeText(requireContext(), getString(R.string.error_invalid_year), Toast.LENGTH_SHORT).show()
-                }
-            }
-            .setNegativeButton(getString(R.string.btn_cancel), null)
-            .show()
-    }
-
     private fun saveBudgetSetup() {
         val incomeStr = binding.etMonthlyIncome.text.toString()
         val needsStr = binding.etNeedsPercent.text.toString()
         val wantsStr = binding.etWantsPercent.text.toString()
         val savingsStr = binding.etSavingsPercent.text.toString()
+
+        if (startDateVal > endDateVal) {
+            Toast.makeText(requireContext(), "Start date must be before or equal to End date.", Toast.LENGTH_SHORT).show()
+            return
+        }
 
         if (incomeStr.isBlank()) {
             Toast.makeText(requireContext(), getString(R.string.error_income_empty), Toast.LENGTH_SHORT).show()
@@ -220,10 +240,10 @@ class MonthSetupFragment : Fragment() {
             return
         }
 
-        viewModel.setupBudgetMonth(
-            id = activeMonthId,
-            month = activeMonth,
-            year = activeYear,
+        viewModel.setupBudgetPeriod(
+            id = activePeriodId,
+            startDate = startDateVal,
+            endDate = endDateVal,
             incomeStr = incomeStr,
             needsPercent = needsP,
             wantsPercent = wantsP,

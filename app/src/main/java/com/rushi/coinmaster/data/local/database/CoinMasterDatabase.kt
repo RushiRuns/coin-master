@@ -10,13 +10,13 @@ import com.rushi.coinmaster.data.local.entity.*
     entities = [
         AccountEntity::class,
         CategoryEntity::class,
-        BudgetMonthEntity::class,
+        BudgetPeriodEntity::class,
         EnvelopeAllocationEntity::class,
         TransactionEntity::class,
         SinkingFundEntity::class,
         DebtEntity::class
     ],
-    version = 4,
+    version = 5,
     exportSchema = false
 )
 @TypeConverters(AppConverters::class)

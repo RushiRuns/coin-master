@@ -16,7 +16,8 @@ import javax.inject.Singleton
 class DebtRepository @Inject constructor(
     private val db: CoinMasterDatabase,
     private val debtDao: DebtDao,
-    private val transactionDao: TransactionDao
+    private val transactionDao: TransactionDao,
+    private val budgetRepository: BudgetRepository
 ) {
     fun getDebtsFlow(): Flow<List<DebtEntity>> = debtDao.getDebtsFlow()
 
@@ -52,16 +53,15 @@ class DebtRepository @Inject constructor(
             "Borrowed from ${debt.personName}"
         }
 
-        // Determine budget month ID (format: YYYYMM)
-        val calendar = java.util.Calendar.getInstance().apply { timeInMillis = dateMillis }
-        val budgetMonthId = calendar.get(java.util.Calendar.YEAR) * 100 + (calendar.get(java.util.Calendar.MONTH) + 1)
+        // Determine budget period
+        val budgetPeriod = budgetRepository.getOrCreateBudgetPeriodForDate(dateMillis)
 
         val initialTransaction = TransactionEntity(
             amountPaise = debt.amountPaise,
             type = transactionType,
             accountId = accountId,
             categoryId = categoryId,
-            budgetMonthId = budgetMonthId,
+            budgetPeriodId = budgetPeriod.id,
             debtId = debtId,
             date = dateMillis,
             note = note
@@ -104,14 +104,14 @@ class DebtRepository @Inject constructor(
             "Repayment to ${debt.personName}"
         }
 
-        val calendar = java.util.Calendar.getInstance().apply { timeInMillis = dateMillis }
-        val budgetMonthId = calendar.get(java.util.Calendar.YEAR) * 100 + (calendar.get(java.util.Calendar.MONTH) + 1)
+        // Determine budget period
+        val budgetPeriod = budgetRepository.getOrCreateBudgetPeriodForDate(dateMillis)
 
         val repaymentTransaction = TransactionEntity(
             amountPaise = amountPaise,
             type = transactionType,
             accountId = accountId,
-            budgetMonthId = budgetMonthId,
+            budgetPeriodId = budgetPeriod.id,
             debtId = debtId,
             date = dateMillis,
             note = formattedNote

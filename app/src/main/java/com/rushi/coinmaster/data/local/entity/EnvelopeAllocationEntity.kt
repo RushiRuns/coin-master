@@ -9,14 +9,14 @@ import androidx.room.PrimaryKey
 @Entity(
     tableName = "envelope_allocations",
     indices = [
-        Index(value = ["budget_month_id", "category_id"], unique = true),
+        Index(value = ["budget_period_id", "category_id"], unique = true),
         Index("category_id")
     ],
     foreignKeys = [
         ForeignKey(
-            entity = BudgetMonthEntity::class,
+            entity = BudgetPeriodEntity::class,
             parentColumns = ["id"],
-            childColumns = ["budget_month_id"],
+            childColumns = ["budget_period_id"],
             onDelete = ForeignKey.CASCADE
         ),
         ForeignKey(
@@ -29,7 +29,8 @@ import androidx.room.PrimaryKey
 )
 data class EnvelopeAllocationEntity(
     @PrimaryKey(autoGenerate = true) val id: Long = 0,
-    @ColumnInfo(name = "budget_month_id") val budgetMonthId: Int,
+    @ColumnInfo(name = "budget_period_id") val budgetPeriodId: Int,
     @ColumnInfo(name = "category_id") val categoryId: Long,
     @ColumnInfo(name = "allocated_amount_paise") val allocatedAmountPaise: Long
 )
+

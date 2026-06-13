@@ -3,7 +3,7 @@ package com.rushi.coinmaster.ui.onboarding
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.rushi.coinmaster.data.local.entity.AccountEntity
-import com.rushi.coinmaster.data.local.entity.BudgetMonthEntity
+import com.rushi.coinmaster.data.local.entity.BudgetPeriodEntity
 import com.rushi.coinmaster.data.local.model.AccountType
 import com.rushi.coinmaster.data.preferences.AppPreferences
 import com.rushi.coinmaster.data.repository.AccountRepository
@@ -75,24 +75,36 @@ class OnboardingViewModel @Inject constructor(
             // 3. Seed default envelopes
             budgetRepository.seedDefaultCategories()
 
-            // 4. Create first BudgetMonth
+            // 4. Create first BudgetPeriod starting today and ending 1 month later
             val incomePaise = MoneyMath.rupeesToPaise(monthlyIncomeStr.toDouble())
             val calendar = Calendar.getInstance()
-            val year = calendar.get(Calendar.YEAR)
-            val month = calendar.get(Calendar.MONTH) + 1 // 1-indexed
-            val budgetMonthId = year * 100 + month
             
-            val firstBudget = BudgetMonthEntity(
-                id = budgetMonthId,
-                month = month,
-                year = year,
+            // Start Date: today at 00:00:00.000
+            calendar.set(Calendar.HOUR_OF_DAY, 0)
+            calendar.set(Calendar.MINUTE, 0)
+            calendar.set(Calendar.SECOND, 0)
+            calendar.set(Calendar.MILLISECOND, 0)
+            val startDate = calendar.timeInMillis
+
+            // End Date: 1 month later minus 1 day at 23:59:59.999
+            calendar.add(Calendar.MONTH, 1)
+            calendar.add(Calendar.DAY_OF_YEAR, -1)
+            calendar.set(Calendar.HOUR_OF_DAY, 23)
+            calendar.set(Calendar.MINUTE, 59)
+            calendar.set(Calendar.SECOND, 59)
+            calendar.set(Calendar.MILLISECOND, 999)
+            val endDate = calendar.timeInMillis
+            
+            val firstBudget = BudgetPeriodEntity(
+                startDate = startDate,
+                endDate = endDate,
                 incomePaise = incomePaise,
                 needsPercent = 50,
                 wantsPercent = 30,
                 savingsPercent = 20,
                 isActive = false
             )
-            budgetRepository.insertBudgetMonth(firstBudget)
+            budgetRepository.insertBudgetPeriod(firstBudget)
 
             // 5. Complete state
             appPreferences.setOnboardingComplete(true)

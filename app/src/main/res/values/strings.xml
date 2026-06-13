@@ -49,7 +49,7 @@
     <string name="label_budget_health">Monthly Budget Health</string>
     <string name="label_recent_activity">Recent Activity</string>
     <string name="text_budget_health_summary">%1$s spent of %2$s budgeted</string>
-    <string name="text_budget_health_no_budget">No budget set up for this month.</string>
+    <string name="text_budget_health_no_budget">No budget set up for this period.</string>
     <string name="text_chart_placeholder">Tap a segment to view details</string>
     <string name="text_chart_details">%1$s: %2$s spent of %3$s budgeted</string>
     <string name="text_no_transactions">No recent transactions</string>

@@ -94,7 +94,7 @@ class AddEditEnvelopeFragment : Fragment() {
             viewLifecycleOwner.lifecycleScope.launch {
                 viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                     launch {
-                        viewModel.budgetMonthState.collect {
+                        viewModel.budgetPeriodState.collect {
                             updateBucketRemainingHint()
                         }
                     }
@@ -288,7 +288,7 @@ class AddEditEnvelopeFragment : Fragment() {
     }
 
     private fun updateBucketRemainingHint() {
-        val month = viewModel.budgetMonthState.value ?: return
+        val period = viewModel.budgetPeriodState.value ?: return
         val envelopes = viewModel.envelopesState.value
         val bucketStr = binding.actvBucketType.text.toString()
         val selectedBucket = try {
@@ -302,7 +302,7 @@ class AddEditEnvelopeFragment : Fragment() {
             return
         }
 
-        val split = computeBucketSplitUseCase(month.incomePaise, month.needsPercent, month.wantsPercent, month.savingsPercent)
+        val split = computeBucketSplitUseCase(period.incomePaise, period.needsPercent, period.wantsPercent, period.savingsPercent)
         val targetPaise = when (selectedBucket) {
             BucketType.NEEDS -> split.needsPaise
             BucketType.WANTS -> split.wantsPaise

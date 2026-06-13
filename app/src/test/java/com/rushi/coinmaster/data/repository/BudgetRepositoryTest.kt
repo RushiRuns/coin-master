@@ -16,22 +16,22 @@ class BudgetRepositoryTest {
     private val repository = BudgetRepository(budgetDao, categoryDao)
 
     @Test
-    fun `copyAllocations clones previous month allocations into new month`() = runTest {
+    fun `copyAllocations clones previous period allocations into new period`() = runTest {
         val previousAllocations = listOf(
-            EnvelopeAllocationEntity(budgetMonthId = 202601, categoryId = 1L, allocatedAmountPaise = 5000L),
-            EnvelopeAllocationEntity(budgetMonthId = 202601, categoryId = 2L, allocatedAmountPaise = 10000L)
+            EnvelopeAllocationEntity(budgetPeriodId = 1, categoryId = 1L, allocatedAmountPaise = 5000L),
+            EnvelopeAllocationEntity(budgetPeriodId = 1, categoryId = 2L, allocatedAmountPaise = 10000L)
         )
-        coEvery { budgetDao.getAllocations(202601) } returns previousAllocations
+        coEvery { budgetDao.getAllocations(1) } returns previousAllocations
 
-        repository.copyAllocations(202601, 202602)
+        repository.copyAllocations(1, 2)
 
         coVerify(exactly = 1) {
-            budgetDao.replaceAllocations(202602, match { allocations ->
+            budgetDao.replaceAllocations(2, match { allocations ->
                 allocations.size == 2 &&
-                        allocations[0].budgetMonthId == 202602 &&
+                        allocations[0].budgetPeriodId == 2 &&
                         allocations[0].categoryId == 1L &&
                         allocations[0].allocatedAmountPaise == 5000L &&
-                        allocations[1].budgetMonthId == 202602 &&
+                        allocations[1].budgetPeriodId == 2 &&
                         allocations[1].categoryId == 2L &&
                         allocations[1].allocatedAmountPaise == 10000L
             })
@@ -39,10 +39,10 @@ class BudgetRepositoryTest {
     }
 
     @Test
-    fun `copyAllocations does nothing if previous month has no allocations`() = runTest {
-        coEvery { budgetDao.getAllocations(202601) } returns emptyList()
+    fun `copyAllocations does nothing if previous period has no allocations`() = runTest {
+        coEvery { budgetDao.getAllocations(1) } returns emptyList()
 
-        repository.copyAllocations(202601, 202602)
+        repository.copyAllocations(1, 2)
 
         coVerify(exactly = 0) {
             budgetDao.replaceAllocations(any(), any())

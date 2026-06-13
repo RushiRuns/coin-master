@@ -1,7 +1,7 @@
 package com.rushi.coinmaster.domain.usecase
 
 import com.rushi.coinmaster.data.local.entity.AccountEntity
-import com.rushi.coinmaster.data.local.entity.BudgetMonthEntity
+import com.rushi.coinmaster.data.local.entity.BudgetPeriodEntity
 import com.rushi.coinmaster.data.local.entity.TransactionEntity
 import com.rushi.coinmaster.data.local.model.AccountType
 import com.rushi.coinmaster.data.local.model.TransactionType
@@ -132,16 +132,23 @@ class AddTransactionUseCaseTest {
     }
 
     @Test
-    fun testAutoCreatesBudgetMonthIfMissing() = runBlocking {
+    fun testResolvesBudgetPeriodOnInsertion() = runBlocking {
         val account = AccountEntity(id = 1L, name = "Bank", type = AccountType.BANK_ACCOUNT, colorHex = "", iconName = "")
         coEvery { accountRepository.getAccountById(1L) } returns account
-        coEvery { budgetRepository.getBudgetMonth(202606) } returns null
+        
+        val mockPeriod = BudgetPeriodEntity(
+            id = 5,
+            startDate = 1000L,
+            endDate = 2000L,
+            incomePaise = 0L
+        )
+        coEvery { budgetRepository.getOrCreateBudgetPeriodForDate(any()) } returns mockPeriod
 
         val transaction = TransactionEntity(
             amountPaise = 50000L,
             type = TransactionType.INCOME,
             accountId = 1L,
-            date = 1780704000000L // 6th June 2026 UTC/local approx
+            date = 1500L
         )
 
         coEvery { transactionRepository.insertTransaction(any()) } returns 10L
@@ -152,8 +159,8 @@ class AddTransactionUseCaseTest {
         assertEquals(10L, result.getOrNull())
 
         coVerify {
-            budgetRepository.insertBudgetMonth(match {
-                it.id == 202606 && it.month == 6 && it.year == 2026 && it.incomePaise == 0L
+            transactionRepository.insertTransaction(match {
+                it.budgetPeriodId == 5
             })
         }
     }

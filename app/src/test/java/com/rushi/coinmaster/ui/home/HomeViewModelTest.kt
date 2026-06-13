@@ -1,7 +1,7 @@
 package com.rushi.coinmaster.ui.home
 
 import com.rushi.coinmaster.data.local.entity.AccountEntity
-import com.rushi.coinmaster.data.local.entity.BudgetMonthEntity
+import com.rushi.coinmaster.data.local.entity.BudgetPeriodEntity
 import com.rushi.coinmaster.data.local.entity.CategoryEntity
 import com.rushi.coinmaster.data.local.entity.TransactionEntity
 import com.rushi.coinmaster.data.local.entity.DebtEntity
@@ -40,21 +40,10 @@ class HomeViewModelTest {
 
     private lateinit var viewModel: HomeViewModel
 
-    private val currentMonthId: Int
-        get() {
-            val cal = Calendar.getInstance()
-            return cal.get(Calendar.YEAR) * 100 + (cal.get(Calendar.MONTH) + 1)
-        }
-
-    private val testAccounts = listOf(
-        AccountEntity(id = 1L, name = "Cash", type = AccountType.CASH, balancePaise = 10000L, colorHex = "#000", iconName = "ic_cash"),
-        AccountEntity(id = 2L, name = "Bank", type = AccountType.BANK_ACCOUNT, balancePaise = 50000L, colorHex = "#FFF", iconName = "ic_bank")
-    )
-
-    private val testBudgetMonth = BudgetMonthEntity(
-        id = 202606, // Will be overridden or matched
-        month = 6,
-        year = 2026,
+    private val testBudgetPeriod = BudgetPeriodEntity(
+        id = 1,
+        startDate = System.currentTimeMillis() - 100000L,
+        endDate = System.currentTimeMillis() + 1000000L,
         incomePaise = 5000000L,
         needsPercent = 50,
         wantsPercent = 30,
@@ -93,6 +82,11 @@ class HomeViewModelTest {
         TransactionEntity(id = 101L, amountPaise = 2000L, type = TransactionType.EXPENSE, accountId = 1L, categoryId = 11L, date = 1686010000000L, note = "Dinner")
     )
 
+    private val testAccounts = listOf(
+        AccountEntity(id = 1L, name = "Cash", type = AccountType.CASH, balancePaise = 10000L, colorHex = "#000", iconName = "ic_cash"),
+        AccountEntity(id = 2L, name = "Bank", type = AccountType.BANK_ACCOUNT, balancePaise = 50000L, colorHex = "#FFF", iconName = "ic_bank")
+    )
+
     @Before
     fun setUp() {
         Dispatchers.setMain(testDispatcher)
@@ -100,12 +94,8 @@ class HomeViewModelTest {
         // Mock repository flows
         every { accountRepository.getAccountsFlow() } returns flowOf(testAccounts)
         
-        // Mock current calendar month budget
-        val monthId = currentMonthId
-        val currentBudget = testBudgetMonth.copy(id = monthId, month = monthId % 100, year = monthId / 100)
-        every { budgetRepository.getBudgetMonthsFlow() } returns flowOf(listOf(currentBudget))
-        
-        every { budgetRepository.getEnvelopesWithAllocationsFlow(monthId) } returns flowOf(testEnvelopes)
+        every { budgetRepository.getBudgetPeriodsFlow() } returns flowOf(listOf(testBudgetPeriod))
+        every { budgetRepository.getEnvelopesWithAllocationsFlow(testBudgetPeriod.id) } returns flowOf(testEnvelopes)
         every { budgetRepository.getCategoriesFlow() } returns flowOf(testCategories)
         every { transactionRepository.getRecentTransactionsFlow(7) } returns flowOf(testTransactions)
         every { debtRepository.getDebtsFlow() } returns flowOf(emptyList())
@@ -139,7 +129,7 @@ class HomeViewModelTest {
         val lastState = states.last()
         assertEquals(60000L, lastState.netWorth)
         assertEquals(testAccounts, lastState.accounts)
-        assertEquals(currentMonthId, lastState.budgetMonth?.id)
+        assertEquals(testBudgetPeriod.id, lastState.budgetPeriod?.id)
         assertEquals(testEnvelopes, lastState.envelopes)
         assertEquals(35000L, lastState.totalBudgetedPaise)
         assertEquals(7000L, lastState.totalSpentPaise)

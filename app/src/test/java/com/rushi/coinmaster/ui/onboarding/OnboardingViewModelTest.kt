@@ -1,7 +1,7 @@
 package com.rushi.coinmaster.ui.onboarding
 
 import com.rushi.coinmaster.data.local.entity.AccountEntity
-import com.rushi.coinmaster.data.local.entity.BudgetMonthEntity
+import com.rushi.coinmaster.data.local.entity.BudgetPeriodEntity
 import com.rushi.coinmaster.data.local.model.AccountType
 import com.rushi.coinmaster.data.preferences.AppPreferences
 import com.rushi.coinmaster.data.repository.AccountRepository
@@ -127,7 +127,7 @@ class OnboardingViewModelTest {
             it.name == "Primary Bank" && it.type == AccountType.BANK_ACCOUNT && it.balancePaise == 100050L
         }) }
         coVerify { budgetRepository.seedDefaultCategories() }
-        coVerify { budgetRepository.insertBudgetMonth(match { 
+        coVerify { budgetRepository.insertBudgetPeriod(match { 
             it.incomePaise == 5000000L && it.needsPercent == 50 && it.wantsPercent == 30 && it.savingsPercent == 20
         }) }
 
