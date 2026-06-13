@@ -14,10 +14,16 @@ class AppConverters {
     fun toAccountType(name: String): AccountType = AccountType.valueOf(name)
 
     @TypeConverter
-    fun fromBucketType(type: BucketType): String = type.name
+    fun fromBucketType(type: BucketType?): String? = type?.name
 
     @TypeConverter
-    fun toBucketType(name: String): BucketType = BucketType.valueOf(name)
+    fun toBucketType(name: String?): BucketType? = name?.let {
+        try {
+            BucketType.valueOf(it)
+        } catch (e: Exception) {
+            null
+        }
+    }
 
     @TypeConverter
     fun fromTransactionType(type: TransactionType): String = type.name

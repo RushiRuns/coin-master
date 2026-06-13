@@ -74,6 +74,9 @@
         <action
             android:id="@+id/action_budgetFragment_to_goalsFragment"
             app:destination="@id/goalsFragment" />
+        <action
+            android:id="@+id/action_budgetFragment_to_manageEnvelopesFragment"
+            app:destination="@id/manageEnvelopesFragment" />
     </fragment>
 
     <fragment
@@ -89,6 +92,16 @@
             android:name="bucketTypeOrdinal"
             app:argType="integer"
             android:defaultValue="-1" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/manageEnvelopesFragment"
+        android:name="com.rushi.coinmaster.ui.budget.ManageEnvelopesFragment"
+        android:label="ManageEnvelopesFragment"
+        tools:layout="@layout/fragment_manage_envelopes">
+        <action
+            android:id="@+id/action_manageEnvelopesFragment_to_addEditEnvelopeFragment"
+            app:destination="@id/addEditEnvelopeFragment" />
     </fragment>
 
     <fragment

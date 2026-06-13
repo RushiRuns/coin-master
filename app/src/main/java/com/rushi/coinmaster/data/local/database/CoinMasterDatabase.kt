@@ -16,7 +16,7 @@ import com.rushi.coinmaster.data.local.entity.*
         SinkingFundEntity::class,
         DebtEntity::class
     ],
-    version = 3,
+    version = 4,
     exportSchema = false
 )
 @TypeConverters(AppConverters::class)

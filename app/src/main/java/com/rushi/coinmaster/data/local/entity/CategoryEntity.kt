@@ -9,7 +9,7 @@ import com.rushi.coinmaster.data.local.model.BucketType
 data class CategoryEntity(
     @PrimaryKey(autoGenerate = true) val id: Long = 0,
     val name: String,
-    @ColumnInfo(name = "bucket_type") val bucketType: BucketType,
+    @ColumnInfo(name = "bucket_type") val bucketType: BucketType? = null,
     @ColumnInfo(name = "color_hex") val colorHex: String,
     @ColumnInfo(name = "icon_name") val iconName: String,
     @ColumnInfo(name = "display_order") val displayOrder: Int,
