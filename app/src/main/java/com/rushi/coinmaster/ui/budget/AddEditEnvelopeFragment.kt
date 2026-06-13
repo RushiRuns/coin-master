@@ -34,6 +34,9 @@ class AddEditEnvelopeFragment : Fragment() {
     private val viewModel: BudgetViewModel by activityViewModels()
     private val args: AddEditEnvelopeFragmentArgs by navArgs()
 
+    @javax.inject.Inject
+    lateinit var computeBucketSplitUseCase: com.rushi.coinmaster.domain.usecase.ComputeBucketSplitUseCase
+
     private var selectedColor: String = "#E57373"
     private var selectedIcon: String = "ic_emergency"
 
@@ -62,13 +65,22 @@ class AddEditEnvelopeFragment : Fragment() {
 
         val isEditMode = args.categoryId != 0L
 
+        // Toggle Advanced Settings (Icon & Color)
+        binding.btnToggleAdvanced.setOnClickListener {
+            val isCollapsed = binding.layoutAdvancedIconColor.visibility == View.GONE
+            binding.layoutAdvancedIconColor.visibility = if (isCollapsed) View.VISIBLE else View.GONE
+            binding.btnToggleAdvanced.text = if (isCollapsed) "Hide Color & Icon Settings" else "Customize Color & Icon"
+        }
+
         if (isEditMode) {
             binding.tvTitle.text = "Edit Envelope"
             binding.btnDeleteCategory.visibility = View.VISIBLE
+            binding.tilEnvelopeAmount.visibility = View.GONE
             loadCategoryData(args.categoryId)
         } else {
             binding.tvTitle.text = "New Envelope"
             binding.btnDeleteCategory.visibility = View.GONE
+            binding.tilEnvelopeAmount.visibility = View.VISIBLE
             
             // Pre-select bucket type if passed
             if (args.bucketTypeOrdinal != -1) {
@@ -77,6 +89,26 @@ class AddEditEnvelopeFragment : Fragment() {
             }
             highlightSelectedColor()
             highlightSelectedIcon()
+
+            // Update remaining balance hint reactively
+            viewLifecycleOwner.lifecycleScope.launch {
+                viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                    launch {
+                        viewModel.budgetMonthState.collect {
+                            updateBucketRemainingHint()
+                        }
+                    }
+                    launch {
+                        viewModel.envelopesState.collect {
+                            updateBucketRemainingHint()
+                        }
+                    }
+                }
+            }
+
+            binding.actvBucketType.setOnItemClickListener { _, _, _, _ ->
+                updateBucketRemainingHint()
+            }
         }
 
         // Save Category
@@ -110,7 +142,7 @@ class AddEditEnvelopeFragment : Fragment() {
     }
 
     private fun setupBucketDropdown() {
-        val buckets = BucketType.values().map { it.name }
+        val buckets = listOf("UNASSIGNED") + BucketType.values().map { it.name }
         val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, buckets)
         binding.actvBucketType.setAdapter(adapter)
         
@@ -216,7 +248,7 @@ class AddEditEnvelopeFragment : Fragment() {
             val category = viewModel.getCategoryById(categoryId)
             if (category != null) {
                 binding.etEnvelopeName.setText(category.name)
-                binding.actvBucketType.setText(category.bucketType.name, false)
+                binding.actvBucketType.setText(category.bucketType?.name ?: "UNASSIGNED", false)
                 selectedColor = category.colorHex
                 selectedIcon = category.iconName
                 highlightSelectedColor()
@@ -229,9 +261,20 @@ class AddEditEnvelopeFragment : Fragment() {
         val name = binding.etEnvelopeName.text.toString()
         val bucketStr = binding.actvBucketType.text.toString()
         val bucket = try {
-            BucketType.valueOf(bucketStr)
+            if (bucketStr == "UNASSIGNED") null else BucketType.valueOf(bucketStr)
         } catch (e: Exception) {
-            BucketType.NEEDS
+            null
+        }
+
+        val amountStr = binding.etEnvelopeAmount.text.toString()
+        val initialAllocationPaise = if (amountStr.isNotBlank()) {
+            try {
+                com.rushi.coinmaster.util.MoneyMath.rupeesToPaise(amountStr)
+            } catch (e: Exception) {
+                null
+            }
+        } else {
+            null
         }
 
         viewModel.saveCategory(
@@ -239,8 +282,39 @@ class AddEditEnvelopeFragment : Fragment() {
             name = name,
             bucketType = bucket,
             colorHex = selectedColor,
-            iconName = selectedIcon
+            iconName = selectedIcon,
+            initialAllocationPaise = initialAllocationPaise
         )
+    }
+
+    private fun updateBucketRemainingHint() {
+        val month = viewModel.budgetMonthState.value ?: return
+        val envelopes = viewModel.envelopesState.value
+        val bucketStr = binding.actvBucketType.text.toString()
+        val selectedBucket = try {
+            if (bucketStr == "UNASSIGNED") null else BucketType.valueOf(bucketStr)
+        } catch (e: Exception) {
+            null
+        }
+
+        if (selectedBucket == null) {
+            binding.tilEnvelopeAmount.helperText = "No bucket limit (Unassigned)"
+            return
+        }
+
+        val split = computeBucketSplitUseCase(month.incomePaise, month.needsPercent, month.wantsPercent, month.savingsPercent)
+        val targetPaise = when (selectedBucket) {
+            BucketType.NEEDS -> split.needsPaise
+            BucketType.WANTS -> split.wantsPaise
+            BucketType.SAVINGS -> split.savingsPaise
+        }
+
+        val allocatedPaise = envelopes.filter { it.bucketType == selectedBucket }.sumOf { it.allocatedAmountPaise }
+        val remainingPaise = targetPaise - allocatedPaise
+
+        val languageCode = com.rushi.coinmaster.util.LocaleHelper.getLanguage(requireContext())
+        val remainingStr = com.rushi.coinmaster.util.CurrencyFormatter.format(remainingPaise, languageCode)
+        binding.tilEnvelopeAmount.helperText = "Limit: $remainingStr remaining in $bucketStr bucket"
     }
 
     private fun showDeleteConfirmation() {

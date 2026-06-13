@@ -1,6 +1,7 @@
 package com.rushi.coinmaster.ui.budget
 
 import com.rushi.coinmaster.data.local.entity.BudgetMonthEntity
+import com.rushi.coinmaster.data.local.entity.CategoryEntity
 import com.rushi.coinmaster.data.local.model.BucketType
 import com.rushi.coinmaster.data.local.model.EnvelopeWithAllocation
 import com.rushi.coinmaster.data.repository.BudgetRepository
@@ -234,6 +235,79 @@ class BudgetViewModelTest {
 
         coVerify(exactly = 1) {
             budgetRepository.insertCategory(match { it.name == "Rent" && it.bucketType == BucketType.NEEDS })
+        }
+    }
+
+    @Test
+    fun `saveCategory with initial allocation calls saveAllocation when category is new`() = runTest {
+        coEvery { budgetRepository.insertCategory(any()) } returns 123L
+        viewModel.selectMonth(202601)
+
+        viewModel.saveCategory(
+            id = 0L,
+            name = "Rent",
+            bucketType = BucketType.NEEDS,
+            colorHex = "#00BCD4",
+            iconName = "ic_home",
+            initialAllocationPaise = 500_000L
+        )
+        testScheduler.advanceUntilIdle()
+
+        coVerify(exactly = 1) {
+            budgetRepository.insertCategory(match { it.name == "Rent" })
+            budgetRepository.saveAllocation(202601, 123L, 500_000L)
+        }
+    }
+
+    @Test
+    fun `copyAllocationsFromPreviousMonth invokes copyAllocations with correct previous month ID`() = runTest {
+        viewModel.selectMonth(202601)
+        viewModel.copyAllocationsFromPreviousMonth()
+        testScheduler.advanceUntilIdle()
+
+        coVerify(exactly = 1) {
+            budgetRepository.copyAllocations(202512, 202601)
+        }
+    }
+
+    @Test
+    fun `saveCategory rejects duplicate name case-insensitively`() = runTest {
+        val existingCategories = listOf(
+            CategoryEntity(id = 10L, name = "Groceries", bucketType = BucketType.NEEDS, colorHex = "#FF5733", iconName = "ic_grocery", displayOrder = 0)
+        )
+        every { budgetRepository.getCategoriesFlow() } returns MutableStateFlow(existingCategories)
+        viewModel = BudgetViewModel(context, budgetRepository, validateZeroBalanceUseCase)
+
+        val events = mutableListOf<BudgetUiEvent>()
+        backgroundScope.launch(UnconfinedTestDispatcher(testScheduler)) {
+            viewModel.uiEvent.collect { events.add(it) }
+        }
+
+        viewModel.saveCategory(
+            id = 0L,
+            name = "groceries", // lowercase duplicate
+            bucketType = BucketType.NEEDS,
+            colorHex = "#00BCD4",
+            iconName = "ic_home"
+        )
+        testScheduler.advanceUntilIdle()
+
+        // Verify duplicate error is emitted and database insert is NOT called
+        coVerify(exactly = 0) { budgetRepository.insertCategory(any()) }
+        assertTrue(events.any { it is BudgetUiEvent.Error && it.message == "An envelope with this name already exists." })
+    }
+
+    @Test
+    fun `assignCategoryToBucket updates category with target bucketType`() = runTest {
+        val targetCategory = CategoryEntity(id = 12L, name = "Rent", bucketType = null, colorHex = "#00BCD4", iconName = "ic_home", displayOrder = 0)
+        every { budgetRepository.getCategoriesFlow() } returns MutableStateFlow(listOf(targetCategory))
+        viewModel = BudgetViewModel(context, budgetRepository, validateZeroBalanceUseCase)
+
+        viewModel.assignCategoryToBucket(12L, BucketType.NEEDS)
+        testScheduler.advanceUntilIdle()
+
+        coVerify(exactly = 1) {
+            budgetRepository.updateCategory(match { it.id == 12L && it.bucketType == BucketType.NEEDS })
         }
     }
 }

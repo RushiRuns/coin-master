@@ -52,6 +52,26 @@ class BudgetViewModel @Inject constructor(
         budgetRepository.getEnvelopesWithAllocationsFlow(monthId)
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
 
+    val showCopyPreviousState: StateFlow<Boolean> = _selectedMonthId.flatMapLatest { monthId ->
+        val prevMonthId = getPreviousMonthId(monthId)
+        combine(
+            budgetMonthState,
+            envelopesState,
+            budgetRepository.hasAllocationsFlow(prevMonthId)
+        ) { month, envelopes, prevHasAllocations ->
+            if (month == null || month.isActive) {
+                false
+            } else {
+                val hasCurrentAllocations = envelopes.any { it.allocatedAmountPaise > 0L }
+                !hasCurrentAllocations && prevHasAllocations
+            }
+        }
+    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), false)
+
+    // Reactively track all active categories (pool)
+    val allCategoriesState: StateFlow<List<CategoryEntity>> = budgetRepository.getCategoriesFlow()
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
+
     // Reactively track live unallocated / validation state
     val unallocatedState: StateFlow<BudgetValidationResult> = combine(
         budgetMonthState,
@@ -71,6 +91,22 @@ class BudgetViewModel @Inject constructor(
 
     fun selectMonth(id: Int) {
         _selectedMonthId.value = id
+    }
+
+    private fun getPreviousMonthId(monthId: Int): Int {
+        val year = monthId / 100
+        val month = monthId % 100
+        val prevYear = if (month == 1) year - 1 else year
+        val prevMonth = if (month == 1) 12 else month - 1
+        return prevYear * 100 + prevMonth
+    }
+
+    fun copyAllocationsFromPreviousMonth() {
+        viewModelScope.launch {
+            val currentMonthId = _selectedMonthId.value
+            val prevMonthId = getPreviousMonthId(currentMonthId)
+            budgetRepository.copyAllocations(prevMonthId, currentMonthId)
+        }
     }
 
     fun selectPreviousMonth() {
@@ -162,12 +198,28 @@ class BudgetViewModel @Inject constructor(
         return budgetRepository.getCategoriesFlow().first().find { it.id == id }
     }
 
-    fun saveCategory(id: Long, name: String, bucketType: BucketType, colorHex: String, iconName: String) {
+    fun saveCategory(
+        id: Long,
+        name: String,
+        bucketType: BucketType?,
+        colorHex: String,
+        iconName: String,
+        initialAllocationPaise: Long? = null
+    ) {
         viewModelScope.launch {
             if (name.isBlank()) {
                 _uiEvent.emit(BudgetUiEvent.Error(context.getString(R.string.error_envelope_name_empty)))
                 return@launch
             }
+            // Check duplicate envelope name (case-insensitive, non-deleted, excluding self)
+            val exists = budgetRepository.getCategoriesFlow().first().any {
+                it.name.equals(name.trim(), ignoreCase = true) && !it.isDeleted && it.id != id
+            }
+            if (exists) {
+                _uiEvent.emit(BudgetUiEvent.Error("An envelope with this name already exists."))
+                return@launch
+            }
+
             val category = if (id == 0L) {
                 CategoryEntity(
                     name = name.trim(),
@@ -186,11 +238,24 @@ class BudgetViewModel @Inject constructor(
                 ) ?: return@launch
             }
             if (id == 0L) {
-                budgetRepository.insertCategory(category)
+                val newId = budgetRepository.insertCategory(category)
+                if (initialAllocationPaise != null && initialAllocationPaise > 0L) {
+                    budgetRepository.saveAllocation(_selectedMonthId.value, newId, initialAllocationPaise)
+                }
             } else {
                 budgetRepository.updateCategory(category)
             }
             _uiEvent.emit(BudgetUiEvent.SuccessSave)
+        }
+    }
+
+    fun assignCategoryToBucket(categoryId: Long, bucketType: BucketType) {
+        viewModelScope.launch {
+            val existing = budgetRepository.getCategoriesFlow().first().find { it.id == categoryId }
+            if (existing != null) {
+                budgetRepository.updateCategory(existing.copy(bucketType = bucketType))
+                _uiEvent.emit(BudgetUiEvent.SuccessSave)
+            }
         }
     }
 

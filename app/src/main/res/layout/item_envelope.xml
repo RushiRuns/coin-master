@@ -60,13 +60,11 @@
         app:layout_constraintEnd_toStartOf="@id/layout_allocation_click" />
 
     <!-- Clickable Allocation Input Box (48dp min touch target) -->
-    <LinearLayout
+    <FrameLayout
         android:id="@+id/layout_allocation_click"
         android:layout_width="100dp"
         android:layout_height="48dp"
         android:background="@drawable/bg_allocation_box"
-        android:orientation="horizontal"
-        android:gravity="center"
         android:paddingStart="8dp"
         android:paddingEnd="8dp"
         app:layout_constraintTop_toTopOf="parent"
@@ -77,12 +75,28 @@
             android:id="@+id/tv_allocated_amount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:text="₹0.00"
             android:textColor="@color/primary"
             android:textSize="14sp"
             android:textStyle="bold"
             android:singleLine="true" />
-    </LinearLayout>
+
+        <EditText
+            android:id="@+id/et_allocated_amount"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:background="@null"
+            android:inputType="numberDecimal"
+            android:textColor="@color/primary"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:singleLine="true"
+            android:imeOptions="actionDone"
+            android:visibility="gone"
+            tools:text="2000" />
+    </FrameLayout>
 
     <!-- Category Metadata Edit Button (48dp touch target) -->
     <ImageButton

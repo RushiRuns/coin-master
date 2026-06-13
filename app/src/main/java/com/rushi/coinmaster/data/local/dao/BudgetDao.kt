@@ -45,6 +45,12 @@ interface BudgetDao {
         insertAllocations(allocations)
     }
 
+    @Query("SELECT EXISTS(SELECT 1 FROM envelope_allocations WHERE budget_month_id = :budgetMonthId LIMIT 1)")
+    fun hasAllocationsFlow(budgetMonthId: Int): Flow<Boolean>
+
+    @Query("SELECT EXISTS(SELECT 1 FROM envelope_allocations WHERE budget_month_id = :budgetMonthId LIMIT 1)")
+    suspend fun hasAllocations(budgetMonthId: Int): Boolean
+
     @Query("""
         SELECT 
             c.id AS categoryId,
@@ -63,7 +69,7 @@ interface BudgetDao {
             ), 0) AS spentAmountPaise
         FROM categories c
         LEFT JOIN envelope_allocations ea ON c.id = ea.category_id AND ea.budget_month_id = :budgetMonthId
-        WHERE c.is_deleted = 0
+        WHERE c.is_deleted = 0 AND c.bucket_type IS NOT NULL
         ORDER BY c.display_order ASC
     """)
     fun getEnvelopesWithAllocationsFlow(budgetMonthId: Int): Flow<List<EnvelopeWithAllocation>>

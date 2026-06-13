@@ -39,6 +39,23 @@ class BudgetRepository @Inject constructor(
         budgetDao.insertAllocation(allocation)
     }
 
+    fun hasAllocationsFlow(budgetMonthId: Int): Flow<Boolean> {
+        return budgetDao.hasAllocationsFlow(budgetMonthId)
+    }
+
+    suspend fun hasAllocations(budgetMonthId: Int): Boolean {
+        return budgetDao.hasAllocations(budgetMonthId)
+    }
+
+    suspend fun copyAllocations(fromMonthId: Int, toMonthId: Int) {
+        val previousAllocations = budgetDao.getAllocations(fromMonthId)
+        if (previousAllocations.isEmpty()) return
+        val newAllocations = previousAllocations.map {
+            it.copy(budgetMonthId = toMonthId)
+        }
+        budgetDao.replaceAllocations(toMonthId, newAllocations)
+    }
+
     // Category CRUD helpers for AddEditEnvelope
     suspend fun insertCategory(category: CategoryEntity): Long = categoryDao.insertCategory(category)
 

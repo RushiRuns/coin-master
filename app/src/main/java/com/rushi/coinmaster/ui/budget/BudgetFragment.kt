@@ -1,6 +1,7 @@
 package com.rushi.coinmaster.ui.budget
 
 import android.app.AlertDialog
+import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
 import android.text.InputType
@@ -69,6 +70,18 @@ class BudgetFragment : Fragment() {
             findNavController().navigate(action)
         }
 
+        // Toolbar Menu Action (Manage Envelopes pool)
+        binding.toolbar.inflateMenu(R.menu.menu_budget)
+        binding.toolbar.setOnMenuItemClickListener { menuItem ->
+            if (menuItem.itemId == R.id.action_manage_envelopes) {
+                val action = BudgetFragmentDirections.actionBudgetFragmentToManageEnvelopesFragment()
+                findNavController().navigate(action)
+                true
+            } else {
+                false
+            }
+        }
+
         // Activate Budget Button
         binding.btnActivateBudget.setOnClickListener {
             viewModel.activateBudgetMonth()
@@ -76,27 +89,15 @@ class BudgetFragment : Fragment() {
 
         // Add Envelopes Buttons
         binding.btnAddNeedsEnvelope.setOnClickListener {
-            val action = BudgetFragmentDirections.actionBudgetFragmentToAddEditEnvelopeFragment(
-                categoryId = 0L,
-                bucketTypeOrdinal = BucketType.NEEDS.ordinal
-            )
-            findNavController().navigate(action)
+            showEnvelopeSelectionDialog(BucketType.NEEDS)
         }
 
         binding.btnAddWantsEnvelope.setOnClickListener {
-            val action = BudgetFragmentDirections.actionBudgetFragmentToAddEditEnvelopeFragment(
-                categoryId = 0L,
-                bucketTypeOrdinal = BucketType.WANTS.ordinal
-            )
-            findNavController().navigate(action)
+            showEnvelopeSelectionDialog(BucketType.WANTS)
         }
 
         binding.btnAddSavingsEnvelope.setOnClickListener {
-            val action = BudgetFragmentDirections.actionBudgetFragmentToAddEditEnvelopeFragment(
-                categoryId = 0L,
-                bucketTypeOrdinal = BucketType.SAVINGS.ordinal
-            )
-            findNavController().navigate(action)
+            showEnvelopeSelectionDialog(BucketType.SAVINGS)
         }
 
         binding.btnManageGoals.setOnClickListener {
@@ -109,12 +110,37 @@ class BudgetFragment : Fragment() {
             findNavController().navigate(action)
         }
 
+        // Copy Previous Month Action
+        binding.btnCopyPrevious.setOnClickListener {
+            val prevMonthId = viewModel.selectedMonthId.value
+            val year = prevMonthId / 100
+            val month = prevMonthId % 100
+            val prevYear = if (month == 1) year - 1 else year
+            val prevMonth = if (month == 1) 12 else month - 1
+            val monthName = DateFormatSymbols().months[prevMonth - 1]
+            
+            AlertDialog.Builder(requireContext())
+                .setTitle("Copy Previous Budget")
+                .setMessage("Are you sure you want to copy allocations from $monthName $prevYear? This will overwrite any current allocations.")
+                .setPositiveButton("Copy") { _, _ ->
+                    viewModel.copyAllocationsFromPreviousMonth()
+                }
+                .setNegativeButton("Cancel", null)
+                .show()
+        }
+
         // Observe ViewModel flows
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 launch {
                     viewModel.selectedMonthId.collect { monthId ->
                         updateMonthLabel(monthId)
+                    }
+                }
+
+                launch {
+                    viewModel.showCopyPreviousState.collect { show ->
+                        binding.cardCopyPrevious.visibility = if (show) View.VISIBLE else View.GONE
                     }
                 }
 
@@ -250,12 +276,48 @@ class BudgetFragment : Fragment() {
             itemBinding.tvEnvelopeSpent.text = getString(R.string.text_spent_prefix, CurrencyFormatter.format(envelope.spentAmountPaise, languageCode))
             itemBinding.tvAllocatedAmount.text = CurrencyFormatter.format(envelope.allocatedAmountPaise, languageCode)
 
-            // Click to Edit Allocation
+            val tvAllocated = itemBinding.tvAllocatedAmount
+            val etAllocated = itemBinding.etAllocatedAmount
+
+            // Click to Edit Allocation (Inline)
             itemBinding.layoutAllocationClick.setOnClickListener {
                 if (viewModel.budgetMonthState.value?.isActive == true) {
                     Toast.makeText(requireContext(), getString(R.string.text_cannot_modify_active), Toast.LENGTH_SHORT).show()
                 } else {
-                    showAllocationDialog(envelope)
+                    if (tvAllocated.visibility == View.VISIBLE) {
+                        tvAllocated.visibility = View.GONE
+                        etAllocated.visibility = View.VISIBLE
+                        
+                        val rupeesVal = String.format("%.2f", envelope.allocatedAmountPaise / 100.0)
+                        etAllocated.setText(rupeesVal)
+                        etAllocated.requestFocus()
+                        etAllocated.setSelection(etAllocated.text.length)
+                        showKeyboard(etAllocated)
+                    }
+                }
+            }
+
+            etAllocated.setOnEditorActionListener { _, actionId, _ ->
+                if (actionId == android.view.inputmethod.EditorInfo.IME_ACTION_DONE) {
+                    val amountStr = etAllocated.text.toString()
+                    viewModel.saveAllocation(envelope.categoryId, amountStr)
+                    etAllocated.clearFocus()
+                    true
+                } else {
+                    false
+                }
+            }
+
+            etAllocated.setOnFocusChangeListener { _, hasFocus ->
+                if (!hasFocus) {
+                    val amountStr = etAllocated.text.toString()
+                    val originalStr = String.format("%.2f", envelope.allocatedAmountPaise / 100.0)
+                    if (amountStr != originalStr && amountStr.isNotBlank()) {
+                        viewModel.saveAllocation(envelope.categoryId, amountStr)
+                    }
+                    tvAllocated.visibility = View.VISIBLE
+                    etAllocated.visibility = View.GONE
+                    hideKeyboard(etAllocated)
                 }
             }
 
@@ -279,37 +341,14 @@ class BudgetFragment : Fragment() {
         viewModel.budgetMonthState.value?.let { updateBudgetUi(it) }
     }
 
-    private fun showAllocationDialog(envelope: EnvelopeWithAllocation) {
-        val input = EditText(requireContext()).apply {
-            inputType = InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_FLAG_DECIMAL
-            setText(String.format("%.2f", envelope.allocatedAmountPaise / 100.0))
-            setSelection(text.length)
-        }
+    private fun showKeyboard(view: View) {
+        val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as android.view.inputmethod.InputMethodManager
+        imm.showSoftInput(view, android.view.inputmethod.InputMethodManager.SHOW_IMPLICIT)
+    }
 
-        val container = FrameLayout(requireContext())
-        val margin = (24 * resources.displayMetrics.density).toInt()
-        val params = FrameLayout.LayoutParams(
-            ViewGroup.LayoutParams.MATCH_PARENT,
-            ViewGroup.LayoutParams.WRAP_CONTENT
-        ).apply {
-            leftMargin = margin
-            rightMargin = margin
-            topMargin = (8 * resources.displayMetrics.density).toInt()
-            bottomMargin = (8 * resources.displayMetrics.density).toInt()
-        }
-        input.layoutParams = params
-        container.addView(input)
-
-        AlertDialog.Builder(requireContext())
-            .setTitle(getString(R.string.text_allocate_budget))
-            .setMessage(getString(R.string.text_enter_allocation, envelope.categoryName))
-            .setView(container)
-            .setPositiveButton(getString(R.string.btn_save)) { _, _ ->
-                val amountStr = input.text.toString()
-                viewModel.saveAllocation(envelope.categoryId, amountStr)
-            }
-            .setNegativeButton(getString(R.string.btn_cancel), null)
-            .show()
+    private fun hideKeyboard(view: View) {
+        val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as android.view.inputmethod.InputMethodManager
+        imm.hideSoftInputFromWindow(view.windowToken, 0)
     }
 
     private fun getIconDrawableResId(iconName: String): Int {
@@ -329,5 +368,37 @@ class BudgetFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private fun showEnvelopeSelectionDialog(bucketType: BucketType) {
+        val unassignedEnvelopes = viewModel.allCategoriesState.value.filter {
+            it.bucketType == null && !it.isDeleted
+        }
+
+        if (unassignedEnvelopes.isEmpty()) {
+            AlertDialog.Builder(requireContext())
+                .setTitle("No Unassigned Envelopes")
+                .setMessage("All envelopes have been allocated to a bucket. Please create new envelopes in the pool first.")
+                .setPositiveButton("Manage Envelopes") { _, _ ->
+                    val action = BudgetFragmentDirections.actionBudgetFragmentToManageEnvelopesFragment()
+                    findNavController().navigate(action)
+                }
+                .setNegativeButton("Cancel", null)
+                .show()
+        } else {
+            val names = unassignedEnvelopes.map { it.name }.toTypedArray()
+            AlertDialog.Builder(requireContext())
+                .setTitle("Select Envelope for $bucketType")
+                .setItems(names) { _, which ->
+                    val selectedCategory = unassignedEnvelopes[which]
+                    viewModel.assignCategoryToBucket(selectedCategory.id, bucketType)
+                }
+                .setNeutralButton("Manage Envelopes") { _, _ ->
+                    val action = BudgetFragmentDirections.actionBudgetFragmentToManageEnvelopesFragment()
+                    findNavController().navigate(action)
+                }
+                .setNegativeButton("Cancel", null)
+                .show()
+        }
     }
 }
