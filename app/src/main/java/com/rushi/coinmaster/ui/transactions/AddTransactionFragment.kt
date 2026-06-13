@@ -49,7 +49,7 @@ class AddTransactionFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.toolbar.setNavigationOnClickListener {
-            findNavController().popBackStack()
+            requireActivity().onBackPressedDispatcher.onBackPressed()
         }
 
         setupTypeDropdown()
@@ -106,7 +106,7 @@ class AddTransactionFragment : Fragment() {
         }
 
         binding.btnCancel.setOnClickListener {
-            findNavController().popBackStack()
+            requireActivity().onBackPressedDispatcher.onBackPressed()
         }
     }
 

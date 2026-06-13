@@ -46,7 +46,7 @@ class AddEditGoalFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.toolbar.setNavigationOnClickListener {
-            findNavController().popBackStack()
+            requireActivity().onBackPressedDispatcher.onBackPressed()
         }
 
         val isEditing = args.goalId > 0L
@@ -71,7 +71,7 @@ class AddEditGoalFragment : Fragment() {
 
         // Cancel button
         binding.btnCancel.setOnClickListener {
-            findNavController().navigateUp()
+            requireActivity().onBackPressedDispatcher.onBackPressed()
         }
 
         // Save button
@@ -125,7 +125,7 @@ class AddEditGoalFragment : Fragment() {
                                     getString(R.string.text_goal_saved),
                                     Toast.LENGTH_SHORT
                                 ).show()
-                                findNavController().navigateUp()
+                                requireActivity().onBackPressedDispatcher.onBackPressed()
                             }
                             is AddEditGoalEvent.Error -> {
                                 Toast.makeText(requireContext(), event.message, Toast.LENGTH_LONG).show()

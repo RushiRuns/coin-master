@@ -52,7 +52,7 @@ class AddEditAccountFragment : Fragment() {
         )
 
         binding.toolbar.setNavigationOnClickListener {
-            findNavController().popBackStack()
+            requireActivity().onBackPressedDispatcher.onBackPressed()
         }
 
         colorsList = listOf(

@@ -42,7 +42,7 @@ class GoalsFragment : Fragment() {
 
         // Toolbar back button
         binding.btnBack.setOnClickListener {
-            findNavController().navigateUp()
+            requireActivity().onBackPressedDispatcher.onBackPressed()
         }
 
         // Setup Adapter
