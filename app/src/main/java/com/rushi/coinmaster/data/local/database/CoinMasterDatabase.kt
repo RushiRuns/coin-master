@@ -13,9 +13,10 @@ import com.rushi.coinmaster.data.local.entity.*
         BudgetMonthEntity::class,
         EnvelopeAllocationEntity::class,
         TransactionEntity::class,
-        SinkingFundEntity::class
+        SinkingFundEntity::class,
+        DebtEntity::class
     ],
-    version = 2,
+    version = 3,
     exportSchema = false
 )
 @TypeConverters(AppConverters::class)
@@ -25,4 +26,5 @@ abstract class CoinMasterDatabase : RoomDatabase() {
     abstract fun budgetDao(): BudgetDao
     abstract fun transactionDao(): TransactionDao
     abstract fun sinkingFundDao(): SinkingFundDao
+    abstract fun debtDao(): DebtDao
 }

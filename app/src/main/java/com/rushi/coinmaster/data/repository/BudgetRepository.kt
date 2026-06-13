@@ -62,7 +62,8 @@ class BudgetRepository @Inject constructor(
             CategoryEntity(name = "Shopping", bucketType = BucketType.WANTS, colorHex = "#4DB6AC", iconName = "ic_shopping", displayOrder = 5),
             
             CategoryEntity(name = "General Savings", bucketType = BucketType.SAVINGS, colorHex = "#4DD0E1", iconName = "ic_savings", displayOrder = 6),
-            CategoryEntity(name = "Emergency Fund", bucketType = BucketType.SAVINGS, colorHex = "#FF8A65", iconName = "ic_emergency", displayOrder = 7)
+            CategoryEntity(name = "Emergency Fund", bucketType = BucketType.SAVINGS, colorHex = "#FF8A65", iconName = "ic_emergency", displayOrder = 7),
+            CategoryEntity(name = "Lending & Debts", bucketType = BucketType.WANTS, colorHex = "#90A4AE", iconName = "ic_accounts", displayOrder = 8)
         )
 
         for (category in defaults) {

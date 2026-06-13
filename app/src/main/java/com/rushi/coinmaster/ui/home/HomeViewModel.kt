@@ -36,7 +36,9 @@ data class HomeUiState(
     val recentTransactions: List<TransactionDisplayItem> = emptyList(),
     val totalSpentPaise: Long = 0L,
     val totalBudgetedPaise: Long = 0L,
-    val selectedCategoryDetail: EnvelopeWithAllocation? = null
+    val selectedCategoryDetail: EnvelopeWithAllocation? = null,
+    val owedToYouPaise: Long = 0L,
+    val youOwePaise: Long = 0L
 )
 
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -45,6 +47,7 @@ class HomeViewModel @Inject constructor(
     private val accountRepository: AccountRepository,
     private val budgetRepository: BudgetRepository,
     private val transactionRepository: TransactionRepository,
+    private val debtRepository: com.rushi.coinmaster.data.repository.DebtRepository,
     private val getNetWorthUseCase: GetNetWorthUseCase
 ) : ViewModel() {
 
@@ -56,6 +59,14 @@ class HomeViewModel @Inject constructor(
 
     // Flow for accounts and net worth
     private val accountsFlow = accountRepository.getAccountsFlow()
+    
+    // Flow for debts
+    private val debtsFlow = debtRepository.getDebtsFlow()
+
+    // Combined accounts and debts flow
+    private val accountsAndDebtsFlow = combine(accountsFlow, debtsFlow) { accounts, debts ->
+        Pair(accounts, debts)
+    }
     
     // Flow for current budget month
     private val budgetMonthFlow = budgetRepository.getBudgetMonthsFlow().map { months ->
@@ -92,13 +103,15 @@ class HomeViewModel @Inject constructor(
 
     // Expose all states combined into a single HomeUiState
     val uiState: StateFlow<HomeUiState> = combine(
-        accountsFlow,
+        accountsAndDebtsFlow,
         budgetMonthFlow,
         envelopesFlow,
         recentTransactionsFlow,
         _selectedCategoryId
-    ) { accounts, budgetMonth, envelopes, recentTransactions, selectedCategoryId ->
-        val netWorth = getNetWorthUseCase(accounts)
+    ) { accountsAndDebts, budgetMonth, envelopes, recentTransactions, selectedCategoryId ->
+        val accounts = accountsAndDebts.first
+        val debts = accountsAndDebts.second
+        val netWorth = getNetWorthUseCase(accounts, debts)
         
         // Sum total allocations and total spent for the active categories
         var totalBudgeted = 0L
@@ -110,6 +123,10 @@ class HomeViewModel @Inject constructor(
 
         val selectedDetail = envelopes.find { it.categoryId == selectedCategoryId }
 
+        val activeDebts = debts.filter { !it.isSettled }
+        val owedToYou = activeDebts.filter { it.type == com.rushi.coinmaster.data.local.model.DebtType.LENT }.sumOf { it.remainingPaise }
+        val youOwe = activeDebts.filter { it.type == com.rushi.coinmaster.data.local.model.DebtType.BORROWED }.sumOf { it.remainingPaise }
+
         HomeUiState(
             netWorth = netWorth,
             accounts = accounts,
@@ -118,7 +135,9 @@ class HomeViewModel @Inject constructor(
             recentTransactions = recentTransactions,
             totalSpentPaise = totalSpent,
             totalBudgetedPaise = totalBudgeted,
-            selectedCategoryDetail = selectedDetail
+            selectedCategoryDetail = selectedDetail,
+            owedToYouPaise = owedToYou,
+            youOwePaise = youOwe
         )
     }.stateIn(
         scope = viewModelScope,

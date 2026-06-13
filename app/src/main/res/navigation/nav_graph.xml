@@ -28,6 +28,9 @@
         <action
             android:id="@+id/action_homeFragment_to_addEditAccountFragment"
             app:destination="@id/addEditAccountFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_debtsFragment"
+            app:destination="@id/debtsFragment" />
     </fragment>
 
     <fragment
@@ -130,6 +133,43 @@
             android:name="goalId"
             app:argType="long"
             android:defaultValue="0L" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/debtsFragment"
+        android:name="com.rushi.coinmaster.ui.debts.DebtsFragment"
+        android:label="DebtsFragment"
+        tools:layout="@layout/fragment_debts">
+        <action
+            android:id="@+id/action_debtsFragment_to_addEditDebtFragment"
+            app:destination="@id/addEditDebtFragment" />
+        <action
+            android:id="@+id/action_debtsFragment_to_debtDetailsFragment"
+            app:destination="@id/debtDetailsFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/addEditDebtFragment"
+        android:name="com.rushi.coinmaster.ui.debts.AddEditDebtFragment"
+        android:label="AddEditDebtFragment"
+        tools:layout="@layout/fragment_add_edit_debt">
+        <argument
+            android:name="debtId"
+            app:argType="long"
+            android:defaultValue="0L" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/debtDetailsFragment"
+        android:name="com.rushi.coinmaster.ui.debts.DebtDetailsFragment"
+        android:label="DebtDetailsFragment"
+        tools:layout="@layout/fragment_debt_details">
+        <argument
+            android:name="debtId"
+            app:argType="long" />
+        <action
+            android:id="@+id/action_debtDetailsFragment_to_addEditDebtFragment"
+            app:destination="@id/addEditDebtFragment" />
     </fragment>
 
 </navigation>

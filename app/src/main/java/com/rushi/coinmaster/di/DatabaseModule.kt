@@ -41,4 +41,7 @@ object DatabaseModule {
 
     @Provides
     fun provideSinkingFundDao(db: CoinMasterDatabase): SinkingFundDao = db.sinkingFundDao()
+
+    @Provides
+    fun provideDebtDao(db: CoinMasterDatabase): DebtDao = db.debtDao()
 }

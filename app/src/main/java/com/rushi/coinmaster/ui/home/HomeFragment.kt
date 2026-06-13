@@ -56,6 +56,11 @@ class HomeFragment : Fragment() {
         setupPieChart()
         setupFAB()
 
+        binding.cardDebts.setOnClickListener {
+            val action = HomeFragmentDirections.actionHomeFragmentToDebtsFragment()
+            findNavController().navigate(action)
+        }
+
         // Observe ViewModel State
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -64,6 +69,10 @@ class HomeFragment : Fragment() {
 
                     // 1. Net Worth
                     binding.tvNetWorth.text = CurrencyFormatter.format(uiState.netWorth, languageCode)
+
+                    // Debts & Loans Summary
+                    binding.tvOwedToYou.text = CurrencyFormatter.format(uiState.owedToYouPaise, languageCode)
+                    binding.tvYouOwe.text = CurrencyFormatter.format(uiState.youOwePaise, languageCode)
 
                     // 2. Accounts list
                     accountsAdapter.submitList(uiState.accounts)

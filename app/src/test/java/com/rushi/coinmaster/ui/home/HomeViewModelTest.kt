@@ -4,6 +4,7 @@ import com.rushi.coinmaster.data.local.entity.AccountEntity
 import com.rushi.coinmaster.data.local.entity.BudgetMonthEntity
 import com.rushi.coinmaster.data.local.entity.CategoryEntity
 import com.rushi.coinmaster.data.local.entity.TransactionEntity
+import com.rushi.coinmaster.data.local.entity.DebtEntity
 import com.rushi.coinmaster.data.local.model.AccountType
 import com.rushi.coinmaster.data.local.model.BucketType
 import com.rushi.coinmaster.data.local.model.EnvelopeWithAllocation
@@ -11,6 +12,7 @@ import com.rushi.coinmaster.data.local.model.TransactionType
 import com.rushi.coinmaster.data.repository.AccountRepository
 import com.rushi.coinmaster.data.repository.BudgetRepository
 import com.rushi.coinmaster.data.repository.TransactionRepository
+import com.rushi.coinmaster.data.repository.DebtRepository
 import com.rushi.coinmaster.domain.usecase.GetNetWorthUseCase
 import io.mockk.*
 import kotlinx.coroutines.Dispatchers
@@ -33,6 +35,7 @@ class HomeViewModelTest {
     private val accountRepository: AccountRepository = mockk()
     private val budgetRepository: BudgetRepository = mockk()
     private val transactionRepository: TransactionRepository = mockk()
+    private val debtRepository: DebtRepository = mockk()
     private val getNetWorthUseCase: GetNetWorthUseCase = mockk()
 
     private lateinit var viewModel: HomeViewModel
@@ -105,12 +108,14 @@ class HomeViewModelTest {
         every { budgetRepository.getEnvelopesWithAllocationsFlow(monthId) } returns flowOf(testEnvelopes)
         every { budgetRepository.getCategoriesFlow() } returns flowOf(testCategories)
         every { transactionRepository.getRecentTransactionsFlow(7) } returns flowOf(testTransactions)
-        every { getNetWorthUseCase(testAccounts) } returns 60000L
-
+        every { debtRepository.getDebtsFlow() } returns flowOf(emptyList())
+        every { getNetWorthUseCase(testAccounts, any()) } returns 60000L
+ 
         viewModel = HomeViewModel(
             accountRepository = accountRepository,
             budgetRepository = budgetRepository,
             transactionRepository = transactionRepository,
+            debtRepository = debtRepository,
             getNetWorthUseCase = getNetWorthUseCase
         )
     }

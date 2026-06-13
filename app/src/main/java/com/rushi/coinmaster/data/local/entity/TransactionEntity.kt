@@ -13,7 +13,8 @@ import com.rushi.coinmaster.data.local.model.TransactionType
         Index("account_id"),
         Index("transfer_to_account_id"),
         Index("category_id"),
-        Index("budget_month_id")
+        Index("budget_month_id"),
+        Index("debt_id")
     ],
     foreignKeys = [
         ForeignKey(
@@ -39,6 +40,12 @@ import com.rushi.coinmaster.data.local.model.TransactionType
             parentColumns = ["id"],
             childColumns = ["budget_month_id"],
             onDelete = ForeignKey.CASCADE
+        ),
+        ForeignKey(
+            entity = DebtEntity::class,
+            parentColumns = ["id"],
+            childColumns = ["debt_id"],
+            onDelete = ForeignKey.SET_NULL
         )
     ]
 )
@@ -50,6 +57,7 @@ data class TransactionEntity(
     @ColumnInfo(name = "transfer_to_account_id") val transferToAccountId: Long? = null,
     @ColumnInfo(name = "category_id") val categoryId: Long? = null,
     @ColumnInfo(name = "budget_month_id") val budgetMonthId: Int? = null,
+    @ColumnInfo(name = "debt_id") val debtId: Long? = null,
     val date: Long, // Epoch millis
     val note: String? = null,
     @ColumnInfo(name = "is_deleted") val isDeleted: Boolean = false
