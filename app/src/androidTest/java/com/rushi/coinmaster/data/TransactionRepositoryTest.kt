@@ -48,7 +48,7 @@ class TransactionRepositoryTest {
         categoryDao = db.categoryDao()
         budgetDao = db.budgetDao()
         transactionDao = db.transactionDao()
-        repository = TransactionRepository(context, transactionDao)
+        repository = TransactionRepository(transactionDao)
 
         // Seed initial data to satisfy Foreign Key constraints
         accountId1 = accountDao.insertAccount(

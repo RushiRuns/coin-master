@@ -1,17 +1,13 @@
 package com.rushi.coinmaster.data.repository
 
-import android.content.Context
 import com.rushi.coinmaster.data.local.dao.TransactionDao
 import com.rushi.coinmaster.data.local.entity.TransactionEntity
-import com.rushi.coinmaster.widget.WidgetUpdater
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
 class TransactionRepository @Inject constructor(
-    @ApplicationContext private val context: Context,
     private val transactionDao: TransactionDao
 ) {
     fun getTransactionsFlow(): Flow<List<TransactionEntity>> = transactionDao.getTransactionsFlow()
@@ -31,14 +27,9 @@ class TransactionRepository @Inject constructor(
 
     suspend fun getTransactionById(id: Long): TransactionEntity? = transactionDao.getTransactionById(id)
 
-    suspend fun insertTransaction(transaction: TransactionEntity): Long {
-        val id = transactionDao.insertTransactionAndUpdateAccount(transaction)
-        WidgetUpdater.updateWidget(context)
-        return id
-    }
+    suspend fun insertTransaction(transaction: TransactionEntity): Long =
+        transactionDao.insertTransactionAndUpdateAccount(transaction)
 
-    suspend fun deleteTransaction(transactionId: Long) {
+    suspend fun deleteTransaction(transactionId: Long) =
         transactionDao.deleteTransactionAndUpdateAccount(transactionId)
-        WidgetUpdater.updateWidget(context)
-    }
 }
