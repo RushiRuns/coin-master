@@ -48,7 +48,10 @@
     <string name="title_settings">सेटिंग्स</string>
     <string name="label_net_worth">एकूण संपत्ती</string>
     <string name="label_budget_health">मासिक बजेट आरोग्य</string>
-    <string name="label_recent_activity">अलीकडील क्रियाकलाप</string>
+    <string name="label_recent_activity">दैनिक क्रियाकलाप</string>
+    <string name="text_today">आज</string>
+    <string name="text_yesterday">काल</string>
+    <string name="text_no_transactions_for_date">या दिवशी कोणतेही व्यवहार नाहीत</string>
     <string name="text_budget_health_summary">%2$s पैकी %1$s खर्च</string>
     <string name="text_budget_health_no_budget">या महिन्यासाठी बजेट सेट केलेले नाही।</string>
     <string name="text_chart_placeholder">तपशील पाहण्यासाठी कोणत्याही विभागावर टॅप करा</string>

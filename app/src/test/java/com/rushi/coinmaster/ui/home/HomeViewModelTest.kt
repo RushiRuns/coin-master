@@ -97,7 +97,7 @@ class HomeViewModelTest {
         every { budgetRepository.getBudgetPeriodsFlow() } returns flowOf(listOf(testBudgetPeriod))
         every { budgetRepository.getEnvelopesWithAllocationsFlow(testBudgetPeriod.id) } returns flowOf(testEnvelopes)
         every { budgetRepository.getCategoriesFlow() } returns flowOf(testCategories)
-        every { transactionRepository.getRecentTransactionsFlow(7) } returns flowOf(testTransactions)
+        every { transactionRepository.getTransactionsBetweenDatesFlow(any(), any()) } returns flowOf(testTransactions)
         every { debtRepository.getDebtsFlow() } returns flowOf(emptyList())
         every { getNetWorthUseCase(testAccounts, any()) } returns 60000L
  
@@ -169,5 +169,31 @@ class HomeViewModelTest {
         viewModel.selectCategory(null)
         testScheduler.advanceUntilIdle()
         assertNull(states.last().selectedCategoryDetail)
+    }
+
+    @Test
+    fun testDateSelectionUpdatesStateAndTriggersQuery() = runTest {
+        val states = mutableListOf<HomeUiState>()
+        backgroundScope.launch(UnconfinedTestDispatcher(testScheduler)) {
+            viewModel.uiState.collect {
+                states.add(it)
+            }
+        }
+
+        testScheduler.advanceUntilIdle()
+        
+        // Default selected date should be close to current time
+        val initialSelectedDate = states.last().selectedDateMillis
+        assert(System.currentTimeMillis() - initialSelectedDate < 5000L)
+
+        // Select a different date
+        val testDate = 1686000000000L // 6 Jun 2023
+        viewModel.selectDate(testDate)
+        testScheduler.advanceUntilIdle()
+
+        assertEquals(testDate, states.last().selectedDateMillis)
+        
+        // Verify repository is called
+        verify { transactionRepository.getTransactionsBetweenDatesFlow(any(), any()) }
     }
 }

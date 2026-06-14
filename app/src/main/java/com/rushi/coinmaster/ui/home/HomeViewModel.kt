@@ -34,6 +34,7 @@ data class HomeUiState(
     val budgetPeriod: BudgetPeriodEntity? = null,
     val envelopes: List<EnvelopeWithAllocation> = emptyList(),
     val recentTransactions: List<TransactionDisplayItem> = emptyList(),
+    val selectedDateMillis: Long = System.currentTimeMillis(),
     val totalSpentPaise: Long = 0L,
     val totalBudgetedPaise: Long = 0L,
     val selectedCategoryDetail: EnvelopeWithAllocation? = null,
@@ -53,6 +54,9 @@ class HomeViewModel @Inject constructor(
 
     private val _selectedCategoryId = MutableStateFlow<Long?>(null)
     val selectedCategoryId: StateFlow<Long?> = _selectedCategoryId.asStateFlow()
+
+    private val _selectedDateMillis = MutableStateFlow(System.currentTimeMillis())
+    val selectedDateMillis: StateFlow<Long> = _selectedDateMillis.asStateFlow()
 
     // Flow for accounts and net worth
     private val accountsFlow = accountRepository.getAccountsFlow()
@@ -80,29 +84,52 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    // Flow for recent transactions mapped with details.
-    // Uses SQL LIMIT 7 at the DB level (not .take(7) in memory) for performance.
-    private val recentTransactionsFlow = combine(
-        transactionRepository.getRecentTransactionsFlow(7),
-        accountRepository.getAccountsFlow(),
-        budgetRepository.getCategoriesFlow()
-    ) { transactions, accounts, categories ->
-        val accountMap = accounts.associateBy { it.id }
-        val categoryMap = categories.associateBy { it.id }
+    // Flow for recent transactions mapped with details filtered by selected date.
+    @OptIn(ExperimentalCoroutinesApi::class)
+    private val recentTransactionsFlow = _selectedDateMillis.flatMapLatest { dateMillis ->
+        val calendar = Calendar.getInstance()
+        calendar.timeInMillis = dateMillis
+        
+        // Start of day: 00:00:00.000
+        calendar.set(Calendar.HOUR_OF_DAY, 0)
+        calendar.set(Calendar.MINUTE, 0)
+        calendar.set(Calendar.SECOND, 0)
+        calendar.set(Calendar.MILLISECOND, 0)
+        val startOfDay = calendar.timeInMillis
 
-        transactions.map { t ->
-            TransactionDisplayItem(
-                id = t.id,
-                amountPaise = t.amountPaise,
-                type = t.type,
-                accountName = accountMap[t.accountId]?.name ?: "Unknown",
-                transferToAccountName = t.transferToAccountId?.let { id -> accountMap[id]?.name },
-                categoryName = t.categoryId?.let { id -> categoryMap[id]?.name },
-                categoryColorHex = t.categoryId?.let { id -> categoryMap[id]?.colorHex },
-                dateMillis = t.date,
-                note = t.note
-            )
+        // End of day: 23:59:59.999
+        calendar.set(Calendar.HOUR_OF_DAY, 23)
+        calendar.set(Calendar.MINUTE, 59)
+        calendar.set(Calendar.SECOND, 59)
+        calendar.set(Calendar.MILLISECOND, 999)
+        val endOfDay = calendar.timeInMillis
+
+        combine(
+            transactionRepository.getTransactionsBetweenDatesFlow(startOfDay, endOfDay),
+            accountRepository.getAccountsFlow(),
+            budgetRepository.getCategoriesFlow()
+        ) { transactions, accounts, categories ->
+            val accountMap = accounts.associateBy { it.id }
+            val categoryMap = categories.associateBy { it.id }
+
+            transactions.map { t ->
+                TransactionDisplayItem(
+                    id = t.id,
+                    amountPaise = t.amountPaise,
+                    type = t.type,
+                    accountName = accountMap[t.accountId]?.name ?: "Unknown",
+                    transferToAccountName = t.transferToAccountId?.let { id -> accountMap[id]?.name },
+                    categoryName = t.categoryId?.let { id -> categoryMap[id]?.name },
+                    categoryColorHex = t.categoryId?.let { id -> categoryMap[id]?.colorHex },
+                    dateMillis = t.date,
+                    note = t.note
+                )
+            }
         }
+    }
+
+    private val selectionFlow = combine(_selectedCategoryId, _selectedDateMillis) { categoryId, dateMillis ->
+        Pair(categoryId, dateMillis)
     }
 
     // Expose all states combined into a single HomeUiState
@@ -111,8 +138,10 @@ class HomeViewModel @Inject constructor(
         budgetPeriodFlow,
         envelopesFlow,
         recentTransactionsFlow,
-        _selectedCategoryId
-    ) { accountsAndDebts, budgetPeriod, envelopes, recentTransactions, selectedCategoryId ->
+        selectionFlow
+    ) { accountsAndDebts, budgetPeriod, envelopes, recentTransactions, selection ->
+        val selectedCategoryId = selection.first
+        val selectedDateMillis = selection.second
         val accounts = accountsAndDebts.first
         val debts = accountsAndDebts.second
         val netWorth = getNetWorthUseCase(accounts, debts)
@@ -137,6 +166,7 @@ class HomeViewModel @Inject constructor(
             budgetPeriod = budgetPeriod,
             envelopes = envelopes,
             recentTransactions = recentTransactions,
+            selectedDateMillis = selectedDateMillis,
             totalSpentPaise = totalSpent,
             totalBudgetedPaise = totalBudgeted,
             selectedCategoryDetail = selectedDetail,
@@ -151,5 +181,9 @@ class HomeViewModel @Inject constructor(
 
     fun selectCategory(categoryId: Long?) {
         _selectedCategoryId.value = categoryId
+    }
+
+    fun selectDate(dateMillis: Long) {
+        _selectedDateMillis.value = dateMillis
     }
 }

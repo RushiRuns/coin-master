@@ -47,7 +47,10 @@
     <string name="title_settings">Settings</string>
     <string name="label_net_worth">Total Net Worth</string>
     <string name="label_budget_health">Monthly Budget Health</string>
-    <string name="label_recent_activity">Recent Activity</string>
+    <string name="label_recent_activity">Daily Activity</string>
+    <string name="text_today">Today</string>
+    <string name="text_yesterday">Yesterday</string>
+    <string name="text_no_transactions_for_date">No transactions on this day</string>
     <string name="text_budget_health_summary">%1$s spent of %2$s budgeted</string>
     <string name="text_budget_health_no_budget">No budget set up for this period.</string>
     <string name="text_chart_placeholder">Tap a segment to view details</string>

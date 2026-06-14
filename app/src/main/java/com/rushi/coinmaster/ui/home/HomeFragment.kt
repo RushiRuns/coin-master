@@ -1,5 +1,6 @@
 package com.rushi.coinmaster.ui.home
 
+import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -23,8 +24,10 @@ import com.rushi.coinmaster.data.local.model.EnvelopeWithAllocation
 import com.rushi.coinmaster.databinding.FragmentHomeBinding
 import com.rushi.coinmaster.util.CurrencyFormatter
 import com.rushi.coinmaster.util.LocaleHelper
+import com.rushi.coinmaster.util.DateFormatter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import java.util.Calendar
 
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
@@ -55,6 +58,10 @@ class HomeFragment : Fragment() {
         setupRecyclerViews()
         setupPieChart()
         setupFAB()
+
+        binding.btnSelectDate.setOnClickListener {
+            showDatePicker()
+        }
 
         binding.cardDebts.setOnClickListener {
             val action = HomeFragmentDirections.actionHomeFragmentToDebtsFragment()
@@ -123,6 +130,8 @@ class HomeFragment : Fragment() {
                     }
 
                     // 6. Recent Transactions
+                    binding.btnSelectDate.text = getRelativeDateString(uiState.selectedDateMillis, requireContext())
+
                     if (uiState.recentTransactions.isNotEmpty()) {
                         binding.rvRecentTransactions.visibility = View.VISIBLE
                         binding.tvNoTransactions.visibility = View.GONE
@@ -210,6 +219,45 @@ class HomeFragment : Fragment() {
         binding.fabAddTransaction.setOnClickListener {
             val action = HomeFragmentDirections.actionHomeFragmentToAddTransactionFragment()
             findNavController().navigate(action)
+        }
+    }
+
+    private fun showDatePicker() {
+        val calendar = Calendar.getInstance()
+        calendar.timeInMillis = viewModel.uiState.value.selectedDateMillis
+
+        android.app.DatePickerDialog(
+            requireContext(),
+            { _, year, month, dayOfMonth ->
+                val selectedCal = Calendar.getInstance().apply {
+                    set(Calendar.YEAR, year)
+                    set(Calendar.MONTH, month)
+                    set(Calendar.DAY_OF_MONTH, dayOfMonth)
+                }
+                viewModel.selectDate(selectedCal.timeInMillis)
+            },
+            calendar.get(Calendar.YEAR),
+            calendar.get(Calendar.MONTH),
+            calendar.get(Calendar.DAY_OF_MONTH)
+        ).show()
+    }
+
+    private fun getRelativeDateString(dateMillis: Long, context: Context): String {
+        val languageCode = LocaleHelper.getLanguage(context)
+        val today = Calendar.getInstance()
+        val target = Calendar.getInstance().apply { timeInMillis = dateMillis }
+
+        val isToday = today.get(Calendar.YEAR) == target.get(Calendar.YEAR) &&
+                today.get(Calendar.DAY_OF_YEAR) == target.get(Calendar.DAY_OF_YEAR)
+
+        val yesterday = Calendar.getInstance().apply { add(Calendar.DAY_OF_YEAR, -1) }
+        val isYesterday = yesterday.get(Calendar.YEAR) == target.get(Calendar.YEAR) &&
+                yesterday.get(Calendar.DAY_OF_YEAR) == target.get(Calendar.DAY_OF_YEAR)
+
+        return when {
+            isToday -> context.getString(R.string.text_today)
+            isYesterday -> context.getString(R.string.text_yesterday)
+            else -> DateFormatter.formatDate(dateMillis, languageCode)
         }
     }
 
