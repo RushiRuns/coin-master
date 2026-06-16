@@ -4,7 +4,7 @@
 
 **Input**: Feature specification from `/specs/[###-feature-name]/spec.md`
 
-**Note**: This template is filled in by the `/speckit.plan` command. See `.specify/templates/plan-template.md` for the execution workflow.
+**Note**: This template is filled in by the `/speckit-plan` command. See `.specify/templates/plan-template.md` for the execution workflow.
 
 ## Summary
 
@@ -36,21 +36,11 @@
 
 **Scale/Scope**: [domain-specific, e.g., 10k users, 1M LOC, 50 screens or NEEDS CLARIFICATION]
 
-## Constitution Compliance
+## Constitution Check
 
 *GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
 
-- [ ] **Principle I (Architecture)**: Does the plan use MVVM + Repository? (No direct DAO access from VM)
-- [ ] **Principle II (Database)**: Is Room used for all financial data? (No SharedPreferences for money)
-- [ ] **Principle III (Integrity)**: Are all monetary values `Long` or `BigDecimal`? (NO Float/Double)
-- [ ] **Principle IV (Budgeting)**: Is zero-balance enforced at the Repository layer?
-- [ ] **Principle V (Design)**: Does it strictly use Material Design 2? (No MD3/Material You)
-- [ ] **Principle VI (Simplicity)**: Is the task completable in 3 taps or fewer?
-- [ ] **Principle VII (Localization)**: Are all strings moved to `strings.xml`?
-- [ ] **Principle VIII (Privacy)**: Is the feature fully offline? (No INTERNET permission)
-- [ ] **Principle IX (Reactive)**: Does data flow via Flow/LiveData? (No direct DB queries from UI)
-- [ ] **Principle X (Quality)**: Are tests planned for VM, Repository, and DAOs?
-- [ ] **Principle XI (Separation)**: Is this plan focused on HOW (technical), not WHAT (spec)?
+[Gates determined based on constitution file]
 
 ## Project Structure
 
@@ -58,12 +48,12 @@
 
 ```text
 specs/[###-feature]/
-├── plan.md              # This file (/speckit.plan command output)
-├── research.md          # Phase 0 output (/speckit.plan command)
-├── data-model.md        # Phase 1 output (/speckit.plan command)
-├── quickstart.md        # Phase 1 output (/speckit.plan command)
-├── contracts/           # Phase 1 output (/speckit.plan command)
-└── tasks.md             # Phase 2 output (/speckit.tasks command - NOT created by /speckit.plan)
+├── plan.md              # This file (/speckit-plan command output)
+├── research.md          # Phase 0 output (/speckit-plan command)
+├── data-model.md        # Phase 1 output (/speckit-plan command)
+├── quickstart.md        # Phase 1 output (/speckit-plan command)
+├── contracts/           # Phase 1 output (/speckit-plan command)
+└── tasks.md             # Phase 2 output (/speckit-tasks command - NOT created by /speckit-plan)
 ```
 
 ### Source Code (repository root)

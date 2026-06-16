@@ -44,4 +44,16 @@ object DatabaseModule {
 
     @Provides
     fun provideDebtDao(db: CoinMasterDatabase): DebtDao = db.debtDao()
+
+    @Provides
+    fun provideExpenseCategoryDao(db: CoinMasterDatabase): ExpenseCategoryDao = db.expenseCategoryDao()
+
+    @Provides
+    fun provideIncomeStreamDao(db: CoinMasterDatabase): IncomeStreamDao = db.incomeStreamDao()
+
+    @Provides
+    fun provideNoteDao(db: CoinMasterDatabase): NoteDao = db.noteDao()
+
+    @Provides
+    fun provideTransferRecipientDao(db: CoinMasterDatabase): TransferRecipientDao = db.transferRecipientDao()
 }

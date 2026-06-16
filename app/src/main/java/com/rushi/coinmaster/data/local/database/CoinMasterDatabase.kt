@@ -14,7 +14,11 @@ import com.rushi.coinmaster.data.local.entity.*
         EnvelopeAllocationEntity::class,
         TransactionEntity::class,
         SinkingFundEntity::class,
-        DebtEntity::class
+        DebtEntity::class,
+        ExpenseCategoryEntity::class,
+        IncomeStreamEntity::class,
+        NoteEntity::class,
+        TransferRecipientEntity::class
     ],
     version = 5,
     exportSchema = false
@@ -27,4 +31,8 @@ abstract class CoinMasterDatabase : RoomDatabase() {
     abstract fun transactionDao(): TransactionDao
     abstract fun sinkingFundDao(): SinkingFundDao
     abstract fun debtDao(): DebtDao
+    abstract fun expenseCategoryDao(): ExpenseCategoryDao
+    abstract fun incomeStreamDao(): IncomeStreamDao
+    abstract fun noteDao(): NoteDao
+    abstract fun transferRecipientDao(): TransferRecipientDao
 }
