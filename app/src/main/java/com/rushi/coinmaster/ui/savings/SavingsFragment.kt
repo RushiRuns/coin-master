@@ -15,6 +15,9 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.setupWithNavController
+import com.rushi.coinmaster.MainActivity
 import com.rushi.coinmaster.R
 import com.rushi.coinmaster.data.local.entity.BudgetPeriodEntity
 import com.rushi.coinmaster.data.local.model.BucketType
@@ -53,9 +56,18 @@ class SavingsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.toolbar.setNavigationOnClickListener {
-            requireActivity().onBackPressedDispatcher.onBackPressed()
-        }
+        binding.toolbar.setupWithNavController(
+            findNavController(),
+            AppBarConfiguration(
+                setOf(
+                    R.id.homeFragment, R.id.transactionsFragment, R.id.budgetFragment,
+                    R.id.nav_categories, R.id.nav_expense_type, R.id.nav_income,
+                    R.id.nav_savings, R.id.nav_accounts, R.id.nav_notes,
+                    R.id.nav_transfers, R.id.nav_goals, R.id.nav_settings
+                ),
+                (requireActivity() as MainActivity).drawerLayout
+            )
+        )
 
         binding.btnAddSavingsEnvelope.setOnClickListener {
             showEnvelopeSelectionDialog()

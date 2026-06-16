@@ -47,6 +47,13 @@ class MainActivity : AppCompatActivity() {
         binding.navView.setupWithNavController(navController)
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
+            val sidebarTopLevelDestinations = setOf(
+                R.id.homeFragment, R.id.transactionsFragment, R.id.budgetFragment,
+                R.id.nav_categories, R.id.nav_expense_type, R.id.nav_income,
+                R.id.nav_savings, R.id.nav_accounts, R.id.nav_notes,
+                R.id.nav_transfers, R.id.nav_goals, R.id.nav_settings
+            )
+
             if (destination.id == R.id.homeFragment
                 || destination.id == R.id.transactionsFragment
                 || destination.id == R.id.budgetFragment
@@ -55,9 +62,11 @@ class MainActivity : AppCompatActivity() {
                 binding.drawerLayout.setDrawerLockMode(androidx.drawerlayout.widget.DrawerLayout.LOCK_MODE_UNLOCKED)
             } else {
                 binding.bottomNavigation.visibility = View.GONE
-                // Lock drawer on detail and onboarding fragments to prevent accidental swipe gestures
-                if (destination.id == R.id.onboardingFragment 
-                    || destination.id == R.id.addEditAccountFragment 
+                // Lock drawer on detail/onboarding fragments, unlock on sidebar screens
+                if (destination.id in sidebarTopLevelDestinations) {
+                    binding.drawerLayout.setDrawerLockMode(androidx.drawerlayout.widget.DrawerLayout.LOCK_MODE_UNLOCKED)
+                } else if (destination.id == R.id.onboardingFragment
+                    || destination.id == R.id.addEditAccountFragment
                     || destination.id == R.id.addEditEnvelopeFragment
                     || destination.id == R.id.addEditGoalFragment
                     || destination.id == R.id.addTransactionFragment

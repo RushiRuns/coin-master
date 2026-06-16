@@ -11,6 +11,9 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.setupWithNavController
+import com.rushi.coinmaster.MainActivity
 import com.rushi.coinmaster.R
 import com.rushi.coinmaster.databinding.FragmentGoalsBinding
 import com.rushi.coinmaster.util.LocaleHelper
@@ -40,10 +43,19 @@ class GoalsFragment : Fragment() {
 
         val languageCode = LocaleHelper.getLanguage(requireContext())
 
-        // Toolbar back button
-        binding.btnBack.setOnClickListener {
-            requireActivity().onBackPressedDispatcher.onBackPressed()
-        }
+        // Setup toolbar with hamburger icon for sidebar navigation
+        binding.toolbar.setupWithNavController(
+            findNavController(),
+            AppBarConfiguration(
+                setOf(
+                    R.id.homeFragment, R.id.transactionsFragment, R.id.budgetFragment,
+                    R.id.nav_categories, R.id.nav_expense_type, R.id.nav_income,
+                    R.id.nav_savings, R.id.nav_accounts, R.id.nav_notes,
+                    R.id.nav_transfers, R.id.nav_goals, R.id.nav_settings
+                ),
+                (requireActivity() as MainActivity).drawerLayout
+            )
+        )
 
         // Setup Adapter
         adapter = GoalsAdapter(

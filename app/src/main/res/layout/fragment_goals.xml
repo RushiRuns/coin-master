@@ -18,34 +18,9 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorSurface">
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <ImageButton
-                    android:id="@+id/btn_back"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:layout_centerVertical="true"
-                    android:background="?android:attr/selectableItemBackgroundBorderless"
-                    android:src="@drawable/ic_arrow_back"
-                    android:contentDescription="Back"
-                    app:tint="@color/text_primary" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_toEndOf="@id/btn_back"
-                    android:layout_centerVertical="true"
-                    android:layout_marginStart="16dp"
-                    android:text="@string/title_savings_goals"
-                    android:textColor="@color/text_primary"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
-            </RelativeLayout>
-        </com.google.android.material.appbar.MaterialToolbar>
+            android:background="?attr/colorSurface"
+            app:title="@string/menu_goals"
+            app:titleTextColor="@color/text_primary" />
     </com.google.android.material.appbar.AppBarLayout>
 
     <!-- Goals List or Empty State -->

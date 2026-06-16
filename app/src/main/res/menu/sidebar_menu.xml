@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
-    <group android:checkableBehavior="single">
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group
+        android:id="@+id/group_main"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/homeFragment"
+            android:icon="@drawable/ic_home"
+            android:title="@string/label_dashboard" />
         <item
             android:id="@+id/nav_categories"
             android:icon="@drawable/ic_category"
@@ -35,12 +40,12 @@
             android:icon="@drawable/ic_goals"
             android:title="@string/menu_goals" />
     </group>
-    <item android:title="@string/menu_system_settings">
-        <menu>
-            <item
-                android:id="@+id/nav_settings"
-                android:icon="@drawable/ic_settings"
-                android:title="@string/menu_settings" />
-        </menu>
-    </item>
+    <group
+        android:id="@+id/group_settings"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_settings"
+            android:icon="@drawable/ic_settings"
+            android:title="@string/menu_settings" />
+    </group>
 </menu>
