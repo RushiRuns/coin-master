@@ -113,9 +113,9 @@
 
 ### Implementation for User Story 5
 
-- [ ] T020 [US5] Exclude Savings envelopes from Needs/Wants lists in app/src/main/java/com/rushi/coinmaster/ui/budget/BudgetFragment.kt
-- [ ] T021 [US5] Create SavingsFragment for targets configuration displaying remaining quantity below the top bar in app/src/main/java/com/rushi/coinmaster/ui/savings/SavingsFragment.kt and app/src/main/res/layout/fragment_savings.xml
-- [ ] T022 [US5] Update BudgetRepository validation engine to enforce zero-based budgeting across Needs, Wants, and Savings allocations in app/src/main/java/com/rushi/coinmaster/data/repository/
+- [x] T020 [US5] Exclude Savings envelopes from Needs/Wants lists in app/src/main/java/com/rushi/coinmaster/ui/budget/BudgetFragment.kt
+- [x] T021 [US5] Create SavingsFragment for targets configuration displaying remaining quantity below the top bar in app/src/main/java/com/rushi/coinmaster/ui/savings/SavingsFragment.kt and app/src/main/res/layout/fragment_savings.xml
+- [x] T022 [US5] Update BudgetRepository validation engine to enforce zero-based budgeting across Needs, Wants, and Savings allocations in app/src/main/java/com/rushi/coinmaster/data/repository/
 
 ---
 
