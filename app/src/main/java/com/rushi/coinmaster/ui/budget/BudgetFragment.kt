@@ -27,6 +27,8 @@ import com.rushi.coinmaster.databinding.ItemEnvelopeBinding
 import com.rushi.coinmaster.domain.usecase.ComputeBucketSplitUseCase
 import com.rushi.coinmaster.util.CurrencyFormatter
 import com.rushi.coinmaster.util.LocaleHelper
+import com.rushi.coinmaster.MainActivity
+import androidx.navigation.ui.setupWithNavController
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
@@ -55,6 +57,13 @@ class BudgetFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val navController = findNavController()
+        val appBarConfiguration = androidx.navigation.ui.AppBarConfiguration(
+            setOf(R.id.homeFragment, R.id.transactionsFragment, R.id.budgetFragment),
+            (requireActivity() as MainActivity).drawerLayout
+        )
+        binding.toolbar.setupWithNavController(navController, appBarConfiguration)
 
         // Month/Period Navigation
         binding.btnPrevMonth.setOnClickListener {

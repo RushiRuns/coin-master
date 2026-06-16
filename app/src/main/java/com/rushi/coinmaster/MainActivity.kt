@@ -24,6 +24,8 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
 
+    val drawerLayout: androidx.drawerlayout.widget.DrawerLayout get() = binding.drawerLayout
+
     @Inject
     lateinit var appPreferences: AppPreferences
 

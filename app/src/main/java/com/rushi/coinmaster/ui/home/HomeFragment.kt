@@ -26,6 +26,8 @@ import com.rushi.coinmaster.data.local.model.ExpenseType
 import com.rushi.coinmaster.databinding.FragmentHomeBinding
 import com.rushi.coinmaster.util.CurrencyFormatter
 import com.rushi.coinmaster.util.LocaleHelper
+import com.rushi.coinmaster.MainActivity
+import androidx.navigation.ui.setupWithNavController
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -53,6 +55,13 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val navController = findNavController()
+        val appBarConfiguration = androidx.navigation.ui.AppBarConfiguration(
+            setOf(R.id.homeFragment, R.id.transactionsFragment, R.id.budgetFragment),
+            (requireActivity() as MainActivity).drawerLayout
+        )
+        binding.toolbar.setupWithNavController(navController, appBarConfiguration)
 
         setupRecyclerView()
         setupPieCharts()
