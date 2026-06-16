@@ -24,7 +24,7 @@ object DatabaseModule {
             context,
             CoinMasterDatabase::class.java,
             DATABASE_NAME
-        ).fallbackToDestructiveMigration().build()
+        ).addMigrations(CoinMasterDatabase.MIGRATION_5_6).fallbackToDestructiveMigration().build()
     }
 
     @Provides

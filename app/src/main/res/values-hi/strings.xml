@@ -40,6 +40,24 @@
     <string name="acc_type_bank">बैंक खाता</string>
     <string name="acc_type_card">क्रेडिट कार्ड</string>
     <string name="acc_type_invest">निवेश</string>
+    <string name="acc_type_savings_account">बचत खाता</string>
+    <string name="acc_type_checking_account">चालू खाता</string>
+    <string name="acc_type_fixed_deposit">सावधि जमा</string>
+    <string name="acc_type_wallet">वॉलेट</string>
+    <string name="acc_type_mutual_fund">म्यूचुअल फंड</string>
+    <string name="acc_type_gold">सोना</string>
+
+    <!-- Sidebar Menu -->
+    <string name="menu_category">खर्च श्रेणी</string>
+    <string name="menu_expense_type">खर्च का प्रकार</string>
+    <string name="menu_income">आय</string>
+    <string name="menu_savings">बचत</string>
+    <string name="menu_accounts">खाते</string>
+    <string name="menu_notes">नोट्स</string>
+    <string name="menu_transfers">ट्रांसफर</string>
+    <string name="menu_goals">लक्ष्य</string>
+    <string name="menu_system_settings">सिस्टम</string>
+    <string name="menu_settings">सेटिंग्स</string>
 
     <!-- Dashboard/Home UI -->
     <string name="title_home">होम</string>

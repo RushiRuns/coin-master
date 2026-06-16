@@ -4,5 +4,11 @@ enum class AccountType {
     CASH,
     BANK_ACCOUNT,
     CREDIT_CARD,
-    INVESTMENTS
+    INVESTMENTS,
+    SAVINGS_ACCOUNT,
+    CHECKING_ACCOUNT,
+    FIXED_DEPOSIT,
+    WALLET,
+    MUTUAL_FUND,
+    GOLD
 }

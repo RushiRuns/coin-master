@@ -57,6 +57,9 @@ interface TransactionDao {
                     updateAccountBalance(toId, transaction.amountPaise)
                 }
             }
+            TransactionType.EXTERNAL_TRANSFER -> {
+                updateAccountBalance(transaction.accountId, -transaction.amountPaise)
+            }
             TransactionType.BALANCE_CORRECTION -> {
                 setAccountBalance(transaction.accountId, transaction.amountPaise)
             }
@@ -83,6 +86,9 @@ interface TransactionDao {
                 transaction.transferToAccountId?.let { toId ->
                     updateAccountBalance(toId, -transaction.amountPaise)
                 }
+            }
+            TransactionType.EXTERNAL_TRANSFER -> {
+                updateAccountBalance(transaction.accountId, transaction.amountPaise)
             }
             TransactionType.BALANCE_CORRECTION -> {
                 // Cannot mathematically revert correction without previous balance snapshot.

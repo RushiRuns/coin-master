@@ -34,7 +34,7 @@
     </fragment>
 
     <fragment
-        android:id="@+id/accountsFragment"
+        android:id="@+id/nav_accounts"
         android:name="com.rushi.coinmaster.ui.accounts.AccountsFragment"
         android:label="AccountsFragment"
         tools:layout="@layout/fragment_accounts">
@@ -73,7 +73,7 @@
             app:destination="@id/addTransactionFragment" />
         <action
             android:id="@+id/action_budgetFragment_to_goalsFragment"
-            app:destination="@id/goalsFragment" />
+            app:destination="@id/nav_goals" />
         <action
             android:id="@+id/action_budgetFragment_to_manageEnvelopesFragment"
             app:destination="@id/manageEnvelopesFragment" />
@@ -122,13 +122,13 @@
         tools:layout="@layout/fragment_add_transaction" />
 
     <fragment
-        android:id="@+id/settingsFragment"
+        android:id="@+id/nav_settings"
         android:name="com.rushi.coinmaster.ui.settings.SettingsFragment"
         android:label="SettingsFragment"
         tools:layout="@layout/fragment_settings" />
 
     <fragment
-        android:id="@+id/goalsFragment"
+        android:id="@+id/nav_goals"
         android:name="com.rushi.coinmaster.ui.goals.GoalsFragment"
         android:label="GoalsFragment"
         tools:layout="@layout/fragment_goals">
@@ -184,5 +184,41 @@
             android:id="@+id/action_debtDetailsFragment_to_addEditDebtFragment"
             app:destination="@id/addEditDebtFragment" />
     </fragment>
+
+    <fragment
+        android:id="@+id/nav_categories"
+        android:name="com.rushi.coinmaster.ui.categories.ManageCategoriesFragment"
+        android:label="ManageCategoriesFragment"
+        tools:layout="@layout/fragment_manage_categories" />
+
+    <fragment
+        android:id="@+id/nav_expense_type"
+        android:name="com.rushi.coinmaster.ui.expensetype.ExpenseTypeFragment"
+        android:label="ExpenseTypeFragment"
+        tools:layout="@layout/fragment_expense_type" />
+
+    <fragment
+        android:id="@+id/nav_income"
+        android:name="com.rushi.coinmaster.ui.income.IncomeFragment"
+        android:label="IncomeFragment"
+        tools:layout="@layout/fragment_income" />
+
+    <fragment
+        android:id="@+id/nav_savings"
+        android:name="com.rushi.coinmaster.ui.savings.SavingsFragment"
+        android:label="SavingsFragment"
+        tools:layout="@layout/fragment_savings" />
+
+    <fragment
+        android:id="@+id/nav_notes"
+        android:name="com.rushi.coinmaster.ui.notes.NotesFragment"
+        android:label="NotesFragment"
+        tools:layout="@layout/fragment_notes" />
+
+    <fragment
+        android:id="@+id/nav_transfers"
+        android:name="com.rushi.coinmaster.ui.transfers.ManageTransfersFragment"
+        android:label="ManageTransfersFragment"
+        tools:layout="@layout/fragment_manage_transfers" />
 
 </navigation>

@@ -101,6 +101,16 @@ class RecentTransactionsAdapter :
 
                     binding.viewTypeDot.setBackgroundColor(ContextCompat.getColor(context, R.color.divider))
                 }
+                TransactionType.EXTERNAL_TRANSFER -> {
+                    binding.tvTransactionTitle.text = "External Transfer"
+                    val desc = "Transfer from ${item.accountName}"
+                    binding.tvTransactionSubtitle.text = if (item.note.isNullOrBlank()) desc else "$desc - ${item.note}"
+                    
+                    binding.tvTransactionAmount.setTextColor(ContextCompat.getColor(context, R.color.error))
+                    binding.tvTransactionAmount.text = "-${CurrencyFormatter.format(item.amountPaise, languageCode)}"
+                    
+                    binding.viewTypeDot.setBackgroundColor(ContextCompat.getColor(context, R.color.text_secondary))
+                }
             }
         }
     }

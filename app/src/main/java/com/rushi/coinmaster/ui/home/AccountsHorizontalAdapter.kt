@@ -45,6 +45,12 @@ class AccountsHorizontalAdapter(
                 AccountType.BANK_ACCOUNT -> context.getString(R.string.acc_type_bank)
                 AccountType.CREDIT_CARD -> context.getString(R.string.acc_type_card)
                 AccountType.INVESTMENTS -> context.getString(R.string.acc_type_invest)
+                AccountType.SAVINGS_ACCOUNT -> context.getString(R.string.acc_type_savings_account)
+                AccountType.CHECKING_ACCOUNT -> context.getString(R.string.acc_type_checking_account)
+                AccountType.FIXED_DEPOSIT -> context.getString(R.string.acc_type_fixed_deposit)
+                AccountType.WALLET -> context.getString(R.string.acc_type_wallet)
+                AccountType.MUTUAL_FUND -> context.getString(R.string.acc_type_mutual_fund)
+                AccountType.GOLD -> context.getString(R.string.acc_type_gold)
             }
 
             if (account.type == AccountType.CREDIT_CARD) {

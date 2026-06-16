@@ -4,5 +4,6 @@ enum class TransactionType {
     INCOME,
     EXPENSE,
     TRANSFER,
-    BALANCE_CORRECTION
+    BALANCE_CORRECTION,
+    EXTERNAL_TRANSFER
 }
