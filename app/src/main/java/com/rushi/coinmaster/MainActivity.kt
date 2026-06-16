@@ -42,9 +42,17 @@ class MainActivity : AppCompatActivity() {
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         val navController = navHostFragment.navController
 
-        // Bind BottomNavigationView and NavigationView (Sidebar)
+        // Bind BottomNavigationView and both NavigationViews (sidebar)
         binding.bottomNavigation.setupWithNavController(navController)
         binding.navView.setupWithNavController(navController)
+        binding.navViewSettings.setupWithNavController(navController)
+
+        // Keep selection state in sync between both nav views
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            // Uncheck all items in both nav views when navigating
+            binding.navView.checkedItem?.let { }
+            binding.navViewSettings.checkedItem?.let { }
+        }
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
             val sidebarTopLevelDestinations = setOf(
