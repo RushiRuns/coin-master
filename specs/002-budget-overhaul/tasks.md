@@ -49,9 +49,9 @@
 
 ### Implementation for User Story 1
 
-- [ ] T008 [P] [US1] Create IncomeStream domain model and repository mappings in app/src/main/java/com/rushi/coinmaster/domain/model/IncomeStream.kt and app/src/main/java/com/rushi/coinmaster/data/repository/IncomeStreamRepositoryImpl.kt
-- [ ] T009 [US1] Update OnboardingFragment to ask for name, income stream(s), and first account in app/src/main/java/com/rushi/coinmaster/ui/onboarding/OnboardingFragment.kt
-- [ ] T010 [US1] Create onboarding unit tests to verify data persistence in app/src/test/java/com/rushi/coinmaster/ui/onboarding/OnboardingViewModelTest.kt
+- [x] T008 [P] [US1] Create IncomeStream domain model and repository mappings in app/src/main/java/com/rushi/coinmaster/domain/model/IncomeStream.kt and app/src/main/java/com/rushi/coinmaster/data/repository/IncomeStreamRepositoryImpl.kt
+- [x] T009 [US1] Update OnboardingFragment to ask for name, income stream(s), and first account in app/src/main/java/com/rushi/coinmaster/ui/onboarding/OnboardingFragment.kt
+- [x] T010 [US1] Create onboarding unit tests to verify data persistence in app/src/test/java/com/rushi/coinmaster/ui/onboarding/OnboardingViewModelTest.kt
 
 **Checkpoint**: User Story 1 is fully functional and testable independently.
 

@@ -8,6 +8,8 @@ import com.rushi.coinmaster.data.local.model.AccountType
 import com.rushi.coinmaster.data.preferences.AppPreferences
 import com.rushi.coinmaster.data.repository.AccountRepository
 import com.rushi.coinmaster.data.repository.BudgetRepository
+import com.rushi.coinmaster.data.repository.IncomeStreamRepository
+import com.rushi.coinmaster.domain.model.IncomeStream
 import com.rushi.coinmaster.util.MoneyMath
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -20,7 +22,8 @@ import javax.inject.Inject
 class OnboardingViewModel @Inject constructor(
     private val appPreferences: AppPreferences,
     private val accountRepository: AccountRepository,
-    private val budgetRepository: BudgetRepository
+    private val budgetRepository: BudgetRepository,
+    private val incomeStreamRepository: IncomeStreamRepository
 ) : ViewModel() {
 
     // Step 1 State
@@ -32,8 +35,8 @@ class OnboardingViewModel @Inject constructor(
     var accountType: AccountType = AccountType.BANK_ACCOUNT
     var accountBalanceStr: String = ""
 
-    // Step 3 State
-    var monthlyIncomeStr: String = ""
+    // Step 3 State: List of income streams
+    val incomeStreams = mutableListOf<IncomeStream>()
 
     private val _onboardingSuccess = MutableSharedFlow<Unit>()
     val onboardingSuccess: SharedFlow<Unit> = _onboardingSuccess
@@ -48,9 +51,29 @@ class OnboardingViewModel @Inject constructor(
         return balance != null && balance >= 0.0
     }
 
+    fun addIncomeStream(name: String, amountRupees: Double) {
+        val amountPaise = MoneyMath.rupeesToPaise(amountRupees)
+        incomeStreams.add(
+            IncomeStream(
+                name = name,
+                amountPaise = amountPaise,
+                accountId = null
+            )
+        )
+    }
+
+    fun removeIncomeStream(index: Int) {
+        if (index in incomeStreams.indices) {
+            incomeStreams.removeAt(index)
+        }
+    }
+
+    fun getTotalIncomeRupees(): Double {
+        return MoneyMath.paiseToRupeesDouble(incomeStreams.sumOf { it.amountPaise })
+    }
+
     fun validateStep3(): Boolean {
-        val income = monthlyIncomeStr.toDoubleOrNull()
-        return income != null && income > 0.0
+        return incomeStreams.isNotEmpty() && incomeStreams.sumOf { it.amountPaise } > 0L
     }
 
     fun completeOnboarding() {
@@ -70,13 +93,20 @@ class OnboardingViewModel @Inject constructor(
                 colorHex = "#4285F4", // Brand Slate Blue default color
                 iconName = "ic_account"
             )
-            accountRepository.insertAccount(firstAccount)
+            val firstAccountId = accountRepository.insertAccount(firstAccount)
 
             // 3. Seed default envelopes
             budgetRepository.seedDefaultCategories()
 
-            // 4. Create first BudgetPeriod starting today and ending 1 month later
-            val incomePaise = MoneyMath.rupeesToPaise(monthlyIncomeStr.toDouble())
+            // 4. Save income streams linked to the first account
+            val totalIncomePaise = incomeStreams.sumOf { it.amountPaise }
+            incomeStreams.forEach { stream ->
+                incomeStreamRepository.insertIncomeStream(
+                    stream.copy(accountId = firstAccountId)
+                )
+            }
+
+            // 5. Create first BudgetPeriod starting today and ending 1 month later
             val calendar = Calendar.getInstance()
             
             // Start Date: today at 00:00:00.000
@@ -98,7 +128,7 @@ class OnboardingViewModel @Inject constructor(
             val firstBudget = BudgetPeriodEntity(
                 startDate = startDate,
                 endDate = endDate,
-                incomePaise = incomePaise,
+                incomePaise = totalIncomePaise,
                 needsPercent = 50,
                 wantsPercent = 30,
                 savingsPercent = 20,
@@ -106,7 +136,7 @@ class OnboardingViewModel @Inject constructor(
             )
             budgetRepository.insertBudgetPeriod(firstBudget)
 
-            // 5. Complete state
+            // 6. Complete state
             appPreferences.setOnboardingComplete(true)
             
             _onboardingSuccess.emit(Unit)

@@ -1,11 +1,10 @@
 package com.rushi.coinmaster.ui.onboarding
 
-import com.rushi.coinmaster.data.local.entity.AccountEntity
-import com.rushi.coinmaster.data.local.entity.BudgetPeriodEntity
 import com.rushi.coinmaster.data.local.model.AccountType
 import com.rushi.coinmaster.data.preferences.AppPreferences
 import com.rushi.coinmaster.data.repository.AccountRepository
 import com.rushi.coinmaster.data.repository.BudgetRepository
+import com.rushi.coinmaster.data.repository.IncomeStreamRepository
 import io.mockk.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -24,13 +23,19 @@ class OnboardingViewModelTest {
     private val appPreferences: AppPreferences = mockk(relaxed = true)
     private val accountRepository: AccountRepository = mockk(relaxed = true)
     private val budgetRepository: BudgetRepository = mockk(relaxed = true)
+    private val incomeStreamRepository: IncomeStreamRepository = mockk(relaxed = true)
 
     private lateinit var viewModel: OnboardingViewModel
 
     @Before
     fun setUp() {
         Dispatchers.setMain(testDispatcher)
-        viewModel = OnboardingViewModel(appPreferences, accountRepository, budgetRepository)
+        viewModel = OnboardingViewModel(
+            appPreferences,
+            accountRepository,
+            budgetRepository,
+            incomeStreamRepository
+        )
     }
 
     @After
@@ -78,20 +83,16 @@ class OnboardingViewModelTest {
 
     @Test
     fun testStep3Validation() {
-        // Invalid income format invalid
-        viewModel.monthlyIncomeStr = "abc"
+        // Empty income streams invalid
         assertFalse(viewModel.validateStep3())
 
-        // Negative income invalid
-        viewModel.monthlyIncomeStr = "-50000"
+        // 0 expected income invalid
+        viewModel.addIncomeStream("Zero Stream", 0.0)
         assertFalse(viewModel.validateStep3())
 
-        // Zero income invalid
-        viewModel.monthlyIncomeStr = "0"
-        assertFalse(viewModel.validateStep3())
-
-        // Correct income valid
-        viewModel.monthlyIncomeStr = "50000.00"
+        // Positive income valid
+        viewModel.incomeStreams.clear()
+        viewModel.addIncomeStream("Salary", 50000.00)
         assertTrue(viewModel.validateStep3())
     }
 
@@ -103,7 +104,13 @@ class OnboardingViewModelTest {
         viewModel.accountName = "Primary Bank"
         viewModel.accountType = AccountType.BANK_ACCOUNT
         viewModel.accountBalanceStr = "1000.50"
-        viewModel.monthlyIncomeStr = "50000.00"
+        
+        // Add multiple income streams
+        viewModel.addIncomeStream("Salary", 40000.00)
+        viewModel.addIncomeStream("Freelance", 10000.00)
+
+        // Mock first account ID return
+        coEvery { accountRepository.insertAccount(any()) } returns 1L
 
         // Mock success collector
         val successEvents = mutableListOf<Unit>()
@@ -127,6 +134,16 @@ class OnboardingViewModelTest {
             it.name == "Primary Bank" && it.type == AccountType.BANK_ACCOUNT && it.balancePaise == 100050L
         }) }
         coVerify { budgetRepository.seedDefaultCategories() }
+        
+        // Assert income streams stored
+        coVerify { incomeStreamRepository.insertIncomeStream(match {
+            it.name == "Salary" && it.amountPaise == 4000000L && it.accountId == 1L
+        }) }
+        coVerify { incomeStreamRepository.insertIncomeStream(match {
+            it.name == "Freelance" && it.amountPaise == 1000000L && it.accountId == 1L
+        }) }
+
+        // Assert budget period created with combined income
         coVerify { budgetRepository.insertBudgetPeriod(match { 
             it.incomePaise == 5000000L && it.needsPercent == 50 && it.wantsPercent == 30 && it.savingsPercent == 20
         }) }

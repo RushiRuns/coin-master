@@ -1,15 +1,17 @@
 package com.rushi.coinmaster.ui.onboarding
 
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.rushi.coinmaster.R
 import com.rushi.coinmaster.databinding.FragmentSetIncomeBinding
+import com.rushi.coinmaster.databinding.ItemOnboardingIncomeStreamBinding
+import com.rushi.coinmaster.util.CurrencyFormatter
+import com.rushi.coinmaster.util.LocaleHelper
 
 class SetIncomeFragment : Fragment() {
 
@@ -30,26 +32,82 @@ class SetIncomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Setup Income Input
-        binding.etIncome.setText(viewModel.monthlyIncomeStr)
-        binding.etIncome.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                viewModel.monthlyIncomeStr = s?.toString() ?: ""
-                binding.tilIncome.error = null
+        // Bind clicks
+        binding.btnAddStream.setOnClickListener {
+            addIncomeStreamFromInput()
+        }
+
+        // Render initially
+        renderIncomeStreams()
+    }
+
+    private fun addIncomeStreamFromInput() {
+        val name = binding.etStreamName.text?.toString()?.trim() ?: ""
+        val amountStr = binding.etIncome.text?.toString()?.trim() ?: ""
+        
+        var hasError = false
+        if (name.isEmpty()) {
+            binding.tilStreamName.error = "Name cannot be empty"
+            hasError = true
+        } else {
+            binding.tilStreamName.error = null
+        }
+
+        val amount = amountStr.toDoubleOrNull()
+        if (amount == null || amount <= 0.0) {
+            binding.tilIncome.error = getString(R.string.ob_error_income_invalid)
+            hasError = true
+        } else {
+            binding.tilIncome.error = null
+        }
+
+        if (hasError) return
+
+        viewModel.addIncomeStream(name, amount!!)
+        
+        // Reset fields
+        binding.etStreamName.text = null
+        binding.etIncome.text = null
+        binding.tilStreamName.error = null
+        binding.tilIncome.error = null
+
+        renderIncomeStreams()
+    }
+
+    private fun renderIncomeStreams() {
+        binding.llIncomeStreams.removeAllViews()
+        val languageCode = LocaleHelper.getLanguage(requireContext())
+
+        viewModel.incomeStreams.forEachIndexed { index, stream ->
+            val itemBinding = ItemOnboardingIncomeStreamBinding.inflate(
+                layoutInflater,
+                binding.llIncomeStreams,
+                false
+            )
+            itemBinding.tvStreamName.text = stream.name
+            itemBinding.tvStreamAmount.text = CurrencyFormatter.format(stream.amountPaise, languageCode)
+            itemBinding.btnDelete.setOnClickListener {
+                viewModel.removeIncomeStream(index)
+                renderIncomeStreams()
             }
-            override fun afterTextChanged(s: Editable?) {}
-        })
+            binding.llIncomeStreams.addView(itemBinding.root)
+        }
+
+        // Update Total
+        val totalPaise = viewModel.incomeStreams.sumOf { it.amountPaise }
+        binding.tvTotalIncome.text = CurrencyFormatter.format(totalPaise, languageCode)
     }
 
     fun validateAndShowError(): Boolean {
-        val income = viewModel.monthlyIncomeStr.toDoubleOrNull()
-        return if (income == null || income <= 0.0) {
-            binding.tilIncome.error = getString(R.string.ob_error_income_invalid)
-            false
-        } else {
-            binding.tilIncome.error = null
+        return if (viewModel.validateStep3()) {
             true
+        } else {
+            Toast.makeText(
+                requireContext(),
+                "Please declare at least one valid income stream.",
+                Toast.LENGTH_LONG
+            ).show()
+            false
         }
     }
 
