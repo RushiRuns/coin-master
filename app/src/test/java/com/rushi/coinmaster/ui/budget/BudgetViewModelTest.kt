@@ -26,6 +26,7 @@ class BudgetViewModelTest {
     private val context: android.content.Context = mockk(relaxed = true)
     private val budgetRepository: BudgetRepository = mockk(relaxed = true)
     private val validateZeroBalanceUseCase = ValidateZeroBalanceUseCase()
+    private val expenseCategoryRepository: com.rushi.coinmaster.data.repository.ExpenseCategoryRepository = mockk(relaxed = true)
 
     private lateinit var viewModel: BudgetViewModel
 
@@ -66,7 +67,8 @@ class BudgetViewModelTest {
         every { budgetRepository.getBudgetPeriodsFlow() } returns MutableStateFlow(testPeriods)
         every { budgetRepository.getEnvelopesWithAllocationsFlow(any()) } returns MutableStateFlow(emptyList())
         every { budgetRepository.getCategoriesFlow() } returns MutableStateFlow(emptyList())
-        viewModel = BudgetViewModel(context, budgetRepository, validateZeroBalanceUseCase)
+        every { expenseCategoryRepository.getExpenseCategoriesFlow() } returns MutableStateFlow(emptyList())
+        viewModel = BudgetViewModel(context, budgetRepository, validateZeroBalanceUseCase, expenseCategoryRepository)
     }
 
     @After
@@ -114,8 +116,9 @@ class BudgetViewModelTest {
     fun `activateBudgetPeriod does NOT update repository when budget is unbalanced`() = runTest {
         every { budgetRepository.getBudgetPeriodsFlow() } returns MutableStateFlow(listOf(period1))
         every { budgetRepository.getEnvelopesWithAllocationsFlow(any()) } returns MutableStateFlow(unbalancedEnvelopes)
+        every { expenseCategoryRepository.getExpenseCategoriesFlow() } returns MutableStateFlow(emptyList())
 
-        viewModel = BudgetViewModel(context, budgetRepository, validateZeroBalanceUseCase)
+        viewModel = BudgetViewModel(context, budgetRepository, validateZeroBalanceUseCase, expenseCategoryRepository)
         viewModel.selectPeriod(1)
 
         backgroundScope.launch(UnconfinedTestDispatcher(testScheduler)) { viewModel.budgetPeriodState.collect {} }
@@ -132,8 +135,9 @@ class BudgetViewModelTest {
     fun `activateBudgetPeriod updates repository with isActive=true when budget is balanced`() = runTest {
         every { budgetRepository.getBudgetPeriodsFlow() } returns MutableStateFlow(listOf(period1))
         every { budgetRepository.getEnvelopesWithAllocationsFlow(any()) } returns MutableStateFlow(balancedEnvelopes)
+        every { expenseCategoryRepository.getExpenseCategoriesFlow() } returns MutableStateFlow(emptyList())
 
-        viewModel = BudgetViewModel(context, budgetRepository, validateZeroBalanceUseCase)
+        viewModel = BudgetViewModel(context, budgetRepository, validateZeroBalanceUseCase, expenseCategoryRepository)
         viewModel.selectPeriod(1)
 
         backgroundScope.launch(UnconfinedTestDispatcher(testScheduler)) { viewModel.budgetPeriodState.collect {} }
@@ -152,8 +156,9 @@ class BudgetViewModelTest {
     fun `unallocatedState is valid only when allocations exactly equal income`() = runTest {
         every { budgetRepository.getBudgetPeriodsFlow() } returns MutableStateFlow(listOf(period1))
         every { budgetRepository.getEnvelopesWithAllocationsFlow(any()) } returns MutableStateFlow(balancedEnvelopes)
+        every { expenseCategoryRepository.getExpenseCategoriesFlow() } returns MutableStateFlow(emptyList())
 
-        viewModel = BudgetViewModel(context, budgetRepository, validateZeroBalanceUseCase)
+        viewModel = BudgetViewModel(context, budgetRepository, validateZeroBalanceUseCase, expenseCategoryRepository)
         viewModel.selectPeriod(1)
 
         var validation = viewModel.unallocatedState.first()
@@ -225,7 +230,8 @@ class BudgetViewModelTest {
             CategoryEntity(id = 10L, name = "Groceries", bucketType = BucketType.NEEDS, colorHex = "#FF5733", iconName = "ic_grocery", displayOrder = 0)
         )
         every { budgetRepository.getCategoriesFlow() } returns MutableStateFlow(existingCategories)
-        viewModel = BudgetViewModel(context, budgetRepository, validateZeroBalanceUseCase)
+        every { expenseCategoryRepository.getExpenseCategoriesFlow() } returns MutableStateFlow(emptyList())
+        viewModel = BudgetViewModel(context, budgetRepository, validateZeroBalanceUseCase, expenseCategoryRepository)
 
         val events = mutableListOf<BudgetUiEvent>()
         backgroundScope.launch(UnconfinedTestDispatcher(testScheduler)) {
@@ -249,7 +255,8 @@ class BudgetViewModelTest {
     fun `assignCategoryToBucket updates category with target bucketType`() = runTest {
         val targetCategory = CategoryEntity(id = 12L, name = "Rent", bucketType = null, colorHex = "#00BCD4", iconName = "ic_home", displayOrder = 0)
         every { budgetRepository.getCategoriesFlow() } returns MutableStateFlow(listOf(targetCategory))
-        viewModel = BudgetViewModel(context, budgetRepository, validateZeroBalanceUseCase)
+        every { expenseCategoryRepository.getExpenseCategoriesFlow() } returns MutableStateFlow(emptyList())
+        viewModel = BudgetViewModel(context, budgetRepository, validateZeroBalanceUseCase, expenseCategoryRepository)
 
         viewModel.assignCategoryToBucket(12L, BucketType.NEEDS)
         testScheduler.advanceUntilIdle()

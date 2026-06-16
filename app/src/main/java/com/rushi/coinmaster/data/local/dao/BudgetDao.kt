@@ -83,7 +83,8 @@ interface BudgetDao {
                   AND t.budget_period_id = :budgetPeriodId 
                   AND t.type = 'EXPENSE' 
                   AND t.is_deleted = 0
-            ), 0) AS spentAmountPaise
+            ), 0) AS spentAmountPaise,
+            c.expense_category_id AS expenseCategoryId
         FROM categories c
         LEFT JOIN envelope_allocations ea ON c.id = ea.category_id AND ea.budget_period_id = :budgetPeriodId
         WHERE c.is_deleted = 0 AND c.bucket_type IS NOT NULL

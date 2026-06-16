@@ -81,10 +81,10 @@
 
 ### Implementation for User Story 3
 
-- [ ] T014 [P] [US3] Create parent category management fragment and list layout in app/src/main/java/com/rushi/coinmaster/ui/categories/ManageCategoriesFragment.kt and app/src/main/res/layout/fragment_manage_categories.xml
-- [ ] T015 [US3] Modify CategoryEntity (Envelopes) to add nullable expense_category_id FK in app/src/main/java/com/rushi/coinmaster/data/local/entity/CategoryEntity.kt
-- [ ] T016 [US3] Update BudgetFragment layout and binding to group envelopes by category under Needs/Wants buckets in app/src/main/java/com/rushi/coinmaster/ui/budget/BudgetFragment.kt
-- [ ] T017 [US3] Implement CategoryDetailDialogFragment popup showing envelopes list with remaining balances in app/src/main/java/com/rushi/coinmaster/ui/budget/CategoryDetailDialogFragment.kt
+- [x] T014 [P] [US3] Create parent category management fragment and list layout in app/src/main/java/com/rushi/coinmaster/ui/categories/ManageCategoriesFragment.kt and app/src/main/res/layout/fragment_manage_categories.xml
+- [x] T015 [US3] Modify CategoryEntity (Envelopes) to add nullable expense_category_id FK in app/src/main/java/com/rushi/coinmaster/data/local/entity/CategoryEntity.kt
+- [x] T016 [US3] Update BudgetFragment layout and binding to group envelopes by category under Needs/Wants buckets in app/src/main/java/com/rushi/coinmaster/ui/budget/BudgetFragment.kt
+- [x] T017 [US3] Implement CategoryDetailDialogFragment popup showing envelopes list with remaining balances in app/src/main/java/com/rushi/coinmaster/ui/budget/CategoryDetailDialogFragment.kt
 
 **Checkpoint**: Category-based grouping is fully functional.
 

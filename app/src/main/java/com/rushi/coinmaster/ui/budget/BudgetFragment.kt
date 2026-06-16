@@ -28,6 +28,7 @@ import com.rushi.coinmaster.domain.usecase.ComputeBucketSplitUseCase
 import com.rushi.coinmaster.util.CurrencyFormatter
 import com.rushi.coinmaster.util.LocaleHelper
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 import java.text.DateFormatSymbols
 import javax.inject.Inject
@@ -140,8 +141,13 @@ class BudgetFragment : Fragment() {
                 }
 
                 launch {
-                    viewModel.envelopesState.collect { envelopes ->
-                        renderEnvelopes(envelopes)
+                    combine(
+                        viewModel.groupedCategoriesState,
+                        viewModel.envelopesState
+                    ) { groupedCategories, envelopes ->
+                        Pair(groupedCategories, envelopes)
+                    }.collect { (groupedCategories, envelopes) ->
+                        renderBudgetLists(groupedCategories, envelopes)
                     }
                 }
 
@@ -254,14 +260,73 @@ class BudgetFragment : Fragment() {
         binding.progressSavings.progress = if (split.savingsPaise > 0) ((savingsAllocated * 100) / split.savingsPaise).toInt() else 0
     }
 
-    private fun renderEnvelopes(envelopes: List<EnvelopeWithAllocation>) {
+    private fun renderBudgetLists(
+        groupedCategories: List<com.rushi.coinmaster.data.local.model.GroupedCategory>,
+        envelopes: List<EnvelopeWithAllocation>
+    ) {
         val languageCode = LocaleHelper.getLanguage(requireContext())
         binding.containerNeedsEnvelopes.removeAllViews()
         binding.containerWantsEnvelopes.removeAllViews()
         binding.containerSavingsEnvelopes.removeAllViews()
 
-        for (envelope in envelopes) {
-            val itemBinding = ItemEnvelopeBinding.inflate(layoutInflater, null, false)
+        // Render Grouped Needs Categories
+        val needsGroups = groupedCategories.filter { it.bucketType == BucketType.NEEDS }
+        for (category in needsGroups) {
+            val itemBinding = com.rushi.coinmaster.databinding.ItemGroupedCategoryBinding.inflate(layoutInflater, binding.containerNeedsEnvelopes, false)
+            itemBinding.tvCategoryName.text = category.name
+            
+            // Set Color Indicator
+            try {
+                itemBinding.viewCategoryColor.setBackgroundColor(Color.parseColor(category.colorHex))
+            } catch (e: Exception) {
+                // Fallback
+            }
+
+            // Set Icon
+            itemBinding.ivCategoryIcon.setImageResource(getIconDrawableResId(category.iconName))
+
+            itemBinding.tvCategorySpent.text = getString(R.string.text_spent_prefix, CurrencyFormatter.format(category.spentAmountPaise, languageCode))
+            itemBinding.tvAllocatedAmount.text = CurrencyFormatter.format(category.allocatedAmountPaise, languageCode)
+
+            itemBinding.root.setOnClickListener {
+                val dialog = CategoryDetailDialogFragment.newInstance(category.id, category.bucketType.ordinal)
+                dialog.show(childFragmentManager, "category_detail")
+            }
+
+            binding.containerNeedsEnvelopes.addView(itemBinding.root)
+        }
+
+        // Render Grouped Wants Categories
+        val wantsGroups = groupedCategories.filter { it.bucketType == BucketType.WANTS }
+        for (category in wantsGroups) {
+            val itemBinding = com.rushi.coinmaster.databinding.ItemGroupedCategoryBinding.inflate(layoutInflater, binding.containerWantsEnvelopes, false)
+            itemBinding.tvCategoryName.text = category.name
+            
+            // Set Color Indicator
+            try {
+                itemBinding.viewCategoryColor.setBackgroundColor(Color.parseColor(category.colorHex))
+            } catch (e: Exception) {
+                // Fallback
+            }
+
+            // Set Icon
+            itemBinding.ivCategoryIcon.setImageResource(getIconDrawableResId(category.iconName))
+
+            itemBinding.tvCategorySpent.text = getString(R.string.text_spent_prefix, CurrencyFormatter.format(category.spentAmountPaise, languageCode))
+            itemBinding.tvAllocatedAmount.text = CurrencyFormatter.format(category.allocatedAmountPaise, languageCode)
+
+            itemBinding.root.setOnClickListener {
+                val dialog = CategoryDetailDialogFragment.newInstance(category.id, category.bucketType.ordinal)
+                dialog.show(childFragmentManager, "category_detail")
+            }
+
+            binding.containerWantsEnvelopes.addView(itemBinding.root)
+        }
+
+        // Render Savings Envelopes (individually)
+        val savingsEnvelopes = envelopes.filter { it.bucketType == BucketType.SAVINGS }
+        for (envelope in savingsEnvelopes) {
+            val itemBinding = ItemEnvelopeBinding.inflate(layoutInflater, binding.containerSavingsEnvelopes, false)
 
             itemBinding.tvEnvelopeName.text = envelope.categoryName
             itemBinding.viewEnvelopeColor.setBackgroundColor(Color.parseColor(envelope.colorHex))
@@ -323,11 +388,7 @@ class BudgetFragment : Fragment() {
                 findNavController().navigate(action)
             }
 
-            when (envelope.bucketType) {
-                BucketType.NEEDS -> binding.containerNeedsEnvelopes.addView(itemBinding.root)
-                BucketType.WANTS -> binding.containerWantsEnvelopes.addView(itemBinding.root)
-                BucketType.SAVINGS -> binding.containerSavingsEnvelopes.addView(itemBinding.root)
-            }
+            binding.containerSavingsEnvelopes.addView(itemBinding.root)
         }
 
         // Re-trigger progress bar and split logic updates since envelopes have re-rendered

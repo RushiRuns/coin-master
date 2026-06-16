@@ -31,7 +31,8 @@ sealed class BudgetUiEvent {
 class BudgetViewModel @Inject constructor(
     @ApplicationContext private val context: Context,
     private val budgetRepository: BudgetRepository,
-    private val validateZeroBalanceUseCase: ValidateZeroBalanceUseCase
+    private val validateZeroBalanceUseCase: ValidateZeroBalanceUseCase,
+    private val expenseCategoryRepository: com.rushi.coinmaster.data.repository.ExpenseCategoryRepository
 ) : ViewModel() {
 
     private val _selectedPeriodId = MutableStateFlow<Int?>(null)
@@ -55,6 +56,88 @@ class BudgetViewModel @Inject constructor(
         } else {
             budgetRepository.getEnvelopesWithAllocationsFlow(periodId)
         }
+    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
+
+    val parentCategoriesState: StateFlow<List<com.rushi.coinmaster.domain.model.ExpenseCategory>> = expenseCategoryRepository.getExpenseCategoriesFlow()
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
+
+    val groupedCategoriesState: StateFlow<List<com.rushi.coinmaster.data.local.model.GroupedCategory>> = combine(
+        envelopesState,
+        parentCategoriesState
+    ) { envelopes, parents ->
+        val parentMap = parents.associateBy { it.id }
+        val groupedEnvelopes = envelopes.groupBy { it.expenseCategoryId }
+        val resultList = mutableListOf<com.rushi.coinmaster.data.local.model.GroupedCategory>()
+
+        parentMap.forEach { (parentId, parentCategory) ->
+            val list = groupedEnvelopes[parentId] ?: emptyList()
+            val needsEnvelopes = list.filter { it.bucketType == BucketType.NEEDS }
+            val wantsEnvelopes = list.filter { it.bucketType == BucketType.WANTS }
+
+            if (needsEnvelopes.isNotEmpty()) {
+                resultList.add(
+                    com.rushi.coinmaster.data.local.model.GroupedCategory(
+                        id = parentId,
+                        name = parentCategory.name,
+                        colorHex = parentCategory.colorHex,
+                        iconName = parentCategory.iconName,
+                        bucketType = BucketType.NEEDS,
+                        allocatedAmountPaise = needsEnvelopes.sumOf { it.allocatedAmountPaise },
+                        spentAmountPaise = needsEnvelopes.sumOf { it.spentAmountPaise },
+                        envelopes = needsEnvelopes
+                    )
+                )
+            }
+            if (wantsEnvelopes.isNotEmpty()) {
+                resultList.add(
+                    com.rushi.coinmaster.data.local.model.GroupedCategory(
+                        id = parentId,
+                        name = parentCategory.name,
+                        colorHex = parentCategory.colorHex,
+                        iconName = parentCategory.iconName,
+                        bucketType = BucketType.WANTS,
+                        allocatedAmountPaise = wantsEnvelopes.sumOf { it.allocatedAmountPaise },
+                        spentAmountPaise = wantsEnvelopes.sumOf { it.spentAmountPaise },
+                        envelopes = wantsEnvelopes
+                    )
+                )
+            }
+        }
+
+        val uncategorized = groupedEnvelopes[null] ?: emptyList()
+        val uncategorizedNeeds = uncategorized.filter { it.bucketType == BucketType.NEEDS }
+        val uncategorizedWants = uncategorized.filter { it.bucketType == BucketType.WANTS }
+
+        if (uncategorizedNeeds.isNotEmpty()) {
+            resultList.add(
+                com.rushi.coinmaster.data.local.model.GroupedCategory(
+                    id = -1L,
+                    name = "Other Envelopes",
+                    colorHex = "#90A4AE",
+                    iconName = "ic_category",
+                    bucketType = BucketType.NEEDS,
+                    allocatedAmountPaise = uncategorizedNeeds.sumOf { it.allocatedAmountPaise },
+                    spentAmountPaise = uncategorizedNeeds.sumOf { it.spentAmountPaise },
+                    envelopes = uncategorizedNeeds
+                )
+            )
+        }
+        if (uncategorizedWants.isNotEmpty()) {
+            resultList.add(
+                com.rushi.coinmaster.data.local.model.GroupedCategory(
+                    id = -2L,
+                    name = "Other Envelopes",
+                    colorHex = "#90A4AE",
+                    iconName = "ic_category",
+                    bucketType = BucketType.WANTS,
+                    allocatedAmountPaise = uncategorizedWants.sumOf { it.allocatedAmountPaise },
+                    spentAmountPaise = uncategorizedWants.sumOf { it.spentAmountPaise },
+                    envelopes = uncategorizedWants
+                )
+            )
+        }
+
+        resultList
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
 
     val showCopyPreviousState: StateFlow<Boolean> = _selectedPeriodId.flatMapLatest { periodId ->
