@@ -4,10 +4,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.rushi.coinmaster.data.local.entity.AccountEntity
 import com.rushi.coinmaster.data.local.entity.CategoryEntity
+import com.rushi.coinmaster.data.local.entity.TransferRecipientEntity
 import com.rushi.coinmaster.data.local.entity.TransactionEntity
 import com.rushi.coinmaster.data.local.model.TransactionType
 import com.rushi.coinmaster.data.repository.AccountRepository
 import com.rushi.coinmaster.data.repository.BudgetRepository
+import com.rushi.coinmaster.data.repository.TransferRecipientRepository
 import com.rushi.coinmaster.domain.usecase.AddTransactionUseCase
 import android.content.Context
 import com.rushi.coinmaster.R
@@ -28,6 +30,7 @@ class TransactionViewModel @Inject constructor(
     @ApplicationContext private val context: Context,
     private val accountRepository: AccountRepository,
     private val budgetRepository: BudgetRepository,
+    private val transferRecipientRepository: TransferRecipientRepository,
     private val addTransactionUseCase: AddTransactionUseCase
 ) : ViewModel() {
 
@@ -35,6 +38,9 @@ class TransactionViewModel @Inject constructor(
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
 
     val categoriesState: StateFlow<List<CategoryEntity>> = budgetRepository.getCategoriesFlow()
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
+
+    val recipientsState: StateFlow<List<TransferRecipientEntity>> = transferRecipientRepository.getTransferRecipientsFlow()
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
 
     private val _uiEvent = MutableSharedFlow<TransactionUiEvent>()
@@ -45,6 +51,7 @@ class TransactionViewModel @Inject constructor(
         type: TransactionType,
         accountId: Long,
         transferToAccountId: Long?,
+        transferRecipientId: Long?,
         categoryId: Long?,
         date: Long,
         note: String?
@@ -82,11 +89,19 @@ class TransactionViewModel @Inject constructor(
                 }
             }
 
+            if (type == TransactionType.EXTERNAL_TRANSFER) {
+                if (transferRecipientId == null || transferRecipientId == 0L) {
+                    _uiEvent.emit(TransactionUiEvent.Error(context.getString(R.string.error_recipient_required)))
+                    return@launch
+                }
+            }
+
             val transaction = TransactionEntity(
                 amountPaise = amountPaise,
                 type = type,
                 accountId = accountId,
                 transferToAccountId = if (type == TransactionType.TRANSFER) transferToAccountId else null,
+                transferRecipientId = if (type == TransactionType.EXTERNAL_TRANSFER) transferRecipientId else null,
                 categoryId = if (type == TransactionType.EXPENSE) categoryId else null,
                 date = date,
                 note = note?.trim()?.takeIf { it.isNotEmpty() }

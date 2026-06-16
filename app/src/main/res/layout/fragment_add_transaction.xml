@@ -129,6 +129,25 @@
                     android:textColor="@color/text_primary" />
             </com.google.android.material.textfield.TextInputLayout>
 
+            <!-- Recipient Dropdown (Visible only for External Transfer) -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/til_recipient"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:hint="Recipient"
+                android:visibility="gone"
+                app:layout_constraintTop_toBottomOf="@id/til_category">
+
+                <AutoCompleteTextView
+                    android:id="@+id/actv_recipient"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="none"
+                    android:textColor="@color/text_primary" />
+            </com.google.android.material.textfield.TextInputLayout>
+
             <!-- Date Picker Field -->
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/til_date"
@@ -137,7 +156,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:hint="@string/label_date"
-                app:layout_constraintTop_toBottomOf="@id/til_category">
+                app:layout_constraintTop_toBottomOf="@id/til_recipient">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et_date"

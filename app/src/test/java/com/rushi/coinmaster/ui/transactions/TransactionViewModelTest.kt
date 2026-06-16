@@ -2,11 +2,13 @@ package com.rushi.coinmaster.ui.transactions
 
 import com.rushi.coinmaster.data.local.entity.AccountEntity
 import com.rushi.coinmaster.data.local.entity.CategoryEntity
+import com.rushi.coinmaster.data.local.entity.TransferRecipientEntity
 import com.rushi.coinmaster.data.local.model.AccountType
 import com.rushi.coinmaster.data.local.model.BucketType
 import com.rushi.coinmaster.data.local.model.TransactionType
 import com.rushi.coinmaster.data.repository.AccountRepository
 import com.rushi.coinmaster.data.repository.BudgetRepository
+import com.rushi.coinmaster.data.repository.TransferRecipientRepository
 import com.rushi.coinmaster.domain.usecase.AddTransactionUseCase
 import io.mockk.*
 import kotlinx.coroutines.Dispatchers
@@ -28,6 +30,7 @@ class TransactionViewModelTest {
     private val context: android.content.Context = mockk(relaxed = true)
     private val accountRepository: AccountRepository = mockk(relaxed = true)
     private val budgetRepository: BudgetRepository = mockk(relaxed = true)
+    private val transferRecipientRepository: TransferRecipientRepository = mockk(relaxed = true)
     private val addTransactionUseCase: AddTransactionUseCase = mockk()
 
     private lateinit var viewModel: TransactionViewModel
@@ -44,6 +47,7 @@ class TransactionViewModelTest {
         Dispatchers.setMain(testDispatcher)
         every { accountRepository.getAccountsFlow() } returns flowOf(testAccounts)
         every { budgetRepository.getCategoriesFlow() } returns flowOf(testCategories)
+        every { transferRecipientRepository.getTransferRecipientsFlow() } returns flowOf(emptyList())
 
         every { context.getString(com.rushi.coinmaster.R.string.error_amount_empty) } returns "Amount cannot be empty."
         every { context.getString(com.rushi.coinmaster.R.string.error_amount_must_be_greater_than_zero) } returns "Amount must be greater than zero."
@@ -53,7 +57,13 @@ class TransactionViewModelTest {
         every { context.getString(com.rushi.coinmaster.R.string.error_same_accounts) } returns "Source and destination accounts must be different."
         every { context.getString(com.rushi.coinmaster.R.string.error_transaction_save_failed) } returns "Failed to save transaction."
 
-        viewModel = TransactionViewModel(context, accountRepository, budgetRepository, addTransactionUseCase)
+        viewModel = TransactionViewModel(
+            context,
+            accountRepository,
+            budgetRepository,
+            transferRecipientRepository,
+            addTransactionUseCase
+        )
     }
 
     @After
@@ -87,33 +97,33 @@ class TransactionViewModelTest {
         }
 
         // Blank amount
-        viewModel.saveTransaction("", TransactionType.INCOME, 1L, null, null, System.currentTimeMillis(), "")
+        viewModel.saveTransaction("", TransactionType.INCOME, 1L, null, null, null, System.currentTimeMillis(), "")
         testScheduler.advanceUntilIdle()
         assertTrue(events.last() is TransactionUiEvent.Error)
         assertEquals("Amount cannot be empty.", (events.last() as TransactionUiEvent.Error).message)
 
         // Invalid amount
-        viewModel.saveTransaction("-10.00", TransactionType.INCOME, 1L, null, null, System.currentTimeMillis(), "")
+        viewModel.saveTransaction("-10.00", TransactionType.INCOME, 1L, null, null, null, System.currentTimeMillis(), "")
         testScheduler.advanceUntilIdle()
         assertEquals("Amount must be greater than zero.", (events.last() as TransactionUiEvent.Error).message)
 
         // Source account not selected
-        viewModel.saveTransaction("100.00", TransactionType.INCOME, 0L, null, null, System.currentTimeMillis(), "")
+        viewModel.saveTransaction("100.00", TransactionType.INCOME, 0L, null, null, null, System.currentTimeMillis(), "")
         testScheduler.advanceUntilIdle()
         assertEquals("Please select a source account.", (events.last() as TransactionUiEvent.Error).message)
 
         // Expense without category
-        viewModel.saveTransaction("100.00", TransactionType.EXPENSE, 1L, null, null, System.currentTimeMillis(), "")
+        viewModel.saveTransaction("100.00", TransactionType.EXPENSE, 1L, null, null, null, System.currentTimeMillis(), "")
         testScheduler.advanceUntilIdle()
         assertEquals("Please select a category.", (events.last() as TransactionUiEvent.Error).message)
 
         // Transfer without destination account
-        viewModel.saveTransaction("100.00", TransactionType.TRANSFER, 1L, null, null, System.currentTimeMillis(), "")
+        viewModel.saveTransaction("100.00", TransactionType.TRANSFER, 1L, null, null, null, System.currentTimeMillis(), "")
         testScheduler.advanceUntilIdle()
         assertEquals("Please select a destination account.", (events.last() as TransactionUiEvent.Error).message)
 
         // Transfer with same accounts
-        viewModel.saveTransaction("100.00", TransactionType.TRANSFER, 1L, 1L, null, System.currentTimeMillis(), "")
+        viewModel.saveTransaction("100.00", TransactionType.TRANSFER, 1L, 1L, null, null, System.currentTimeMillis(), "")
         testScheduler.advanceUntilIdle()
         assertEquals("Source and destination accounts must be different.", (events.last() as TransactionUiEvent.Error).message)
     }
@@ -127,7 +137,7 @@ class TransactionViewModelTest {
 
         coEvery { addTransactionUseCase(any()) } returns Result.success(1L)
 
-        viewModel.saveTransaction("150.00", TransactionType.INCOME, 1L, null, null, System.currentTimeMillis(), "Salary")
+        viewModel.saveTransaction("150.00", TransactionType.INCOME, 1L, null, null, null, System.currentTimeMillis(), "Salary")
         testScheduler.advanceUntilIdle()
 
         assertTrue(events.last() is TransactionUiEvent.Success)

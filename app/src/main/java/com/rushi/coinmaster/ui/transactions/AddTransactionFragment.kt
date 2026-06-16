@@ -15,6 +15,7 @@ import androidx.navigation.fragment.findNavController
 import com.rushi.coinmaster.R
 import com.rushi.coinmaster.data.local.entity.AccountEntity
 import com.rushi.coinmaster.data.local.entity.CategoryEntity
+import com.rushi.coinmaster.data.local.entity.TransferRecipientEntity
 import com.rushi.coinmaster.data.local.model.TransactionType
 import com.rushi.coinmaster.databinding.FragmentAddTransactionBinding
 import com.rushi.coinmaster.util.DateFormatter
@@ -33,6 +34,7 @@ class AddTransactionFragment : Fragment() {
     private var selectedDateMillis: Long = System.currentTimeMillis()
     private var accountsList: List<AccountEntity> = emptyList()
     private var categoriesList: List<CategoryEntity> = emptyList()
+    private var recipientsList: List<TransferRecipientEntity> = emptyList()
 
     private lateinit var types: List<String>
 
@@ -86,6 +88,19 @@ class AddTransactionFragment : Fragment() {
                 }
 
                 launch {
+                    viewModel.recipientsState.collect { recipients ->
+                        recipientsList = recipients
+                        val recipientNames = recipients.map { it.name }
+                        val recipientAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, recipientNames)
+                        binding.actvRecipient.setAdapter(recipientAdapter)
+
+                        if (recipientNames.isNotEmpty() && binding.actvRecipient.text.isEmpty()) {
+                            binding.actvRecipient.setText(recipientNames[0], false)
+                        }
+                    }
+                }
+
+                launch {
                     viewModel.uiEvent.collect { event ->
                         when (event) {
                             is TransactionUiEvent.Success -> {
@@ -114,7 +129,8 @@ class AddTransactionFragment : Fragment() {
         types = listOf(
             getString(R.string.type_expense),
             getString(R.string.type_income),
-            getString(R.string.type_transfer)
+            getString(R.string.type_transfer),
+            getString(R.string.type_external_transfer)
         )
         val typeAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, types)
         binding.actvType.setAdapter(typeAdapter)
@@ -132,14 +148,22 @@ class AddTransactionFragment : Fragment() {
             getString(R.string.type_expense) -> {
                 binding.tilCategory.visibility = View.VISIBLE
                 binding.tilTransferToAccount.visibility = View.GONE
+                binding.tilRecipient.visibility = View.GONE
             }
             getString(R.string.type_income) -> {
                 binding.tilCategory.visibility = View.GONE
                 binding.tilTransferToAccount.visibility = View.GONE
+                binding.tilRecipient.visibility = View.GONE
             }
             getString(R.string.type_transfer) -> {
                 binding.tilCategory.visibility = View.GONE
                 binding.tilTransferToAccount.visibility = View.VISIBLE
+                binding.tilRecipient.visibility = View.GONE
+            }
+            getString(R.string.type_external_transfer) -> {
+                binding.tilCategory.visibility = View.GONE
+                binding.tilTransferToAccount.visibility = View.GONE
+                binding.tilRecipient.visibility = View.VISIBLE
             }
         }
     }
@@ -181,6 +205,7 @@ class AddTransactionFragment : Fragment() {
             getString(R.string.type_expense) -> TransactionType.EXPENSE
             getString(R.string.type_income) -> TransactionType.INCOME
             getString(R.string.type_transfer) -> TransactionType.TRANSFER
+            getString(R.string.type_external_transfer) -> TransactionType.EXTERNAL_TRANSFER
             else -> TransactionType.EXPENSE
         }
 
@@ -190,6 +215,11 @@ class AddTransactionFragment : Fragment() {
         val selectedDestName = binding.actvTransferToAccount.text.toString()
         val destAccountId = if (type == TransactionType.TRANSFER) {
             accountsList.find { it.name == selectedDestName }?.id
+        } else null
+
+        val selectedRecipientName = binding.actvRecipient.text.toString()
+        val recipientId = if (type == TransactionType.EXTERNAL_TRANSFER) {
+            recipientsList.find { it.name == selectedRecipientName }?.id
         } else null
 
         val selectedCategoryName = binding.actvCategory.text.toString()
@@ -204,6 +234,7 @@ class AddTransactionFragment : Fragment() {
             type = type,
             accountId = sourceAccountId,
             transferToAccountId = destAccountId,
+            transferRecipientId = recipientId,
             categoryId = categoryId,
             date = selectedDateMillis,
             note = note

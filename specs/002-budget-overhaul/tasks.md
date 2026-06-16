@@ -127,9 +127,9 @@
 
 ### Implementation for User Story 6
 
-- [ ] T023 [P] [US6] Create NotesFragment for simple text note CRUD operations in app/src/main/java/com/rushi/coinmaster/ui/notes/NotesFragment.kt and app/src/main/res/layout/fragment_notes.xml
-- [ ] T024 [P] [US6] Create ManageTransfersFragment for managing bank/people recipients in app/src/main/java/com/rushi/coinmaster/ui/transfers/ManageTransfersFragment.kt and app/src/main/res/layout/fragment_manage_transfers.xml
-- [ ] T025 [US6] Update AddTransactionFragment to support EXTERNAL_TRANSFER transactions with recipient selectors in app/src/main/java/com/rushi/coinmaster/ui/transactions/AddTransactionFragment.kt
+- [x] T023 [P] [US6] Create NotesFragment for simple text note CRUD operations in app/src/main/java/com/rushi/coinmaster/ui/notes/NotesFragment.kt and app/src/main/res/layout/fragment_notes.xml
+- [x] T024 [P] [US6] Create ManageTransfersFragment for managing bank/people recipients in app/src/main/java/com/rushi/coinmaster/ui/transfers/ManageTransfersFragment.kt and app/src/main/res/layout/fragment_manage_transfers.xml
+- [x] T025 [US6] Update AddTransactionFragment to support EXTERNAL_TRANSFER transactions with recipient selectors in app/src/main/java/com/rushi/coinmaster/ui/transactions/AddTransactionFragment.kt
 
 ---
 

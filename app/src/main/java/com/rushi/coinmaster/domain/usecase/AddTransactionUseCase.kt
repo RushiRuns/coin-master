@@ -39,6 +39,12 @@ class AddTransactionUseCase @Inject constructor(
                 ?: return Result.failure(IllegalArgumentException("Destination account does not exist."))
         }
 
+        if (transaction.type == TransactionType.EXTERNAL_TRANSFER) {
+            if (transaction.transferRecipientId == null || transaction.transferRecipientId == 0L) {
+                return Result.failure(IllegalArgumentException("Recipient must be selected for external transfers."))
+            }
+        }
+
         // 2. Budget Period checks
         val budgetPeriod = budgetRepository.getOrCreateBudgetPeriodForDate(transaction.date)
 

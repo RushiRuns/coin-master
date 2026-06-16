@@ -151,6 +151,7 @@ class QuickRecordActivity : AppCompatActivity() {
             type = TransactionType.EXPENSE,
             accountId = sourceAccountId,
             transferToAccountId = null,
+            transferRecipientId = null,
             categoryId = categoryId,
             date = System.currentTimeMillis(),
             note = note

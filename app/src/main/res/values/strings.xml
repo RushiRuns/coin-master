@@ -129,6 +129,7 @@
     <string name="type_expense">Expense</string>
     <string name="type_income">Income</string>
     <string name="type_transfer">Transfer</string>
+    <string name="type_external_transfer">External Transfer</string>
     <string name="type_correction">Correction</string>
 
     <!-- Settings Screen -->
@@ -215,6 +216,7 @@
     <string name="error_category_required">Please select a category.</string>
     <string name="error_dest_account_required">Please select a destination account.</string>
     <string name="error_same_accounts">Source and destination accounts must be different.</string>
+    <string name="error_recipient_required">Please select a recipient.</string>
     <string name="error_transaction_save_failed">Failed to save transaction.</string>
     <string name="placeholder_june_2026">June 2026</string>
     <string name="placeholder_declared_income">Declared Income: ₹0.00</string>
