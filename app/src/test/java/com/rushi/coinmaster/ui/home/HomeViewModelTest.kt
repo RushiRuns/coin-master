@@ -133,17 +133,6 @@ class HomeViewModelTest {
         assertEquals(testEnvelopes, lastState.envelopes)
         assertEquals(35000L, lastState.totalBudgetedPaise)
         assertEquals(7000L, lastState.totalSpentPaise)
-        
-        // Check recent transactions mapping
-        assertEquals(2, lastState.recentTransactions.size)
-        val firstTx = lastState.recentTransactions[0]
-        assertEquals(100L, firstTx.id)
-        assertEquals(5000L, firstTx.amountPaise)
-        assertEquals(TransactionType.EXPENSE, firstTx.type)
-        assertEquals("Bank", firstTx.accountName)
-        assertEquals("Groceries", firstTx.categoryName)
-        assertEquals("#E57373", firstTx.categoryColorHex)
-        assertEquals("Weekly food", firstTx.note)
     }
 
     @Test
@@ -169,31 +158,5 @@ class HomeViewModelTest {
         viewModel.selectCategory(null)
         testScheduler.advanceUntilIdle()
         assertNull(states.last().selectedCategoryDetail)
-    }
-
-    @Test
-    fun testDateSelectionUpdatesStateAndTriggersQuery() = runTest {
-        val states = mutableListOf<HomeUiState>()
-        backgroundScope.launch(UnconfinedTestDispatcher(testScheduler)) {
-            viewModel.uiState.collect {
-                states.add(it)
-            }
-        }
-
-        testScheduler.advanceUntilIdle()
-        
-        // Default selected date should be close to current time
-        val initialSelectedDate = states.last().selectedDateMillis
-        assert(System.currentTimeMillis() - initialSelectedDate < 5000L)
-
-        // Select a different date
-        val testDate = 1686000000000L // 6 Jun 2023
-        viewModel.selectDate(testDate)
-        testScheduler.advanceUntilIdle()
-
-        assertEquals(testDate, states.last().selectedDateMillis)
-        
-        // Verify repository is called
-        verify { transactionRepository.getTransactionsBetweenDatesFlow(any(), any()) }
     }
 }

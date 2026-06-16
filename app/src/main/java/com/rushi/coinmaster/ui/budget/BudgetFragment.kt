@@ -89,6 +89,11 @@ class BudgetFragment : Fragment() {
             viewModel.activateBudgetPeriod()
         }
 
+        binding.fabAddTransaction.setOnClickListener {
+            val action = BudgetFragmentDirections.actionBudgetFragmentToAddTransactionFragment()
+            findNavController().navigate(action)
+        }
+
         // Add Envelopes Buttons
         binding.btnAddNeedsEnvelope.setOnClickListener {
             showEnvelopeSelectionDialog(BucketType.NEEDS)

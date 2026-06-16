@@ -200,6 +200,9 @@
     <string name="label_select_existing_envelope">Select Existing Savings Envelope:</string>
     <string name="btn_save_transaction">Save Transaction</string>
     <string name="label_expense_breakdown">Expense Breakdown</string>
+    <string name="label_needs_wants_breakdown">Needs vs Wants Breakdown</string>
+    <string name="label_expense_type_breakdown">Expense Type Breakdown</string>
+    <string name="label_category_breakdown">Category Breakdown</string>
     <string name="btn_change">Change</string>
     <string name="label_bucket_split_percentages">Bucket Split Percentages</string>
     <string name="label_split_target_calculations">Split Target Calculations</string>

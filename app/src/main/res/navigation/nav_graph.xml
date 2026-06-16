@@ -123,9 +123,9 @@
 
     <fragment
         android:id="@+id/transactionsFragment"
-        android:name="com.rushi.coinmaster.ui.PlaceholderFragment"
+        android:name="com.rushi.coinmaster.ui.transactions.TransactionsFragment"
         android:label="TransactionsFragment"
-        tools:layout="@layout/fragment_placeholder" />
+        tools:layout="@layout/fragment_transactions" />
 
     <fragment
         android:id="@+id/nav_settings"

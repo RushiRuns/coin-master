@@ -137,11 +137,11 @@
 
 **Purpose**: Dashboard improvements, transaction filtering, and validation checks
 
-- [ ] T026 [P] Add Floating Action Buttons (FAB) for transaction creation on Dashboard, Transactions, and Budget layouts in app/src/main/res/layout/
-- [ ] T027 [P] Replace expense breakdown chart with three charts (Want vs Need, Expense Type, and Category breakdown) on Dashboard in app/src/main/java/com/rushi/coinmaster/ui/dashboard/DashboardFragment.kt
-- [ ] T028 [US2] Remove daily activity list component from dashboard layout/controller and create a Daily Activity sub-tab inside the Transactions screen in app/src/main/res/layout/fragment_dashboard.xml, app/src/main/java/com/rushi/coinmaster/ui/dashboard/DashboardFragment.kt, and app/src/main/java/com/rushi/coinmaster/ui/transactions/
-- [ ] T029 [P] Add Day, Week, and Month filters to Transactions list in app/src/main/java/com/rushi/coinmaster/ui/transactions/TransactionsFragment.kt
-- [ ] T030 Run quickstart validation scenarios in specs/002-budget-overhaul/quickstart.md
+- [x] T026 [P] Add Floating Action Buttons (FAB) for transaction creation on Dashboard, Transactions, and Budget layouts in app/src/main/res/layout/
+- [x] T027 [P] Replace expense breakdown chart with three charts (Want vs Need, Expense Type, and Category breakdown) on Dashboard in app/src/main/java/com/rushi/coinmaster/ui/dashboard/DashboardFragment.kt
+- [x] T028 [US2] Remove daily activity list component from dashboard layout/controller and create a Daily Activity sub-tab inside the Transactions screen in app/src/main/res/layout/fragment_dashboard.xml, app/src/main/java/com/rushi/coinmaster/ui/dashboard/DashboardFragment.kt, and app/src/main/java/com/rushi/coinmaster/ui/transactions/
+- [x] T029 [P] Add Day, Week, and Month filters to Transactions list in app/src/main/java/com/rushi/coinmaster/ui/transactions/TransactionsFragment.kt
+- [x] T030 Run quickstart validation scenarios in specs/002-budget-overhaul/quickstart.md
 
 ---
 

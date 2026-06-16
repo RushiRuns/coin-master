@@ -20,14 +20,14 @@ import com.github.mikephil.charting.data.PieEntry
 import com.github.mikephil.charting.highlight.Highlight
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener
 import com.rushi.coinmaster.R
+import com.rushi.coinmaster.data.local.model.BucketType
 import com.rushi.coinmaster.data.local.model.EnvelopeWithAllocation
+import com.rushi.coinmaster.data.local.model.ExpenseType
 import com.rushi.coinmaster.databinding.FragmentHomeBinding
 import com.rushi.coinmaster.util.CurrencyFormatter
 import com.rushi.coinmaster.util.LocaleHelper
-import com.rushi.coinmaster.util.DateFormatter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
-import java.util.Calendar
 
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
@@ -38,9 +38,8 @@ class HomeFragment : Fragment() {
     private val viewModel: HomeViewModel by viewModels()
 
     private lateinit var accountsAdapter: AccountsHorizontalAdapter
-    private lateinit var transactionsAdapter: RecentTransactionsAdapter
 
-    /** Guards the one-shot entry animation for the pie chart. */
+    /** Guards the one-shot entry animation for the pie charts. */
     private var isFirstChartLoad = true
 
     override fun onCreateView(
@@ -55,13 +54,9 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        setupRecyclerViews()
-        setupPieChart()
+        setupRecyclerView()
+        setupPieCharts()
         setupFAB()
-
-        binding.btnSelectDate.setOnClickListener {
-            showDatePicker()
-        }
 
         binding.cardDebts.setOnClickListener {
             val action = HomeFragmentDirections.actionHomeFragmentToDebtsFragment()
@@ -101,16 +96,8 @@ class HomeFragment : Fragment() {
                         binding.tvBudgetHealthSummary.text = getString(R.string.text_budget_health_no_budget)
                     }
 
-                    // 4. Pie Chart Category Breakdown
-                    val spentEnvelopes = uiState.envelopes.filter { it.spentAmountPaise > 0L }
-                    if (spentEnvelopes.isNotEmpty()) {
-                        binding.pieChart.visibility = View.VISIBLE
-                        binding.cardCategoryDetail.visibility = View.VISIBLE
-                        updatePieChartData(spentEnvelopes)
-                    } else {
-                        binding.pieChart.visibility = View.GONE
-                        binding.cardCategoryDetail.visibility = View.GONE
-                    }
+                    // 4. Update Pie Charts Data
+                    updateChartsData(uiState.envelopes)
 
                     // 5. Category selection details
                     val selectedDetail = uiState.selectedCategoryDetail
@@ -128,25 +115,12 @@ class HomeFragment : Fragment() {
                         binding.tvCategoryDetail.setText(R.string.text_chart_placeholder)
                         binding.tvCategoryDetail.setTypeface(null, android.graphics.Typeface.ITALIC)
                     }
-
-                    // 6. Recent Transactions
-                    binding.btnSelectDate.text = getRelativeDateString(uiState.selectedDateMillis, requireContext())
-
-                    if (uiState.recentTransactions.isNotEmpty()) {
-                        binding.rvRecentTransactions.visibility = View.VISIBLE
-                        binding.tvNoTransactions.visibility = View.GONE
-                        transactionsAdapter.submitList(uiState.recentTransactions)
-                    } else {
-                        binding.rvRecentTransactions.visibility = View.GONE
-                        binding.tvNoTransactions.visibility = View.VISIBLE
-                    }
                 }
             }
         }
     }
 
-    private fun setupRecyclerViews() {
-        // Accounts Horizontal RecyclerView
+    private fun setupRecyclerView() {
         accountsAdapter = AccountsHorizontalAdapter { accountId ->
             val action = HomeFragmentDirections.actionHomeFragmentToAddEditAccountFragment(accountId)
             findNavController().navigate(action)
@@ -155,63 +129,125 @@ class HomeFragment : Fragment() {
             layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
             adapter = accountsAdapter
         }
-
-        // Recent Transactions RecyclerView
-        transactionsAdapter = RecentTransactionsAdapter()
-        binding.rvRecentTransactions.apply {
-            layoutManager = LinearLayoutManager(requireContext())
-            adapter = transactionsAdapter
-            isNestedScrollingEnabled = false // Let NestedScrollView handle parent scroll
-        }
     }
 
-    private fun setupPieChart() {
-        binding.pieChart.apply {
+    private fun setupPieCharts() {
+        setupPieChart(binding.pieChart, true)
+        setupPieChart(binding.pieChartNeedsWants, false)
+        setupPieChart(binding.pieChartExpenseType, false)
+    }
+
+    private fun setupPieChart(chart: com.github.mikephil.charting.charts.PieChart, enableSelectionListener: Boolean) {
+        chart.apply {
             description.isEnabled = false
-            legend.isEnabled = false // Custom category detail card replaces standard legend
+            legend.isEnabled = false
             isDrawHoleEnabled = true
             setHoleColor(Color.TRANSPARENT)
-            setDrawEntryLabels(false) // Disable labels on slices for a cleaner dashboard look
+            setDrawEntryLabels(false)
             animateY(800)
 
-            setOnChartValueSelectedListener(object : OnChartValueSelectedListener {
-                override fun onValueSelected(e: Entry?, h: Highlight?) {
-                    val envelope = e?.data as? EnvelopeWithAllocation
-                    viewModel.selectCategory(envelope?.categoryId)
-                }
+            if (enableSelectionListener) {
+                setOnChartValueSelectedListener(object : OnChartValueSelectedListener {
+                    override fun onValueSelected(e: Entry?, h: Highlight?) {
+                        val envelope = e?.data as? EnvelopeWithAllocation
+                        viewModel.selectCategory(envelope?.categoryId)
+                    }
 
-                override fun onNothingSelected() {
-                    viewModel.selectCategory(null)
-                }
-            })
+                    override fun onNothingSelected() {
+                        viewModel.selectCategory(null)
+                    }
+                })
+            }
         }
     }
 
-    private fun updatePieChartData(envelopes: List<EnvelopeWithAllocation>) {
+    private fun updateChartsData(envelopes: List<EnvelopeWithAllocation>) {
+        val spentEnvelopes = envelopes.filter { it.spentAmountPaise > 0L }
+
+        // 1. Needs vs Wants Chart
+        val needsSpent = spentEnvelopes.filter { it.bucketType == BucketType.NEEDS }.sumOf { it.spentAmountPaise }
+        val wantsSpent = spentEnvelopes.filter { it.bucketType == BucketType.WANTS }.sumOf { it.spentAmountPaise }
+        
+        if (needsSpent > 0L || wantsSpent > 0L) {
+            binding.cardBreakdownNeedsWants.visibility = View.VISIBLE
+            val entries = mutableListOf<PieEntry>()
+            val colors = mutableListOf<Int>()
+            if (needsSpent > 0L) {
+                entries.add(PieEntry(needsSpent.toFloat() / 100f, "Needs"))
+                colors.add(Color.parseColor("#1E88E5"))
+            }
+            if (wantsSpent > 0L) {
+                entries.add(PieEntry(wantsSpent.toFloat() / 100f, "Wants"))
+                colors.add(Color.parseColor("#E53935"))
+            }
+            updateChartData(binding.pieChartNeedsWants, entries, colors)
+        } else {
+            binding.cardBreakdownNeedsWants.visibility = View.GONE
+        }
+
+        // 2. Expense Type Breakdown (Fixed vs Variable) Chart
+        val fixedSpent = spentEnvelopes.filter { it.expenseType == ExpenseType.FIXED }.sumOf { it.spentAmountPaise }
+        val variableSpent = spentEnvelopes.filter { it.expenseType == ExpenseType.VARIABLE }.sumOf { it.spentAmountPaise }
+
+        if (fixedSpent > 0L || variableSpent > 0L) {
+            binding.cardBreakdownExpenseType.visibility = View.VISIBLE
+            val entries = mutableListOf<PieEntry>()
+            val colors = mutableListOf<Int>()
+            if (fixedSpent > 0L) {
+                entries.add(PieEntry(fixedSpent.toFloat() / 100f, "Fixed"))
+                colors.add(Color.parseColor("#43A047"))
+            }
+            if (variableSpent > 0L) {
+                entries.add(PieEntry(variableSpent.toFloat() / 100f, "Variable"))
+                colors.add(Color.parseColor("#FB8C00"))
+            }
+            updateChartData(binding.pieChartExpenseType, entries, colors)
+        } else {
+            binding.cardBreakdownExpenseType.visibility = View.GONE
+        }
+
+        // 3. Category Breakdown Chart
+        if (spentEnvelopes.isNotEmpty()) {
+            binding.pieChart.visibility = View.VISIBLE
+            binding.cardCategoryDetail.visibility = View.VISIBLE
+            updateCategoryChart(spentEnvelopes)
+        } else {
+            binding.pieChart.visibility = View.GONE
+            binding.cardCategoryDetail.visibility = View.GONE
+        }
+
+        // Disable animation flag after first load
+        if (isFirstChartLoad) {
+            isFirstChartLoad = false
+        }
+    }
+
+    private fun updateCategoryChart(envelopes: List<EnvelopeWithAllocation>) {
         val entries = envelopes.map { env ->
             PieEntry(env.spentAmountPaise.toFloat() / 100f, env.categoryName, env)
         }
-
-        val dataSet = PieDataSet(entries, "Expense Categories").apply {
-            colors = envelopes.map { env ->
-                try {
-                    Color.parseColor(env.colorHex)
-                } catch (e: Exception) {
-                    Color.GRAY
-                }
+        val colors = envelopes.map { env ->
+            try {
+                Color.parseColor(env.colorHex)
+            } catch (e: Exception) {
+                Color.GRAY
             }
-            valueTextSize = 0f // Hide text value directly on the pie slice
-            setDrawValues(false)
         }
+        updateChartData(binding.pieChart, entries, colors)
+    }
 
-        binding.pieChart.data = PieData(dataSet)
-        // Only animate on the very first load — subsequent reactive updates
-        // should not re-trigger the spin animation (T058 performance fix).
+    private fun updateChartData(chart: com.github.mikephil.charting.charts.PieChart, entries: List<PieEntry>, colorsList: List<Int>) {
+        val dataSet = PieDataSet(entries, "").apply {
+            colors = colorsList
+            valueTextSize = 12f
+            setDrawValues(true)
+            valueTextColor = Color.WHITE
+        }
+        chart.data = PieData(dataSet)
         if (isFirstChartLoad) {
-            isFirstChartLoad = false
-            binding.pieChart.animateY(800)
+            chart.animateY(800)
         } else {
-            binding.pieChart.invalidate()
+            chart.invalidate()
         }
     }
 
@@ -219,45 +255,6 @@ class HomeFragment : Fragment() {
         binding.fabAddTransaction.setOnClickListener {
             val action = HomeFragmentDirections.actionHomeFragmentToAddTransactionFragment()
             findNavController().navigate(action)
-        }
-    }
-
-    private fun showDatePicker() {
-        val calendar = Calendar.getInstance()
-        calendar.timeInMillis = viewModel.uiState.value.selectedDateMillis
-
-        android.app.DatePickerDialog(
-            requireContext(),
-            { _, year, month, dayOfMonth ->
-                val selectedCal = Calendar.getInstance().apply {
-                    set(Calendar.YEAR, year)
-                    set(Calendar.MONTH, month)
-                    set(Calendar.DAY_OF_MONTH, dayOfMonth)
-                }
-                viewModel.selectDate(selectedCal.timeInMillis)
-            },
-            calendar.get(Calendar.YEAR),
-            calendar.get(Calendar.MONTH),
-            calendar.get(Calendar.DAY_OF_MONTH)
-        ).show()
-    }
-
-    private fun getRelativeDateString(dateMillis: Long, context: Context): String {
-        val languageCode = LocaleHelper.getLanguage(context)
-        val today = Calendar.getInstance()
-        val target = Calendar.getInstance().apply { timeInMillis = dateMillis }
-
-        val isToday = today.get(Calendar.YEAR) == target.get(Calendar.YEAR) &&
-                today.get(Calendar.DAY_OF_YEAR) == target.get(Calendar.DAY_OF_YEAR)
-
-        val yesterday = Calendar.getInstance().apply { add(Calendar.DAY_OF_YEAR, -1) }
-        val isYesterday = yesterday.get(Calendar.YEAR) == target.get(Calendar.YEAR) &&
-                yesterday.get(Calendar.DAY_OF_YEAR) == target.get(Calendar.DAY_OF_YEAR)
-
-        return when {
-            isToday -> context.getString(R.string.text_today)
-            isYesterday -> context.getString(R.string.text_yesterday)
-            else -> DateFormatter.formatDate(dateMillis, languageCode)
         }
     }
 
