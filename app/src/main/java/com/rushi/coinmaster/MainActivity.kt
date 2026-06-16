@@ -40,18 +40,33 @@ class MainActivity : AppCompatActivity() {
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         val navController = navHostFragment.navController
 
-        // Bind BottomNavigationView
+        // Bind BottomNavigationView and NavigationView (Sidebar)
         binding.bottomNavigation.setupWithNavController(navController)
+        binding.navView.setupWithNavController(navController)
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
             if (destination.id == R.id.homeFragment
-                || destination.id == R.id.nav_accounts
+                || destination.id == R.id.transactionsFragment
                 || destination.id == R.id.budgetFragment
-                || destination.id == R.id.nav_settings
             ) {
                 binding.bottomNavigation.visibility = View.VISIBLE
+                binding.drawerLayout.setDrawerLockMode(androidx.drawerlayout.widget.DrawerLayout.LOCK_MODE_UNLOCKED)
             } else {
                 binding.bottomNavigation.visibility = View.GONE
+                // Lock drawer on detail and onboarding fragments to prevent accidental swipe gestures
+                if (destination.id == R.id.onboardingFragment 
+                    || destination.id == R.id.addEditAccountFragment 
+                    || destination.id == R.id.addEditEnvelopeFragment
+                    || destination.id == R.id.addEditGoalFragment
+                    || destination.id == R.id.addTransactionFragment
+                    || destination.id == R.id.addEditDebtFragment
+                    || destination.id == R.id.debtDetailsFragment
+                    || destination.id == R.id.monthSetupFragment
+                ) {
+                    binding.drawerLayout.setDrawerLockMode(androidx.drawerlayout.widget.DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
+                } else {
+                    binding.drawerLayout.setDrawerLockMode(androidx.drawerlayout.widget.DrawerLayout.LOCK_MODE_UNLOCKED)
+                }
             }
         }
 

@@ -65,9 +65,9 @@
 
 ### Implementation for User Story 2
 
-- [ ] T011 [P] [US2] Update BottomNavigationView menu options to show only Dashboard, Transactions, and Budget in app/src/main/res/menu/bottom_nav_menu.xml
-- [ ] T012 [US2] Bind Navigation Component DrawerLayout to the sidebar menu in app/src/main/java/com/rushi/coinmaster/MainActivity.kt
-- [ ] T013 [US2] Move AccountsFragment and SettingsFragment navigation destinations to the sidebar drawer in app/src/main/res/navigation/nav_graph.xml
+- [x] T011 [P] [US2] Update BottomNavigationView menu options to show only Dashboard, Transactions, and Budget in app/src/main/res/menu/bottom_nav_menu.xml
+- [x] T012 [US2] Bind Navigation Component DrawerLayout to the sidebar menu in app/src/main/java/com/rushi/coinmaster/MainActivity.kt
+- [x] T013 [US2] Move AccountsFragment and SettingsFragment navigation destinations to the sidebar drawer in app/src/main/res/navigation/nav_graph.xml
 
 **Checkpoint**: User Stories 1 AND 2 are fully integrated and functional.
 
