@@ -265,4 +265,23 @@ class BudgetViewModelTest {
             budgetRepository.updateCategory(match { it.id == 12L && it.bucketType == BucketType.NEEDS })
         }
     }
+
+    @Test
+    fun `updateExpenseTypeForCategories updates target categories with correct expenseType`() = runTest {
+        val cat1 = CategoryEntity(id = 1L, name = "Rent", bucketType = BucketType.NEEDS, colorHex = "#00BCD4", iconName = "ic_home", displayOrder = 0, expenseType = com.rushi.coinmaster.data.local.model.ExpenseType.VARIABLE)
+        val cat2 = CategoryEntity(id = 2L, name = "Groceries", bucketType = BucketType.NEEDS, colorHex = "#00BCD4", iconName = "ic_home", displayOrder = 1, expenseType = com.rushi.coinmaster.data.local.model.ExpenseType.VARIABLE)
+        
+        every { budgetRepository.getCategoriesFlow() } returns MutableStateFlow(listOf(cat1, cat2))
+        every { expenseCategoryRepository.getExpenseCategoriesFlow() } returns MutableStateFlow(emptyList())
+        viewModel = BudgetViewModel(context, budgetRepository, validateZeroBalanceUseCase, expenseCategoryRepository)
+
+        viewModel.updateExpenseTypeForCategories(listOf(1L, 2L), com.rushi.coinmaster.data.local.model.ExpenseType.FIXED)
+        testScheduler.advanceUntilIdle()
+
+        coVerify(exactly = 1) {
+            budgetRepository.updateCategories(match { list ->
+                list.size == 2 && list.all { it.expenseType == com.rushi.coinmaster.data.local.model.ExpenseType.FIXED }
+            })
+        }
+    }
 }

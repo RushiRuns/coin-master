@@ -109,6 +109,8 @@ class BudgetRepository @Inject constructor(
 
     suspend fun updateCategory(category: CategoryEntity) = categoryDao.updateCategory(category)
 
+    suspend fun updateCategories(categories: List<CategoryEntity>) = categoryDao.updateCategories(categories)
+
     suspend fun softDeleteCategory(id: Long) = categoryDao.softDeleteCategory(id)
 
     fun getCategoriesFlow(): Flow<List<CategoryEntity>> = categoryDao.getCategoriesFlow()

@@ -98,8 +98,8 @@
 
 ### Implementation for User Story 4
 
-- [ ] T018 [P] [US4] Add expense_type column to CategoryEntity and domain mapping in app/src/main/java/com/rushi/coinmaster/data/local/entity/CategoryEntity.kt
-- [ ] T019 [US4] Create ExpenseTypeFragment with bulk-selection lists to assign/transfer envelopes between Fixed and Variable in app/src/main/java/com/rushi/coinmaster/ui/expensetype/ExpenseTypeFragment.kt and app/src/main/res/layout/fragment_expense_type.xml
+- [x] T018 [P] [US4] Add expense_type column to CategoryEntity and domain mapping in app/src/main/java/com/rushi/coinmaster/data/local/entity/CategoryEntity.kt
+- [x] T019 [US4] Create ExpenseTypeFragment with bulk-selection lists to assign/transfer envelopes between Fixed and Variable in app/src/main/java/com/rushi/coinmaster/ui/expensetype/ExpenseTypeFragment.kt and app/src/main/res/layout/fragment_expense_type.xml
 
 **Checkpoint**: Expense Type classification is fully testable.
 

@@ -22,6 +22,9 @@ interface CategoryDao {
     @Update
     suspend fun updateCategory(category: CategoryEntity)
 
+    @Update
+    suspend fun updateCategories(categories: List<CategoryEntity>)
+
     @Query("UPDATE categories SET is_deleted = 1 WHERE id = :id")
     suspend fun softDeleteCategory(id: Long)
 }

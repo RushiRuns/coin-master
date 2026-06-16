@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.rushi.coinmaster.data.local.entity.BudgetPeriodEntity
 import com.rushi.coinmaster.data.local.entity.CategoryEntity
 import com.rushi.coinmaster.data.local.model.BucketType
+import com.rushi.coinmaster.data.local.model.ExpenseType
 import com.rushi.coinmaster.data.local.model.EnvelopeWithAllocation
 import com.rushi.coinmaster.data.repository.BudgetRepository
 import com.rushi.coinmaster.domain.usecase.BudgetValidationResult
@@ -396,6 +397,19 @@ class BudgetViewModel @Inject constructor(
         viewModelScope.launch {
             budgetRepository.softDeleteCategory(id)
             _uiEvent.emit(BudgetUiEvent.SuccessSave)
+        }
+    }
+
+    fun updateExpenseTypeForCategories(categoryIds: List<Long>, expenseType: ExpenseType) {
+        viewModelScope.launch {
+            val allCategories = budgetRepository.getCategoriesFlow().first()
+            val categoriesToUpdate = allCategories.filter { it.id in categoryIds }.map {
+                it.copy(expenseType = expenseType)
+            }
+            if (categoriesToUpdate.isNotEmpty()) {
+                budgetRepository.updateCategories(categoriesToUpdate)
+                _uiEvent.emit(BudgetUiEvent.SuccessSave)
+            }
         }
     }
 }
