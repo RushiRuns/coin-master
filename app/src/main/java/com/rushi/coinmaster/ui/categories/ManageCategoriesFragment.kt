@@ -52,7 +52,15 @@ class ManageCategoriesFragment : Fragment() {
         "Entertainment" to "ic_movie",
         "Shopping" to "ic_shopping_cart",
         "Savings" to "ic_savings",
-        "Emergency" to "ic_local_hospital"
+        "Emergency" to "ic_local_hospital",
+        "Car" to "ic_directions_car",
+        "School" to "ic_school",
+        "Flight" to "ic_flight",
+        "Favorite" to "ic_favorite",
+        "Phone" to "ic_phone",
+        "Gift" to "ic_card_giftcard",
+        "Work" to "ic_work",
+        "Coffee" to "ic_coffee"
     )
 
     private var editingCategory: ExpenseCategory? = null

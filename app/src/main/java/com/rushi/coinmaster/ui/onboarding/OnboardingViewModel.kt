@@ -8,8 +8,11 @@ import com.rushi.coinmaster.data.local.model.AccountType
 import com.rushi.coinmaster.data.preferences.AppPreferences
 import com.rushi.coinmaster.data.repository.AccountRepository
 import com.rushi.coinmaster.data.repository.BudgetRepository
+import com.rushi.coinmaster.data.local.entity.TransactionEntity
+import com.rushi.coinmaster.data.local.model.TransactionType
 import com.rushi.coinmaster.data.repository.IncomeStreamRepository
 import com.rushi.coinmaster.domain.model.IncomeStream
+import com.rushi.coinmaster.domain.usecase.AddTransactionUseCase
 import com.rushi.coinmaster.util.MoneyMath
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -23,7 +26,8 @@ class OnboardingViewModel @Inject constructor(
     private val appPreferences: AppPreferences,
     private val accountRepository: AccountRepository,
     private val budgetRepository: BudgetRepository,
-    private val incomeStreamRepository: IncomeStreamRepository
+    private val incomeStreamRepository: IncomeStreamRepository,
+    private val addTransactionUseCase: AddTransactionUseCase
 ) : ViewModel() {
 
     // Step 1 State
@@ -104,6 +108,14 @@ class OnboardingViewModel @Inject constructor(
                 incomeStreamRepository.insertIncomeStream(
                     stream.copy(accountId = firstAccountId)
                 )
+                val transaction = TransactionEntity(
+                    amountPaise = stream.amountPaise,
+                    type = TransactionType.INCOME,
+                    accountId = firstAccountId,
+                    date = System.currentTimeMillis(),
+                    note = "Income Stream: ${stream.name}"
+                )
+                addTransactionUseCase(transaction)
             }
 
             // 5. Create first BudgetPeriod starting today and ending 1 month later

@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -147,13 +148,14 @@ class HomeFragment : Fragment() {
     }
 
     private fun setupPieChart(chart: com.github.mikephil.charting.charts.PieChart, enableSelectionListener: Boolean) {
+        val textColor = ContextCompat.getColor(requireContext(), R.color.text_primary)
         chart.apply {
             description.isEnabled = false
             legend.isEnabled = false
             isDrawHoleEnabled = true
             setHoleColor(Color.TRANSPARENT)
             setDrawEntryLabels(true)
-            setEntryLabelColor(Color.BLACK)
+            setEntryLabelColor(textColor)
             setEntryLabelTextSize(11f)
             setUsePercentValues(true)
             setExtraOffsets(24f, 5f, 24f, 5f)
@@ -262,17 +264,19 @@ class HomeFragment : Fragment() {
     }
 
     private fun updateChartData(chart: com.github.mikephil.charting.charts.PieChart, entries: List<PieEntry>, colorsList: List<Int>) {
+        val textColor = ContextCompat.getColor(requireContext(), R.color.text_primary)
+        val textSecondaryColor = ContextCompat.getColor(requireContext(), R.color.text_secondary)
         val dataSet = PieDataSet(entries, "").apply {
             colors = colorsList
             valueTextSize = 11f
             setDrawValues(true)
-            valueTextColor = Color.BLACK
+            valueTextColor = textColor
             xValuePosition = PieDataSet.ValuePosition.OUTSIDE_SLICE
             yValuePosition = PieDataSet.ValuePosition.OUTSIDE_SLICE
             valueLinePart1Length = 0.4f
             valueLinePart2Length = 0.4f
             valueLinePart1OffsetPercentage = 80f
-            valueLineColor = Color.GRAY
+            valueLineColor = textSecondaryColor
         }
         val pieData = PieData(dataSet).apply {
             setValueFormatter(com.github.mikephil.charting.formatter.PercentFormatter(chart))

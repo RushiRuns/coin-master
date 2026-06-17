@@ -5,6 +5,7 @@ import com.rushi.coinmaster.data.preferences.AppPreferences
 import com.rushi.coinmaster.data.repository.AccountRepository
 import com.rushi.coinmaster.data.repository.BudgetRepository
 import com.rushi.coinmaster.data.repository.IncomeStreamRepository
+import com.rushi.coinmaster.domain.usecase.AddTransactionUseCase
 import io.mockk.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -24,6 +25,7 @@ class OnboardingViewModelTest {
     private val accountRepository: AccountRepository = mockk(relaxed = true)
     private val budgetRepository: BudgetRepository = mockk(relaxed = true)
     private val incomeStreamRepository: IncomeStreamRepository = mockk(relaxed = true)
+    private val addTransactionUseCase: AddTransactionUseCase = mockk(relaxed = true)
 
     private lateinit var viewModel: OnboardingViewModel
 
@@ -34,7 +36,8 @@ class OnboardingViewModelTest {
             appPreferences,
             accountRepository,
             budgetRepository,
-            incomeStreamRepository
+            incomeStreamRepository,
+            addTransactionUseCase
         )
     }
 
@@ -141,6 +144,20 @@ class OnboardingViewModelTest {
         }) }
         coVerify { incomeStreamRepository.insertIncomeStream(match {
             it.name == "Freelance" && it.amountPaise == 1000000L && it.accountId == 1L
+        }) }
+
+        // Assert income transactions deposited
+        coVerify { addTransactionUseCase(match {
+            it.amountPaise == 4000000L &&
+            it.type == com.rushi.coinmaster.data.local.model.TransactionType.INCOME &&
+            it.accountId == 1L &&
+            it.note == "Income Stream: Salary"
+        }) }
+        coVerify { addTransactionUseCase(match {
+            it.amountPaise == 1000000L &&
+            it.type == com.rushi.coinmaster.data.local.model.TransactionType.INCOME &&
+            it.accountId == 1L &&
+            it.note == "Income Stream: Freelance"
         }) }
 
         // Assert budget period created with combined income

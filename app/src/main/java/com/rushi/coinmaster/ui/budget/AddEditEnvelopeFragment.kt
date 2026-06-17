@@ -218,7 +218,15 @@ class AddEditEnvelopeFragment : Fragment() {
             "ic_movie" to binding.iconEntertainment,
             "ic_shopping_cart" to binding.iconShopping,
             "ic_savings" to binding.iconSavings,
-            "ic_local_hospital" to binding.iconEmergency
+            "ic_local_hospital" to binding.iconEmergency,
+            "ic_directions_car" to binding.iconCar,
+            "ic_school" to binding.iconSchool,
+            "ic_flight" to binding.iconFlight,
+            "ic_favorite" to binding.iconFavorite,
+            "ic_phone" to binding.iconPhone,
+            "ic_card_giftcard" to binding.iconGift,
+            "ic_work" to binding.iconWork,
+            "ic_coffee" to binding.iconCoffee
         )
 
         for (pair in iconViews) {

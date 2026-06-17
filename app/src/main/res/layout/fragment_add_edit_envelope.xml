@@ -244,7 +244,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:columnCount="4"
-                    android:rowCount="2"
+                    android:rowCount="4"
                     android:alignmentMode="alignMargins"
                     android:columnOrderPreserved="false">
 
@@ -334,6 +334,94 @@
                         android:src="@drawable/ic_local_hospital"
                         android:background="?android:attr/selectableItemBackground"
                         android:contentDescription="Emergency Icon"
+                        app:tint="@color/text_secondary" />
+
+                    <ImageView
+                        android:id="@+id/icon_car"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_margin="8dp"
+                        android:padding="8dp"
+                        android:src="@drawable/ic_directions_car"
+                        android:background="?android:attr/selectableItemBackground"
+                        android:contentDescription="Car Icon"
+                        app:tint="@color/text_secondary" />
+
+                    <ImageView
+                        android:id="@+id/icon_school"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_margin="8dp"
+                        android:padding="8dp"
+                        android:src="@drawable/ic_school"
+                        android:background="?android:attr/selectableItemBackground"
+                        android:contentDescription="School Icon"
+                        app:tint="@color/text_secondary" />
+
+                    <ImageView
+                        android:id="@+id/icon_flight"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_margin="8dp"
+                        android:padding="8dp"
+                        android:src="@drawable/ic_flight"
+                        android:background="?android:attr/selectableItemBackground"
+                        android:contentDescription="Flight Icon"
+                        app:tint="@color/text_secondary" />
+
+                    <ImageView
+                        android:id="@+id/icon_favorite"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_margin="8dp"
+                        android:padding="8dp"
+                        android:src="@drawable/ic_favorite"
+                        android:background="?android:attr/selectableItemBackground"
+                        android:contentDescription="Favorite Icon"
+                        app:tint="@color/text_secondary" />
+
+                    <ImageView
+                        android:id="@+id/icon_phone"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_margin="8dp"
+                        android:padding="8dp"
+                        android:src="@drawable/ic_phone"
+                        android:background="?android:attr/selectableItemBackground"
+                        android:contentDescription="Phone Icon"
+                        app:tint="@color/text_secondary" />
+
+                    <ImageView
+                        android:id="@+id/icon_gift"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_margin="8dp"
+                        android:padding="8dp"
+                        android:src="@drawable/ic_card_giftcard"
+                        android:background="?android:attr/selectableItemBackground"
+                        android:contentDescription="Gift Icon"
+                        app:tint="@color/text_secondary" />
+
+                    <ImageView
+                        android:id="@+id/icon_work"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_margin="8dp"
+                        android:padding="8dp"
+                        android:src="@drawable/ic_work"
+                        android:background="?android:attr/selectableItemBackground"
+                        android:contentDescription="Work Icon"
+                        app:tint="@color/text_secondary" />
+
+                    <ImageView
+                        android:id="@+id/icon_coffee"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_margin="8dp"
+                        android:padding="8dp"
+                        android:src="@drawable/ic_coffee"
+                        android:background="?android:attr/selectableItemBackground"
+                        android:contentDescription="Coffee Icon"
                         app:tint="@color/text_secondary" />
                 </GridLayout>
             </LinearLayout>

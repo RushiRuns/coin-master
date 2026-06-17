@@ -82,13 +82,22 @@ class IncomeViewModelTest {
     }
 
     @Test
-    fun `addIncomeStream inserts new stream into repository`() = runTest {
+    fun `addIncomeStream inserts new stream into repository and deposits the amount`() = runTest {
         viewModel.addIncomeStream("Rental", 1500.00, 10L)
         testScheduler.advanceUntilIdle()
 
         coVerify(exactly = 1) {
             incomeStreamRepository.insertIncomeStream(match {
                 it.name == "Rental" && it.amountPaise == 150000L && it.accountId == 10L
+            })
+        }
+
+        coVerify(exactly = 1) {
+            addTransactionUseCase(match {
+                it.amountPaise == 150000L &&
+                it.type == TransactionType.INCOME &&
+                it.accountId == 10L &&
+                it.note == "Income Stream: Rental"
             })
         }
     }

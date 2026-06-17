@@ -64,6 +64,14 @@ class IncomeViewModel @Inject constructor(
                     accountId = accountId
                 )
             )
+            val transaction = TransactionEntity(
+                amountPaise = amountPaise,
+                type = TransactionType.INCOME,
+                accountId = accountId,
+                date = System.currentTimeMillis(),
+                note = "Income Stream: $name"
+            )
+            addTransactionUseCase(transaction)
             _uiEvent.emit(IncomeUiEvent.ShowToast("Income stream added"))
         }
     }
