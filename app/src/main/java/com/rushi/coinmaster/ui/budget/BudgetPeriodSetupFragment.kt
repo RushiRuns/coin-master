@@ -72,7 +72,6 @@ class BudgetPeriodSetupFragment : Fragment() {
                 if (existing != null && existing.id == activePeriodId) {
                     startDateVal = existing.startDate
                     endDateVal = existing.endDate
-                    binding.etMonthlyIncome.setText(String.format("%.2f", existing.incomePaise / 100.0))
                     binding.etNeedsPercent.setText(existing.needsPercent.toString())
                     binding.etWantsPercent.setText(existing.wantsPercent.toString())
                     binding.etSavingsPercent.setText(existing.savingsPercent.toString())
@@ -101,6 +100,24 @@ class BudgetPeriodSetupFragment : Fragment() {
             }
         }
 
+        // Observe total income streams reactively
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.totalIncomeStreamsPaise.collect { totalPaise ->
+                    binding.etMonthlyIncome.setText(String.format(Locale.US, "%.2f", totalPaise / 100.0))
+                    updateSplitCalculations()
+                }
+            }
+        }
+
+        // Click listeners to navigate to income management
+        binding.etMonthlyIncome.setOnClickListener {
+            findNavController().navigate(R.id.nav_income)
+        }
+        binding.tilMonthlyIncome.setOnClickListener {
+            findNavController().navigate(R.id.nav_income)
+        }
+
         // Date selection click listeners
         binding.btnSelectStartDate.setOnClickListener {
             showDatePicker(true)
@@ -118,7 +135,6 @@ class BudgetPeriodSetupFragment : Fragment() {
                 updateSplitCalculations()
             }
         }
-        binding.etMonthlyIncome.addTextChangedListener(textWatcher)
         binding.etNeedsPercent.addTextChangedListener(textWatcher)
         binding.etWantsPercent.addTextChangedListener(textWatcher)
         binding.etSavingsPercent.addTextChangedListener(textWatcher)
@@ -216,7 +232,6 @@ class BudgetPeriodSetupFragment : Fragment() {
     }
 
     private fun saveBudgetSetup() {
-        val incomeStr = binding.etMonthlyIncome.text.toString()
         val needsStr = binding.etNeedsPercent.text.toString()
         val wantsStr = binding.etWantsPercent.text.toString()
         val savingsStr = binding.etSavingsPercent.text.toString()
@@ -226,8 +241,9 @@ class BudgetPeriodSetupFragment : Fragment() {
             return
         }
 
-        if (incomeStr.isBlank()) {
-            Toast.makeText(requireContext(), getString(R.string.error_income_empty), Toast.LENGTH_SHORT).show()
+        val totalIncome = viewModel.totalIncomeStreamsPaise.value
+        if (totalIncome <= 0L) {
+            Toast.makeText(requireContext(), "Please add at least one income stream before setting up a budget.", Toast.LENGTH_LONG).show()
             return
         }
 
@@ -244,7 +260,6 @@ class BudgetPeriodSetupFragment : Fragment() {
             id = activePeriodId,
             startDate = startDateVal,
             endDate = endDateVal,
-            incomeStr = incomeStr,
             needsPercent = needsP,
             wantsPercent = wantsP,
             savingsPercent = savingsP

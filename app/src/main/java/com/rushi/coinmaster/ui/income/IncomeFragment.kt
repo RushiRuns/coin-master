@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -16,6 +17,7 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import com.rushi.coinmaster.MainActivity
 import com.rushi.coinmaster.R
+import com.rushi.coinmaster.data.local.entity.AccountEntity
 import com.rushi.coinmaster.databinding.FragmentIncomeBinding
 import com.rushi.coinmaster.databinding.ItemOnboardingIncomeStreamBinding
 import com.rushi.coinmaster.domain.model.IncomeStream
@@ -32,6 +34,7 @@ class IncomeFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val viewModel: IncomeViewModel by viewModels()
+    private var accountsList: List<AccountEntity> = emptyList()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -62,9 +65,24 @@ class IncomeFragment : Fragment() {
             addIncomeStreamFromInput()
         }
 
-        // Observe income streams
+        // Observe accounts, income streams, and UI events
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                launch {
+                    viewModel.accounts.collectLatest { accounts ->
+                        accountsList = accounts
+                        val accountNames = accounts.map { it.name }
+                        val sourceAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, accountNames)
+                        binding.actvStreamAccount.setAdapter(sourceAdapter)
+
+                        if (accountNames.isNotEmpty() && binding.actvStreamAccount.text.isEmpty()) {
+                            binding.actvStreamAccount.setText(accountNames[0], false)
+                        }
+
+                        // Re-render streams list since accounts are now populated (needed to resolve names)
+                        renderIncomeStreams(viewModel.incomeStreams.value)
+                    }
+                }
                 launch {
                     viewModel.incomeStreams.collectLatest { streams ->
                         renderIncomeStreams(streams)
@@ -76,6 +94,15 @@ class IncomeFragment : Fragment() {
                         binding.tvTotalIncome.text = CurrencyFormatter.format(totalPaise, langCode)
                     }
                 }
+                launch {
+                    viewModel.uiEvent.collect { event ->
+                        when (event) {
+                            is IncomeUiEvent.ShowToast -> {
+                                Toast.makeText(requireContext(), event.message, Toast.LENGTH_SHORT).show()
+                            }
+                        }
+                    }
+                }
             }
         }
     }
@@ -83,6 +110,7 @@ class IncomeFragment : Fragment() {
     private fun addIncomeStreamFromInput() {
         val name = binding.etStreamName.text?.toString()?.trim() ?: ""
         val amountStr = binding.etStreamAmount.text?.toString()?.trim() ?: ""
+        val selectedAccountName = binding.actvStreamAccount.text?.toString() ?: ""
 
         if (name.isEmpty()) {
             binding.tilStreamName.error = "Name cannot be empty"
@@ -97,12 +125,18 @@ class IncomeFragment : Fragment() {
         }
         binding.tilStreamAmount.error = null
 
-        viewModel.addIncomeStream(name, amount)
+        val selectedAccount = accountsList.find { it.name == selectedAccountName }
+        if (selectedAccount == null) {
+            binding.tilStreamAccount.error = "Please select a valid account"
+            return
+        }
+        binding.tilStreamAccount.error = null
+
+        viewModel.addIncomeStream(name, amount, selectedAccount.id)
 
         binding.etStreamName.text = null
         binding.etStreamAmount.text = null
-
-        Toast.makeText(requireContext(), "Income stream added", Toast.LENGTH_SHORT).show()
+        // Do not reset account text to keep the selection helper active
     }
 
     private fun renderIncomeStreams(streams: List<IncomeStream>) {
@@ -124,6 +158,20 @@ class IncomeFragment : Fragment() {
                 )
                 itemBinding.tvStreamName.text = stream.name
                 itemBinding.tvStreamAmount.text = CurrencyFormatter.format(stream.amountPaise, langCode) + " / month"
+
+                val linkedAccount = accountsList.find { it.id == stream.accountId }
+                if (linkedAccount != null) {
+                    itemBinding.tvStreamAccount.text = "Deposits to: ${linkedAccount.name}"
+                    itemBinding.tvStreamAccount.visibility = View.VISIBLE
+                    itemBinding.btnDeposit.visibility = View.VISIBLE
+                    itemBinding.btnDeposit.setOnClickListener {
+                        viewModel.depositIncomeStream(stream)
+                    }
+                } else {
+                    itemBinding.tvStreamAccount.text = "Deposits to: Unknown Account"
+                    itemBinding.tvStreamAccount.visibility = View.VISIBLE
+                    itemBinding.btnDeposit.visibility = View.GONE
+                }
 
                 itemBinding.btnDelete.setOnClickListener {
                     AlertDialog.Builder(requireContext())

@@ -33,8 +33,14 @@ class BudgetViewModel @Inject constructor(
     @ApplicationContext private val context: Context,
     private val budgetRepository: BudgetRepository,
     private val validateZeroBalanceUseCase: ValidateZeroBalanceUseCase,
-    private val expenseCategoryRepository: com.rushi.coinmaster.data.repository.ExpenseCategoryRepository
+    private val expenseCategoryRepository: com.rushi.coinmaster.data.repository.ExpenseCategoryRepository,
+    private val incomeStreamRepository: com.rushi.coinmaster.data.repository.IncomeStreamRepository
 ) : ViewModel() {
+
+    // Expose the computed sum of all active income streams
+    val totalIncomeStreamsPaise: StateFlow<Long> = incomeStreamRepository.getIncomeStreamsFlow()
+        .map { list -> list.filter { !it.isDeleted }.sumOf { it.amountPaise } }
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), 0L)
 
     private val _selectedPeriodId = MutableStateFlow<Int?>(null)
     val selectedPeriodId: StateFlow<Int?> = _selectedPeriodId.asStateFlow()
@@ -279,14 +285,14 @@ class BudgetViewModel @Inject constructor(
         id: Int,
         startDate: Long,
         endDate: Long,
-        incomeStr: String,
         needsPercent: Int,
         wantsPercent: Int,
         savingsPercent: Int
     ) {
         viewModelScope.launch {
             try {
-                val incomePaise = MoneyMath.rupeesToPaise(incomeStr)
+                val activeStreams = incomeStreamRepository.getIncomeStreams()
+                val incomePaise = activeStreams.filter { !it.isDeleted }.sumOf { it.amountPaise }
                 
                 // Overlap checks
                 val overlapping = budgetRepository.getOverlappingPeriod(startDate, endDate, id)

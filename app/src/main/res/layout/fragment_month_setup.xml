@@ -133,13 +133,18 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:hint="@string/hint_monthly_income_rupees"
+                app:helperText="Calculated from your active Income Streams. Tap to manage streams."
+                app:helperTextTextColor="@color/primary"
                 app:layout_constraintTop_toBottomOf="@id/card_date_selection">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et_monthly_income"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="numberDecimal"
+                    android:inputType="none"
+                    android:focusable="false"
+                    android:clickable="true"
+                    android:cursorVisible="false"
                     android:textColor="@color/text_primary" />
             </com.google.android.material.textfield.TextInputLayout>
 
