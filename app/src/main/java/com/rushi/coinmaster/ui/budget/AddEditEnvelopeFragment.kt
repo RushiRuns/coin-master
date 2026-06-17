@@ -38,10 +38,11 @@ class AddEditEnvelopeFragment : Fragment() {
     lateinit var computeBucketSplitUseCase: com.rushi.coinmaster.domain.usecase.ComputeBucketSplitUseCase
 
     private var selectedColor: String = "#E57373"
-    private var selectedIcon: String = "ic_emergency"
+    private var selectedIcon: String = "ic_local_hospital"
 
     private lateinit var colorViews: List<View>
     private lateinit var iconViews: List<Pair<String, ImageView>>
+    private var parentCategories: List<com.rushi.coinmaster.domain.model.ExpenseCategory> = emptyList()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -116,6 +117,33 @@ class AddEditEnvelopeFragment : Fragment() {
             saveCategory()
         }
 
+        // Observe and populate parent categories
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.expenseCategoriesState.collect { list ->
+                    parentCategories = list
+                    val categoryNames = listOf("None") + list.map { it.name }
+                    val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, categoryNames)
+                    binding.actvParentCategory.setAdapter(adapter)
+
+                    if (isEditMode) {
+                        viewModel.getCategoryById(args.categoryId)?.let { envelope ->
+                            envelope.expenseCategoryId?.let { parentId ->
+                                val selectedIndex = list.indexOfFirst { it.id == parentId }
+                                if (selectedIndex != -1) {
+                                    binding.actvParentCategory.setText(list[selectedIndex].name, false)
+                                } else {
+                                    binding.actvParentCategory.setText("None", false)
+                                }
+                            } ?: binding.actvParentCategory.setText("None", false)
+                        }
+                    } else {
+                        binding.actvParentCategory.setText("None", false)
+                    }
+                }
+            }
+        }
+
         // Delete Category
         binding.btnDeleteCategory.setOnClickListener {
             showDeleteConfirmation()
@@ -183,14 +211,14 @@ class AddEditEnvelopeFragment : Fragment() {
 
     private fun setupIconSelection() {
         iconViews = listOf(
-            "ic_rent" to binding.iconRent,
-            "ic_groceries" to binding.iconGroceries,
-            "ic_utilities" to binding.iconUtilities,
-            "ic_dining" to binding.iconDining,
-            "ic_entertainment" to binding.iconEntertainment,
-            "ic_shopping" to binding.iconShopping,
+            "ic_home" to binding.iconRent,
+            "ic_shopping_cart" to binding.iconGroceries,
+            "ic_bolt" to binding.iconUtilities,
+            "ic_restaurant" to binding.iconDining,
+            "ic_movie" to binding.iconEntertainment,
+            "ic_shopping_cart" to binding.iconShopping,
             "ic_savings" to binding.iconSavings,
-            "ic_emergency" to binding.iconEmergency
+            "ic_local_hospital" to binding.iconEmergency
         )
 
         for (pair in iconViews) {
@@ -250,7 +278,17 @@ class AddEditEnvelopeFragment : Fragment() {
                 binding.etEnvelopeName.setText(category.name)
                 binding.actvBucketType.setText(category.bucketType?.name ?: "UNASSIGNED", false)
                 selectedColor = category.colorHex
-                selectedIcon = category.iconName
+                selectedIcon = when (category.iconName) {
+                    "ic_rent" -> "ic_home"
+                    "ic_groceries" -> "ic_shopping_cart"
+                    "ic_utilities" -> "ic_bolt"
+                    "ic_dining" -> "ic_restaurant"
+                    "ic_entertainment" -> "ic_movie"
+                    "ic_shopping" -> "ic_shopping_cart"
+                    "ic_savings" -> "ic_savings"
+                    "ic_emergency" -> "ic_local_hospital"
+                    else -> category.iconName
+                }
                 highlightSelectedColor()
                 highlightSelectedIcon()
             }
@@ -277,13 +315,21 @@ class AddEditEnvelopeFragment : Fragment() {
             null
         }
 
+        val selectedParentCategoryName = binding.actvParentCategory.text.toString()
+        val expenseCategoryId = if (selectedParentCategoryName == "None") {
+            null
+        } else {
+            parentCategories.find { it.name == selectedParentCategoryName }?.id
+        }
+
         viewModel.saveCategory(
             id = args.categoryId,
             name = name,
             bucketType = bucket,
             colorHex = selectedColor,
             iconName = selectedIcon,
-            initialAllocationPaise = initialAllocationPaise
+            initialAllocationPaise = initialAllocationPaise,
+            expenseCategoryId = expenseCategoryId
         )
     }
 

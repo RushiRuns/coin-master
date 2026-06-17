@@ -172,6 +172,10 @@ class BudgetViewModel @Inject constructor(
     val allCategoriesState: StateFlow<List<CategoryEntity>> = budgetRepository.getCategoriesFlow()
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
 
+    // Reactively track all active parent categories
+    val expenseCategoriesState: StateFlow<List<com.rushi.coinmaster.domain.model.ExpenseCategory>> = expenseCategoryRepository.getExpenseCategoriesFlow()
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
+
     // Reactively track live unallocated / validation state
     val unallocatedState: StateFlow<BudgetValidationResult> = combine(
         budgetPeriodState,
@@ -337,7 +341,8 @@ class BudgetViewModel @Inject constructor(
         bucketType: BucketType?,
         colorHex: String,
         iconName: String,
-        initialAllocationPaise: Long? = null
+        initialAllocationPaise: Long? = null,
+        expenseCategoryId: Long? = null
     ) {
         viewModelScope.launch {
             val periodId = _selectedPeriodId.value ?: 0
@@ -360,7 +365,8 @@ class BudgetViewModel @Inject constructor(
                     bucketType = bucketType,
                     colorHex = colorHex,
                     iconName = iconName,
-                    displayOrder = 0
+                    displayOrder = 0,
+                    expenseCategoryId = expenseCategoryId
                 )
             } else {
                 val existing = budgetRepository.getCategoriesFlow().first().find { it.id == id }
@@ -368,7 +374,8 @@ class BudgetViewModel @Inject constructor(
                     name = name.trim(),
                     bucketType = bucketType,
                     colorHex = colorHex,
-                    iconName = iconName
+                    iconName = iconName,
+                    expenseCategoryId = expenseCategoryId
                 ) ?: return@launch
             }
             if (id == 0L) {

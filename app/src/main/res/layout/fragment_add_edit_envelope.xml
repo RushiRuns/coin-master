@@ -82,6 +82,24 @@
                     android:textColor="@color/text_primary" />
             </com.google.android.material.textfield.TextInputLayout>
 
+            <!-- Parent Category Selection -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/til_parent_category"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:hint="Parent Category (Optional)"
+                app:layout_constraintTop_toBottomOf="@id/til_bucket_selection">
+
+                <AutoCompleteTextView
+                    android:id="@+id/actv_parent_category"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="none"
+                    android:textColor="@color/text_primary" />
+            </com.google.android.material.textfield.TextInputLayout>
+
             <!-- Initial Allocation Input -->
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/til_envelope_amount"
@@ -91,7 +109,7 @@
                 android:layout_marginTop="16dp"
                 android:hint="Initial Allocation (Optional)"
                 app:helperText="Will be allocated to the current month's budget"
-                app:layout_constraintTop_toBottomOf="@id/til_bucket_selection">
+                app:layout_constraintTop_toBottomOf="@id/til_parent_category">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et_envelope_amount"

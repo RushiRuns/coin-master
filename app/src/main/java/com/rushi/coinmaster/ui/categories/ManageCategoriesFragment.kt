@@ -45,15 +45,17 @@ class ManageCategoriesFragment : Fragment() {
     )
 
     private val icons = listOf(
-        "Rent" to "ic_rent",
-        "Groceries" to "ic_groceries",
-        "Utilities" to "ic_utilities",
-        "Dining" to "ic_dining",
-        "Entertainment" to "ic_entertainment",
-        "Shopping" to "ic_shopping",
+        "Rent" to "ic_home",
+        "Groceries" to "ic_shopping_cart",
+        "Utilities" to "ic_bolt",
+        "Dining" to "ic_restaurant",
+        "Entertainment" to "ic_movie",
+        "Shopping" to "ic_shopping_cart",
         "Savings" to "ic_savings",
-        "Emergency" to "ic_emergency"
+        "Emergency" to "ic_local_hospital"
     )
+
+    private var editingCategory: ExpenseCategory? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -83,6 +85,10 @@ class ManageCategoriesFragment : Fragment() {
 
         binding.btnAddCategory.setOnClickListener {
             addCategoryFromInput()
+        }
+
+        binding.btnCancelEdit.setOnClickListener {
+            resetForm()
         }
 
         viewLifecycleOwner.lifecycleScope.launch {
@@ -115,21 +121,67 @@ class ManageCategoriesFragment : Fragment() {
         val colorHex = colors[binding.spColor.selectedItemPosition].second
         val iconName = icons[binding.spIcon.selectedItemPosition].second
 
-        val newCategory = ExpenseCategory(
-            name = name,
-            colorHex = colorHex,
-            iconName = iconName
-        )
-
-        viewLifecycleOwner.lifecycleScope.launch {
-            try {
-                expenseCategoryRepository.insertExpenseCategory(newCategory)
-                Toast.makeText(requireContext(), "Category added successfully!", Toast.LENGTH_SHORT).show()
-                binding.etCategoryName.text = null
-            } catch (e: Exception) {
-                Toast.makeText(requireContext(), "Failed to add category: ${e.message}", Toast.LENGTH_SHORT).show()
+        val editCat = editingCategory
+        if (editCat != null) {
+            val updated = editCat.copy(
+                name = name,
+                colorHex = colorHex,
+                iconName = iconName
+            )
+            viewLifecycleOwner.lifecycleScope.launch {
+                try {
+                    expenseCategoryRepository.updateExpenseCategory(updated)
+                    Toast.makeText(requireContext(), "Category updated successfully!", Toast.LENGTH_SHORT).show()
+                    resetForm()
+                } catch (e: Exception) {
+                    Toast.makeText(requireContext(), "Failed to update category: ${e.message}", Toast.LENGTH_SHORT).show()
+                }
+            }
+        } else {
+            val newCategory = ExpenseCategory(
+                name = name,
+                colorHex = colorHex,
+                iconName = iconName
+            )
+            viewLifecycleOwner.lifecycleScope.launch {
+                try {
+                    expenseCategoryRepository.insertExpenseCategory(newCategory)
+                    Toast.makeText(requireContext(), "Category added successfully!", Toast.LENGTH_SHORT).show()
+                    resetForm()
+                } catch (e: Exception) {
+                    Toast.makeText(requireContext(), "Failed to add category: ${e.message}", Toast.LENGTH_SHORT).show()
+                }
             }
         }
+    }
+
+    private fun startEditingCategory(category: ExpenseCategory) {
+        editingCategory = category
+        binding.etCategoryName.setText(category.name)
+        
+        val colorIndex = colors.indexOfFirst { it.second.equals(category.colorHex, ignoreCase = true) }
+        if (colorIndex != -1) {
+            binding.spColor.setSelection(colorIndex)
+        }
+
+        val iconIndex = icons.indexOfFirst { it.second == category.iconName }
+        if (iconIndex != -1) {
+            binding.spIcon.setSelection(iconIndex)
+        }
+
+        binding.tvFormHeader.text = "Edit Category"
+        binding.btnAddCategory.text = "Update Category"
+        binding.btnCancelEdit.visibility = View.VISIBLE
+    }
+
+    private fun resetForm() {
+        binding.etCategoryName.text = null
+        binding.spColor.setSelection(0)
+        binding.spIcon.setSelection(0)
+        binding.tvFormHeader.text = "Create Category"
+        binding.btnAddCategory.text = "Add Category"
+        binding.btnCancelEdit.visibility = View.GONE
+        editingCategory = null
     }
 
     private fun renderCategoriesList(list: List<ExpenseCategory>) {
@@ -153,15 +205,14 @@ class ManageCategoriesFragment : Fragment() {
             } catch (e: Exception) {
                 // Default fallback
             }
-
-            // Set Icon
-            val resId = requireContext().resources.getIdentifier(
-                category.iconName,
-                "drawable",
-                requireContext().packageName
+ 
+            // Set Icon using IconHelper to correctly resolve standard drawable resource IDs
+            itemBinding.ivIcon.setImageResource(
+                com.rushi.coinmaster.util.IconHelper.getIconDrawableResId(requireContext(), category.iconName)
             )
-            if (resId != 0) {
-                itemBinding.ivIcon.setImageResource(resId)
+
+            itemBinding.btnEdit.setOnClickListener {
+                startEditingCategory(category)
             }
 
             itemBinding.btnDelete.setOnClickListener {
@@ -169,6 +220,9 @@ class ManageCategoriesFragment : Fragment() {
                     try {
                         expenseCategoryRepository.softDeleteExpenseCategory(category.id)
                         Toast.makeText(requireContext(), "Category deleted", Toast.LENGTH_SHORT).show()
+                        if (editingCategory?.id == category.id) {
+                            resetForm()
+                        }
                     } catch (e: Exception) {
                         Toast.makeText(requireContext(), "Error deleting category", Toast.LENGTH_SHORT).show()
                     }

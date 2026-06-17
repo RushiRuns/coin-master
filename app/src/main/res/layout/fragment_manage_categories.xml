@@ -67,6 +67,7 @@
                     android:padding="16dp">
 
                     <TextView
+                        android:id="@+id/tv_form_header"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Create Category"
@@ -118,12 +119,28 @@
                             android:layout_weight="1" />
                     </LinearLayout>
 
-                    <Button
-                        android:id="@+id/btn_add_category"
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp"
-                        android:text="Add Category" />
+                        android:orientation="horizontal"
+                        android:layout_marginTop="16dp">
+
+                        <Button
+                            android:id="@+id/btn_add_category"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Add Category" />
+
+                        <Button
+                            android:id="@+id/btn_cancel_edit"
+                            style="@style/Widget.MaterialComponents.Button.TextButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:text="Cancel"
+                            android:visibility="gone" />
+                    </LinearLayout>
 
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
@@ -149,7 +166,6 @@
                 android:layout_marginBottom="16dp"
                 android:orientation="vertical"
                 app:layout_constraintTop_toBottomOf="@id/tv_list_header"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent" />
 

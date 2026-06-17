@@ -120,16 +120,16 @@ class BudgetRepository @Inject constructor(
         if (existing.isNotEmpty()) return
 
         val defaults = listOf(
-            CategoryEntity(name = "Rent", bucketType = BucketType.NEEDS, colorHex = "#E57373", iconName = "ic_rent", displayOrder = 0),
-            CategoryEntity(name = "Groceries", bucketType = BucketType.NEEDS, colorHex = "#81C784", iconName = "ic_groceries", displayOrder = 1),
-            CategoryEntity(name = "Utilities", bucketType = BucketType.NEEDS, colorHex = "#64B5F6", iconName = "ic_utilities", displayOrder = 2),
+            CategoryEntity(name = "Rent", bucketType = BucketType.NEEDS, colorHex = "#E57373", iconName = "ic_home", displayOrder = 0),
+            CategoryEntity(name = "Groceries", bucketType = BucketType.NEEDS, colorHex = "#81C784", iconName = "ic_shopping_cart", displayOrder = 1),
+            CategoryEntity(name = "Utilities", bucketType = BucketType.NEEDS, colorHex = "#64B5F6", iconName = "ic_bolt", displayOrder = 2),
             
-            CategoryEntity(name = "Dining Out", bucketType = BucketType.WANTS, colorHex = "#FFD54F", iconName = "ic_dining", displayOrder = 3),
-            CategoryEntity(name = "Entertainment", bucketType = BucketType.WANTS, colorHex = "#BA68C8", iconName = "ic_entertainment", displayOrder = 4),
-            CategoryEntity(name = "Shopping", bucketType = BucketType.WANTS, colorHex = "#4DB6AC", iconName = "ic_shopping", displayOrder = 5),
+            CategoryEntity(name = "Dining Out", bucketType = BucketType.WANTS, colorHex = "#FFD54F", iconName = "ic_restaurant", displayOrder = 3),
+            CategoryEntity(name = "Entertainment", bucketType = BucketType.WANTS, colorHex = "#BA68C8", iconName = "ic_movie", displayOrder = 4),
+            CategoryEntity(name = "Shopping", bucketType = BucketType.WANTS, colorHex = "#4DB6AC", iconName = "ic_shopping_cart", displayOrder = 5),
             
             CategoryEntity(name = "General Savings", bucketType = BucketType.SAVINGS, colorHex = "#4DD0E1", iconName = "ic_savings", displayOrder = 6),
-            CategoryEntity(name = "Emergency Fund", bucketType = BucketType.SAVINGS, colorHex = "#FF8A65", iconName = "ic_emergency", displayOrder = 7),
+            CategoryEntity(name = "Emergency Fund", bucketType = BucketType.SAVINGS, colorHex = "#FF8A65", iconName = "ic_local_hospital", displayOrder = 7),
             CategoryEntity(name = "Lending & Debts", bucketType = BucketType.WANTS, colorHex = "#90A4AE", iconName = "ic_accounts", displayOrder = 8)
         )
 

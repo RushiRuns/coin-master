@@ -108,17 +108,7 @@ class ManageEnvelopesFragment : Fragment() {
     }
 
     private fun getIconDrawableResId(iconName: String): Int {
-        return when (iconName) {
-            "ic_rent" -> android.R.drawable.ic_menu_today
-            "ic_groceries" -> android.R.drawable.ic_menu_gallery
-            "ic_utilities" -> android.R.drawable.ic_menu_info_details
-            "ic_dining" -> android.R.drawable.ic_menu_compass
-            "ic_entertainment" -> android.R.drawable.ic_menu_slideshow
-            "ic_shopping" -> android.R.drawable.ic_menu_view
-            "ic_savings" -> android.R.drawable.ic_menu_save
-            "ic_emergency" -> android.R.drawable.ic_menu_help
-            else -> android.R.drawable.ic_menu_help
-        }
+        return com.rushi.coinmaster.util.IconHelper.getIconDrawableResId(requireContext(), iconName)
     }
 
     override fun onDestroyView() {
