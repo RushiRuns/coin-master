@@ -18,6 +18,7 @@ import com.rushi.coinmaster.data.local.entity.CategoryEntity
 import com.rushi.coinmaster.data.local.entity.TransferRecipientEntity
 import com.rushi.coinmaster.data.local.model.TransactionType
 import com.rushi.coinmaster.databinding.FragmentAddTransactionBinding
+import androidx.navigation.fragment.navArgs
 import com.rushi.coinmaster.util.DateFormatter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -30,12 +31,14 @@ class AddTransactionFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val viewModel: TransactionViewModel by viewModels()
+    private val args: AddTransactionFragmentArgs by navArgs()
 
     private var selectedDateMillis: Long = System.currentTimeMillis()
     private var accountsList: List<AccountEntity> = emptyList()
     private var categoriesList: List<CategoryEntity> = emptyList()
     private var recipientsList: List<TransferRecipientEntity> = emptyList()
 
+    private var editingTransaction: com.rushi.coinmaster.data.local.entity.TransactionEntity? = null
     private lateinit var types: List<String>
 
     override fun onCreateView(
@@ -57,6 +60,11 @@ class AddTransactionFragment : Fragment() {
         setupTypeDropdown()
         setupDatePicker()
 
+        // If editing a transaction, trigger load
+        if (args.transactionId != 0L) {
+            viewModel.loadTransaction(args.transactionId)
+        }
+
         // Observe Accounts and Categories
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -68,7 +76,19 @@ class AddTransactionFragment : Fragment() {
                         binding.actvAccount.setAdapter(sourceAdapter)
                         binding.actvTransferToAccount.setAdapter(sourceAdapter)
 
-                        if (accountNames.isNotEmpty() && binding.actvAccount.text.isEmpty()) {
+                        val editTx = editingTransaction
+                        if (editTx != null) {
+                            val sourceAcc = accounts.find { it.id == editTx.accountId }
+                            if (sourceAcc != null) {
+                                binding.actvAccount.setText(sourceAcc.name, false)
+                            }
+                            if (editTx.type == TransactionType.TRANSFER) {
+                                val destAcc = accounts.find { it.id == editTx.transferToAccountId }
+                                if (destAcc != null) {
+                                    binding.actvTransferToAccount.setText(destAcc.name, false)
+                                }
+                            }
+                        } else if (accountNames.isNotEmpty() && binding.actvAccount.text.isEmpty()) {
                             binding.actvAccount.setText(accountNames[0], false)
                         }
                     }
@@ -81,7 +101,13 @@ class AddTransactionFragment : Fragment() {
                         val categoryAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, categoryNames)
                         binding.actvCategory.setAdapter(categoryAdapter)
 
-                        if (categoryNames.isNotEmpty() && binding.actvCategory.text.isEmpty()) {
+                        val editTx = editingTransaction
+                        if (editTx != null && editTx.type == TransactionType.EXPENSE) {
+                            val cat = categories.find { it.id == editTx.categoryId }
+                            if (cat != null) {
+                                binding.actvCategory.setText(cat.name, false)
+                            }
+                        } else if (categoryNames.isNotEmpty() && binding.actvCategory.text.isEmpty()) {
                             binding.actvCategory.setText(categoryNames[0], false)
                         }
                     }
@@ -94,8 +120,71 @@ class AddTransactionFragment : Fragment() {
                         val recipientAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, recipientNames)
                         binding.actvRecipient.setAdapter(recipientAdapter)
 
-                        if (recipientNames.isNotEmpty() && binding.actvRecipient.text.isEmpty()) {
+                        val editTx = editingTransaction
+                        if (editTx != null && editTx.type == TransactionType.EXTERNAL_TRANSFER) {
+                            val rec = recipients.find { it.id == editTx.transferRecipientId }
+                            if (rec != null) {
+                                binding.actvRecipient.setText(rec.name, false)
+                            }
+                        } else if (recipientNames.isNotEmpty() && binding.actvRecipient.text.isEmpty()) {
                             binding.actvRecipient.setText(recipientNames[0], false)
+                        }
+                    }
+                }
+
+                launch {
+                    viewModel.transactionToEdit.collect { transaction ->
+                        if (transaction != null) {
+                            editingTransaction = transaction
+                            
+                            binding.toolbar.title = "Edit Transaction"
+                            binding.btnSave.text = "Save Changes"
+
+                            binding.etAmount.setText(String.format(java.util.Locale.US, "%.2f", transaction.amountPaise / 100.0))
+                            selectedDateMillis = transaction.date
+                            binding.etDate.setText(DateFormatter.formatDate(selectedDateMillis))
+                            binding.etNote.setText(transaction.note ?: "")
+
+                            val typeString = when (transaction.type) {
+                                TransactionType.EXPENSE -> getString(R.string.type_expense)
+                                TransactionType.INCOME -> getString(R.string.type_income)
+                                TransactionType.TRANSFER -> getString(R.string.type_transfer)
+                                TransactionType.EXTERNAL_TRANSFER -> getString(R.string.type_external_transfer)
+                                TransactionType.BALANCE_CORRECTION -> getString(R.string.type_expense) // fallback
+                            }
+                            binding.actvType.setText(typeString, false)
+                            updateDropdownVisibility(typeString)
+
+                            // Trigger re-population of spinner lists to bind correct selections
+                            val accs = accountsList
+                            if (accs.isNotEmpty()) {
+                                val sourceAcc = accs.find { it.id == transaction.accountId }
+                                if (sourceAcc != null) {
+                                    binding.actvAccount.setText(sourceAcc.name, false)
+                                }
+                                if (transaction.type == TransactionType.TRANSFER) {
+                                    val destAcc = accs.find { it.id == transaction.transferToAccountId }
+                                    if (destAcc != null) {
+                                        binding.actvTransferToAccount.setText(destAcc.name, false)
+                                    }
+                                }
+                            }
+
+                            val cats = categoriesList
+                            if (cats.isNotEmpty() && transaction.type == TransactionType.EXPENSE) {
+                                val cat = cats.find { it.id == transaction.categoryId }
+                                if (cat != null) {
+                                    binding.actvCategory.setText(cat.name, false)
+                                }
+                            }
+
+                            val recs = recipientsList
+                            if (recs.isNotEmpty() && transaction.type == TransactionType.EXTERNAL_TRANSFER) {
+                                val rec = recs.find { it.id == transaction.transferRecipientId }
+                                if (rec != null) {
+                                    binding.actvRecipient.setText(rec.name, false)
+                                }
+                            }
                         }
                     }
                 }
@@ -237,7 +326,8 @@ class AddTransactionFragment : Fragment() {
             transferRecipientId = recipientId,
             categoryId = categoryId,
             date = selectedDateMillis,
-            note = note
+            note = note,
+            editingTransactionId = args.transactionId
         )
     }
 

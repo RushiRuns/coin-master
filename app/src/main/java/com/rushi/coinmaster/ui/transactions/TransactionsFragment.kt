@@ -82,8 +82,84 @@ class TransactionsFragment : Fragment() {
 
     private fun setupRecyclerView() {
         adapter = RecentTransactionsAdapter()
+        adapter.onItemLongClick = { transaction ->
+            showTransactionOptions(transaction)
+        }
         binding.rvTransactions.layoutManager = LinearLayoutManager(requireContext())
         binding.rvTransactions.adapter = adapter
+
+        // Set up Swipe Gestures (Left to Delete, Right to Edit)
+        val swipeCallback = object : androidx.recyclerview.widget.ItemTouchHelper.SimpleCallback(
+            0,
+            androidx.recyclerview.widget.ItemTouchHelper.LEFT or androidx.recyclerview.widget.ItemTouchHelper.RIGHT
+        ) {
+            override fun onMove(
+                recyclerView: androidx.recyclerview.widget.RecyclerView,
+                viewHolder: androidx.recyclerview.widget.RecyclerView.ViewHolder,
+                target: androidx.recyclerview.widget.RecyclerView.ViewHolder
+            ): Boolean = false
+
+            override fun onSwiped(
+                viewHolder: androidx.recyclerview.widget.RecyclerView.ViewHolder,
+                direction: Int
+            ) {
+                val position = viewHolder.adapterPosition
+                val transaction = adapter.currentList[position]
+
+                if (direction == androidx.recyclerview.widget.ItemTouchHelper.LEFT) {
+                    showDeleteConfirmationDialog(transaction, position)
+                } else if (direction == androidx.recyclerview.widget.ItemTouchHelper.RIGHT) {
+                    adapter.notifyItemChanged(position) // Reset item swipe state
+                    navigateToEditTransaction(transaction.id)
+                }
+            }
+        }
+        val itemTouchHelper = androidx.recyclerview.widget.ItemTouchHelper(swipeCallback)
+        itemTouchHelper.attachToRecyclerView(binding.rvTransactions)
+    }
+
+    private fun showTransactionOptions(transaction: com.rushi.coinmaster.ui.home.TransactionDisplayItem) {
+        val options = arrayOf("Edit", "Delete")
+        android.app.AlertDialog.Builder(requireContext())
+            .setTitle("Transaction Options")
+            .setItems(options) { _, which ->
+                when (which) {
+                    0 -> navigateToEditTransaction(transaction.id)
+                    1 -> showDeleteConfirmationDialog(transaction, null)
+                }
+            }
+            .show()
+    }
+
+    private fun navigateToEditTransaction(transactionId: Long) {
+        val bundle = Bundle().apply {
+            putLong("transactionId", transactionId)
+        }
+        findNavController().navigate(R.id.addTransactionFragment, bundle)
+    }
+
+    private fun showDeleteConfirmationDialog(
+        transaction: com.rushi.coinmaster.ui.home.TransactionDisplayItem,
+        swipePosition: Int?
+    ) {
+        android.app.AlertDialog.Builder(requireContext())
+            .setTitle("Delete Transaction")
+            .setMessage("Are you sure you want to delete this transaction?")
+            .setPositiveButton("Delete") { _, _ ->
+                viewModel.deleteTransaction(transaction.id)
+            }
+            .setNegativeButton("Cancel") { dialog, _ ->
+                dialog.dismiss()
+                if (swipePosition != null) {
+                    adapter.notifyItemChanged(swipePosition)
+                }
+            }
+            .setOnCancelListener {
+                if (swipePosition != null) {
+                    adapter.notifyItemChanged(swipePosition)
+                }
+            }
+            .show()
     }
 
     private fun setupTabLayout() {

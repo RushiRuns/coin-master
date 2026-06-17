@@ -9,6 +9,8 @@ import com.rushi.coinmaster.data.local.model.TransactionType
 import com.rushi.coinmaster.data.repository.AccountRepository
 import com.rushi.coinmaster.data.repository.BudgetRepository
 import com.rushi.coinmaster.data.repository.TransferRecipientRepository
+import com.rushi.coinmaster.data.repository.TransactionRepository
+import com.rushi.coinmaster.data.local.entity.TransactionEntity
 import com.rushi.coinmaster.domain.usecase.AddTransactionUseCase
 import io.mockk.*
 import kotlinx.coroutines.Dispatchers
@@ -32,6 +34,7 @@ class TransactionViewModelTest {
     private val budgetRepository: BudgetRepository = mockk(relaxed = true)
     private val transferRecipientRepository: TransferRecipientRepository = mockk(relaxed = true)
     private val addTransactionUseCase: AddTransactionUseCase = mockk()
+    private val transactionRepository: TransactionRepository = mockk(relaxed = true)
 
     private lateinit var viewModel: TransactionViewModel
 
@@ -62,7 +65,8 @@ class TransactionViewModelTest {
             accountRepository,
             budgetRepository,
             transferRecipientRepository,
-            addTransactionUseCase
+            addTransactionUseCase,
+            transactionRepository
         )
     }
 
@@ -144,5 +148,55 @@ class TransactionViewModelTest {
         coVerify { addTransactionUseCase(match {
             it.amountPaise == 15000L && it.type == TransactionType.INCOME && it.accountId == 1L && it.note == "Salary"
         }) }
+    }
+
+    @Test
+    fun testLoadTransaction() = runTest {
+        val expectedTx = TransactionEntity(
+            id = 42L,
+            amountPaise = 5000L,
+            type = TransactionType.INCOME,
+            accountId = 1L,
+            date = 123456789L,
+            note = "Test Load"
+        )
+        coEvery { transactionRepository.getTransactionById(42L) } returns expectedTx
+
+        viewModel.loadTransaction(42L)
+        testScheduler.advanceUntilIdle()
+
+        assertEquals(expectedTx, viewModel.transactionToEdit.value)
+    }
+
+    @Test
+    fun testSaveTransactionEditingDeletesOldTransactionFirst() = runTest {
+        val events = mutableListOf<TransactionUiEvent>()
+        backgroundScope.launch(UnconfinedTestDispatcher(testScheduler)) {
+            viewModel.uiEvent.collect { events.add(it) }
+        }
+
+        coEvery { addTransactionUseCase(any()) } returns Result.success(2L)
+        coEvery { transactionRepository.deleteTransaction(10L) } just Runs
+
+        viewModel.saveTransaction(
+            amountStr = "200.00",
+            type = TransactionType.INCOME,
+            accountId = 1L,
+            transferToAccountId = null,
+            transferRecipientId = null,
+            categoryId = null,
+            date = System.currentTimeMillis(),
+            note = "Edited Income",
+            editingTransactionId = 10L
+        )
+        testScheduler.advanceUntilIdle()
+
+        assertTrue(events.last() is TransactionUiEvent.Success)
+        coVerifyOrder {
+            transactionRepository.deleteTransaction(10L)
+            addTransactionUseCase(match {
+                it.amountPaise == 20000L && it.type == TransactionType.INCOME && it.accountId == 1L && it.note == "Edited Income"
+            })
+        }
     }
 }

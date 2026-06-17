@@ -10,6 +10,7 @@ import com.rushi.coinmaster.data.local.model.TransactionType
 import com.rushi.coinmaster.data.repository.AccountRepository
 import com.rushi.coinmaster.data.repository.BudgetRepository
 import com.rushi.coinmaster.data.repository.TransferRecipientRepository
+import com.rushi.coinmaster.data.repository.TransactionRepository
 import com.rushi.coinmaster.domain.usecase.AddTransactionUseCase
 import android.content.Context
 import com.rushi.coinmaster.R
@@ -31,7 +32,8 @@ class TransactionViewModel @Inject constructor(
     private val accountRepository: AccountRepository,
     private val budgetRepository: BudgetRepository,
     private val transferRecipientRepository: TransferRecipientRepository,
-    private val addTransactionUseCase: AddTransactionUseCase
+    private val addTransactionUseCase: AddTransactionUseCase,
+    private val transactionRepository: TransactionRepository
 ) : ViewModel() {
 
     val accountsState: StateFlow<List<AccountEntity>> = accountRepository.getAccountsFlow()
@@ -43,8 +45,17 @@ class TransactionViewModel @Inject constructor(
     val recipientsState: StateFlow<List<TransferRecipientEntity>> = transferRecipientRepository.getTransferRecipientsFlow()
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
 
+    private val _transactionToEdit = MutableStateFlow<TransactionEntity?>(null)
+    val transactionToEdit: StateFlow<TransactionEntity?> = _transactionToEdit.asStateFlow()
+
     private val _uiEvent = MutableSharedFlow<TransactionUiEvent>()
     val uiEvent: SharedFlow<TransactionUiEvent> = _uiEvent.asSharedFlow()
+
+    fun loadTransaction(id: Long) {
+        viewModelScope.launch {
+            _transactionToEdit.value = transactionRepository.getTransactionById(id)
+        }
+    }
 
     fun saveTransaction(
         amountStr: String,
@@ -54,7 +65,8 @@ class TransactionViewModel @Inject constructor(
         transferRecipientId: Long?,
         categoryId: Long?,
         date: Long,
-        note: String?
+        note: String?,
+        editingTransactionId: Long = 0L
     ) {
         viewModelScope.launch {
             if (amountStr.isBlank()) {
@@ -92,6 +104,16 @@ class TransactionViewModel @Inject constructor(
             if (type == TransactionType.EXTERNAL_TRANSFER) {
                 if (transferRecipientId == null || transferRecipientId == 0L) {
                     _uiEvent.emit(TransactionUiEvent.Error(context.getString(R.string.error_recipient_required)))
+                    return@launch
+                }
+            }
+
+            // If we are editing, first delete/revert the old transaction
+            if (editingTransactionId != 0L) {
+                try {
+                    transactionRepository.deleteTransaction(editingTransactionId)
+                } catch (e: Exception) {
+                    _uiEvent.emit(TransactionUiEvent.Error("Failed to update: unable to revert original transaction."))
                     return@launch
                 }
             }

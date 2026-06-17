@@ -235,11 +235,23 @@ class HomeFragment : Fragment() {
         val entries = envelopes.map { env ->
             PieEntry(env.spentAmountPaise.toFloat() / 100f, env.categoryName, env)
         }
-        val colors = envelopes.map { env ->
-            try {
+        val beautifulColors = listOf(
+            "#E57373", "#F06292", "#BA68C8", "#9575CD", "#7986CB",
+            "#64B5F6", "#4FC3F7", "#4DD0E1", "#4DB6AC", "#81C784",
+            "#AED581", "#D4E157", "#FFD54F", "#FFB74D", "#FF8A65"
+        )
+        val colors = envelopes.mapIndexed { index, env ->
+            val parsedColor = try {
                 Color.parseColor(env.colorHex)
             } catch (e: Exception) {
                 Color.GRAY
+            }
+            if (parsedColor == Color.GRAY || 
+                env.colorHex.equals("#9E9E9E", ignoreCase = true) || 
+                env.colorHex.equals("#90A4AE", ignoreCase = true)) {
+                Color.parseColor(beautifulColors[index % beautifulColors.size])
+            } else {
+                parsedColor
             }
         }
         updateChartData(binding.pieChart, entries, colors)

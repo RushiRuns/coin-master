@@ -119,7 +119,12 @@
         android:id="@+id/addTransactionFragment"
         android:name="com.rushi.coinmaster.ui.transactions.AddTransactionFragment"
         android:label="Add Transaction"
-        tools:layout="@layout/fragment_add_transaction" />
+        tools:layout="@layout/fragment_add_transaction">
+        <argument
+            android:name="transactionId"
+            app:argType="long"
+            android:defaultValue="0L" />
+    </fragment>
 
     <fragment
         android:id="@+id/transactionsFragment"

@@ -17,6 +17,8 @@ import com.rushi.coinmaster.util.LocaleHelper
 class RecentTransactionsAdapter :
     ListAdapter<TransactionDisplayItem, RecentTransactionsAdapter.TransactionViewHolder>(TransactionDiffCallback()) {
 
+    var onItemLongClick: ((TransactionDisplayItem) -> Unit)? = null
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TransactionViewHolder {
         val binding = ItemRecentTransactionBinding.inflate(
             LayoutInflater.from(parent.context),
@@ -27,7 +29,12 @@ class RecentTransactionsAdapter :
     }
 
     override fun onBindViewHolder(holder: TransactionViewHolder, position: Int) {
-        holder.bind(getItem(position))
+        val item = getItem(position)
+        holder.bind(item)
+        holder.itemView.setOnLongClickListener {
+            onItemLongClick?.invoke(item)
+            true
+        }
     }
 
     inner class TransactionViewHolder(private val binding: ItemRecentTransactionBinding) :
