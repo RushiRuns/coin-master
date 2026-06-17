@@ -18,6 +18,7 @@ import com.rushi.coinmaster.R
 import com.rushi.coinmaster.databinding.FragmentSettingsBinding
 import com.rushi.coinmaster.util.CurrencyFormatter
 import com.rushi.coinmaster.util.LocaleHelper
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -124,6 +125,19 @@ class SettingsFragment : Fragment() {
             if (newTheme == viewModel.currentTheme.value) return@setOnCheckedChangeListener
 
             viewModel.setTheme(newTheme)
+        }
+
+        // Listen for clear all data button click
+        binding.btnClearData.setOnClickListener {
+            MaterialAlertDialogBuilder(requireContext())
+                .setTitle(R.string.title_clear_data_dialog)
+                .setMessage(R.string.msg_clear_data_dialog)
+                .setNegativeButton(R.string.btn_cancel, null)
+                .setPositiveButton(R.string.btn_clear) { dialog, _ ->
+                    viewModel.clearAllData()
+                    dialog.dismiss()
+                }
+                .show()
         }
     }
 

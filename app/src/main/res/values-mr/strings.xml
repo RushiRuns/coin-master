@@ -142,7 +142,15 @@
     <string name="label_currency_format">चलन स्वरूप</string>
     <string name="label_app_version">अॅप आवृत्ती</string>
     <string name="label_about">याबद्दल</string>
-    <string name="text_about_desc">Coin Master हे भारतीय वापरकर्त्यांसाठी बनवलेले पूर्णपणे ऑफलाइन, शून्य-आधारित वैयक्तिक बजेट प्लॅनर आहे।</string>
+    <string name="text_about_desc">Coin Master हे भारतीय वापरकर्त्यांसाठी बनवलेले पूर्णपणे offline, शून्य-आधारित वैयक्तिक बजेट प्लॅनर आहे।</string>
+
+    <!-- Clear Data Option -->
+    <string name="label_data_management">डेटा व्यवस्थापन</string>
+    <string name="text_clear_data_desc">सर्व व्यवहार इतिहास, खाती, बजेट, ध्येये आणि नोट्स कायमचे हटवा।</string>
+    <string name="btn_clear_all_data">सर्व डेटा साफ करा</string>
+    <string name="title_clear_data_dialog">सर्व डेटा साफ करायचा?</string>
+    <string name="msg_clear_data_dialog">हे तुमचे सर्व खाते, श्रेणी, व्यवहार, बजेट, ध्येये, नोट्स आणि वापरकर्ता प्रोफाइल डेटा कायमचे हटवेल. ही क्रिया पूर्ववत केली जाऊ शकत नाही।</string>
+    <string name="btn_clear">साफ करा</string>
 
     <!-- Goals / Sinking Funds Screen -->
     <string name="title_goals">माझे ध्येय</string>

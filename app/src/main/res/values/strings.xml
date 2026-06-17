@@ -144,6 +144,14 @@
     <string name="label_about">About</string>
     <string name="text_about_desc">Coin Master is a fully offline, zero-based personal budget planner built for Indian users.</string>
 
+    <!-- Clear Data Option -->
+    <string name="label_data_management">Data Management</string>
+    <string name="text_clear_data_desc">Permanently delete all transaction history, accounts, budgets, goals, and notes.</string>
+    <string name="btn_clear_all_data">Clear All Data</string>
+    <string name="title_clear_data_dialog">Clear All Data?</string>
+    <string name="msg_clear_data_dialog">This will permanently delete all your accounts, categories, transactions, budgets, goals, notes, and user profile data. This action cannot be undone.</string>
+    <string name="btn_clear">Clear</string>
+
     <!-- Goals / Sinking Funds Screen -->
     <string name="title_goals">My Goals</string>
     <string name="title_savings_goals">Savings Goals</string>

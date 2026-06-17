@@ -71,4 +71,12 @@ class AppPreferences @Inject constructor(
             preferences[KEY_APP_THEME] = theme
         }
     }
+
+    suspend fun clearUserData() {
+        dataStore.edit { preferences ->
+            preferences.remove(KEY_ONBOARDING_COMPLETE)
+            preferences.remove(KEY_USER_NAME)
+            preferences.remove(KEY_PREFERRED_CURRENCY)
+        }
+    }
 }

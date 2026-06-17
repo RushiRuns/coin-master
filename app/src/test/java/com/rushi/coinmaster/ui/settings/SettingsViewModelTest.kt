@@ -1,5 +1,6 @@
 package com.rushi.coinmaster.ui.settings
 
+import com.rushi.coinmaster.data.local.database.CoinMasterDatabase
 import com.rushi.coinmaster.data.preferences.AppPreferences
 import io.mockk.*
 import kotlinx.coroutines.Dispatchers
@@ -19,18 +20,22 @@ class SettingsViewModelTest {
 
     private val context: android.content.Context = mockk(relaxed = true)
     private val appPreferences: AppPreferences = mockk(relaxed = true)
+    private val database: CoinMasterDatabase = mockk(relaxed = true)
 
     private lateinit var viewModel: SettingsViewModel
 
     @Before
     fun setUp() {
         Dispatchers.setMain(testDispatcher)
+        mockkStatic(Dispatchers::class)
+        every { Dispatchers.IO } returns testDispatcher
         every { appPreferences.appLanguage } returns flowOf("mr")
-        viewModel = SettingsViewModel(context, appPreferences)
+        viewModel = SettingsViewModel(context, appPreferences, database)
     }
 
     @After
     fun tearDown() {
+        unmockkStatic(Dispatchers::class)
         Dispatchers.resetMain()
     }
 
@@ -53,5 +58,14 @@ class SettingsViewModelTest {
         testScheduler.advanceUntilIdle()
 
         coVerify { appPreferences.setAppLanguage("hi") }
+    }
+
+    @Test
+    fun testClearAllDataDeletesTablesClearsPreferencesAndUpdatesWidget() = runTest {
+        viewModel.clearAllData()
+        testScheduler.advanceUntilIdle()
+
+        verify { database.clearAllTables() }
+        coVerify { appPreferences.clearUserData() }
     }
 }

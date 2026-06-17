@@ -144,6 +144,14 @@
     <string name="label_about">के बारे में</string>
     <string name="text_about_desc">Coin Master एक पूरी तरह ऑफलाइन, शून्य-आधारित व्यक्तिगत बजट प्लानर है जो भारतीय उपयोगकर्ताओं के लिए बनाया गया है।</string>
 
+    <!-- Clear Data Option -->
+    <string name="label_data_management">डेटा प्रबंधन</string>
+    <string name="text_clear_data_desc">सभी लेन-देन इतिहास, खाते, बजट, लक्ष्य और नोट्स को स्थायी रूप से हटा दें।</string>
+    <string name="btn_clear_all_data">सभी डेटा हटाएं</string>
+    <string name="title_clear_data_dialog">सभी डेटा साफ़ करें?</string>
+    <string name="msg_clear_data_dialog">यह आपके सभी खाते, श्रेणियां, लेनदेन, बजट, लक्ष्य, नोट्स और उपयोगकर्ता प्रोफ़ाइल डेटा को स्थायी रूप से हटा देगा। यह क्रिया पूर्ववत नहीं की जा सकती।</string>
+    <string name="btn_clear">साफ़ करें</string>
+
     <!-- Goals / Sinking Funds Screen -->
     <string name="title_goals">मेरे लक्ष्य</string>
     <string name="title_savings_goals">बचत लक्ष्य</string>
