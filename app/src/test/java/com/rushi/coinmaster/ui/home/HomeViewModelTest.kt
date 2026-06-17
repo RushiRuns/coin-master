@@ -13,6 +13,7 @@ import com.rushi.coinmaster.data.repository.AccountRepository
 import com.rushi.coinmaster.data.repository.BudgetRepository
 import com.rushi.coinmaster.data.repository.TransactionRepository
 import com.rushi.coinmaster.data.repository.DebtRepository
+import com.rushi.coinmaster.data.repository.IncomeStreamRepository
 import com.rushi.coinmaster.domain.usecase.GetNetWorthUseCase
 import io.mockk.*
 import kotlinx.coroutines.Dispatchers
@@ -36,6 +37,7 @@ class HomeViewModelTest {
     private val budgetRepository: BudgetRepository = mockk()
     private val transactionRepository: TransactionRepository = mockk()
     private val debtRepository: DebtRepository = mockk()
+    private val incomeStreamRepository: IncomeStreamRepository = mockk()
     private val getNetWorthUseCase: GetNetWorthUseCase = mockk()
 
     private lateinit var viewModel: HomeViewModel
@@ -99,13 +101,15 @@ class HomeViewModelTest {
         every { budgetRepository.getCategoriesFlow() } returns flowOf(testCategories)
         every { transactionRepository.getTransactionsBetweenDatesFlow(any(), any()) } returns flowOf(testTransactions)
         every { debtRepository.getDebtsFlow() } returns flowOf(emptyList())
-        every { getNetWorthUseCase(testAccounts, any()) } returns 60000L
+        every { incomeStreamRepository.getIncomeStreamsFlow() } returns flowOf(emptyList())
+        every { getNetWorthUseCase(testAccounts, any(), any()) } returns 60000L
  
         viewModel = HomeViewModel(
             accountRepository = accountRepository,
             budgetRepository = budgetRepository,
             transactionRepository = transactionRepository,
             debtRepository = debtRepository,
+            incomeStreamRepository = incomeStreamRepository,
             getNetWorthUseCase = getNetWorthUseCase
         )
     }

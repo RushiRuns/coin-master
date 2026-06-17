@@ -3,6 +3,7 @@ package com.rushi.coinmaster.ui.accounts
 import com.rushi.coinmaster.data.local.entity.AccountEntity
 import com.rushi.coinmaster.data.local.model.AccountType
 import com.rushi.coinmaster.data.repository.AccountRepository
+import com.rushi.coinmaster.data.repository.IncomeStreamRepository
 import com.rushi.coinmaster.domain.usecase.GetNetWorthUseCase
 import io.mockk.*
 import kotlinx.coroutines.Dispatchers
@@ -21,6 +22,7 @@ class AccountsViewModelTest {
     private val testDispatcher = StandardTestDispatcher()
 
     private val accountRepository: AccountRepository = mockk(relaxed = true)
+    private val incomeStreamRepository: IncomeStreamRepository = mockk()
     private val getNetWorthUseCase: GetNetWorthUseCase = mockk()
 
     private lateinit var viewModel: AccountsViewModel
@@ -34,9 +36,10 @@ class AccountsViewModelTest {
     fun setUp() {
         Dispatchers.setMain(testDispatcher)
         every { accountRepository.getAccountsFlow() } returns flowOf(testAccounts)
-        every { getNetWorthUseCase(testAccounts) } returns 60000L
+        every { incomeStreamRepository.getIncomeStreamsFlow() } returns flowOf(emptyList())
+        every { getNetWorthUseCase(testAccounts, any(), any()) } returns 60000L
         
-        viewModel = AccountsViewModel(accountRepository, getNetWorthUseCase)
+        viewModel = AccountsViewModel(accountRepository, incomeStreamRepository, getNetWorthUseCase)
     }
 
     @After

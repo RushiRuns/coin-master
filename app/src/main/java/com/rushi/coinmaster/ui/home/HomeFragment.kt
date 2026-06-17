@@ -152,7 +152,11 @@ class HomeFragment : Fragment() {
             legend.isEnabled = false
             isDrawHoleEnabled = true
             setHoleColor(Color.TRANSPARENT)
-            setDrawEntryLabels(false)
+            setDrawEntryLabels(true)
+            setEntryLabelColor(Color.BLACK)
+            setEntryLabelTextSize(11f)
+            setUsePercentValues(true)
+            setExtraOffsets(24f, 5f, 24f, 5f)
             animateY(800)
 
             if (enableSelectionListener) {
@@ -260,11 +264,20 @@ class HomeFragment : Fragment() {
     private fun updateChartData(chart: com.github.mikephil.charting.charts.PieChart, entries: List<PieEntry>, colorsList: List<Int>) {
         val dataSet = PieDataSet(entries, "").apply {
             colors = colorsList
-            valueTextSize = 12f
+            valueTextSize = 11f
             setDrawValues(true)
-            valueTextColor = Color.WHITE
+            valueTextColor = Color.BLACK
+            xValuePosition = PieDataSet.ValuePosition.OUTSIDE_SLICE
+            yValuePosition = PieDataSet.ValuePosition.OUTSIDE_SLICE
+            valueLinePart1Length = 0.4f
+            valueLinePart2Length = 0.4f
+            valueLinePart1OffsetPercentage = 80f
+            valueLineColor = Color.GRAY
         }
-        chart.data = PieData(dataSet)
+        val pieData = PieData(dataSet).apply {
+            setValueFormatter(com.github.mikephil.charting.formatter.PercentFormatter(chart))
+        }
+        chart.data = pieData
         if (isFirstChartLoad) {
             chart.animateY(800)
         } else {

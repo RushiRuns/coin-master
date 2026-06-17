@@ -35,6 +35,7 @@ class HomeViewModel @Inject constructor(
     private val budgetRepository: BudgetRepository,
     private val transactionRepository: TransactionRepository,
     private val debtRepository: com.rushi.coinmaster.data.repository.DebtRepository,
+    private val incomeStreamRepository: com.rushi.coinmaster.data.repository.IncomeStreamRepository,
     private val getNetWorthUseCase: GetNetWorthUseCase
 ) : ViewModel() {
 
@@ -47,9 +48,13 @@ class HomeViewModel @Inject constructor(
     // Flow for debts
     private val debtsFlow = debtRepository.getDebtsFlow()
 
-    // Combined accounts and debts flow
-    private val accountsAndDebtsFlow = combine(accountsFlow, debtsFlow) { accounts, debts ->
-        Pair(accounts, debts)
+    // Combined accounts, debts and income streams flow
+    private val accountsDebtsAndIncomeFlow = combine(
+        accountsFlow,
+        debtsFlow,
+        incomeStreamRepository.getIncomeStreamsFlow()
+    ) { accounts, debts, incomeStreams ->
+        Triple(accounts, debts, incomeStreams.filter { !it.isDeleted })
     }
     
     // Flow for current budget period containing today's date
@@ -69,14 +74,15 @@ class HomeViewModel @Inject constructor(
 
     // Expose all states combined into a single HomeUiState
     val uiState: StateFlow<HomeUiState> = combine(
-        accountsAndDebtsFlow,
+        accountsDebtsAndIncomeFlow,
         budgetPeriodFlow,
         envelopesFlow,
         _selectedCategoryId
-    ) { accountsAndDebts, budgetPeriod, envelopes, selectedCategoryId ->
-        val accounts = accountsAndDebts.first
-        val debts = accountsAndDebts.second
-        val netWorth = getNetWorthUseCase(accounts, debts)
+    ) { accountsDebtsAndIncome, budgetPeriod, envelopes, selectedCategoryId ->
+        val accounts = accountsDebtsAndIncome.first
+        val debts = accountsDebtsAndIncome.second
+        val incomeStreams = accountsDebtsAndIncome.third
+        val netWorth = getNetWorthUseCase(accounts, debts, incomeStreams)
         
         // Sum total allocations and total spent for the active categories
         var totalBudgeted = 0L
