@@ -47,14 +47,23 @@ class MainActivity : AppCompatActivity() {
         binding.navView.setupWithNavController(navController)
         binding.navViewSettings.setupWithNavController(navController)
 
-        // Keep selection state in sync between both nav views
-        navController.addOnDestinationChangedListener { _, destination, _ ->
-            // Uncheck all items in both nav views when navigating
-            binding.navView.checkedItem?.let { }
-            binding.navViewSettings.checkedItem?.let { }
-        }
+        // Set drawer width to 60% of screen width dynamically
+        val displayMetrics = resources.displayMetrics
+        val drawerWidth = (displayMetrics.widthPixels * 0.6).toInt()
+        val layoutParams = binding.navViewContainer.layoutParams
+        layoutParams.width = drawerWidth
+        binding.navViewContainer.layoutParams = layoutParams
 
+        // Handle navigation selection state sync, auto-closing the drawer, and drawer locking/bottom nav visibility
         navController.addOnDestinationChangedListener { _, destination, _ ->
+            // Keep selection state in sync between both nav views and auto-close drawer
+            if (destination.id == R.id.nav_settings) {
+                binding.navView.checkedItem?.isChecked = false
+            } else {
+                binding.navViewSettings.checkedItem?.isChecked = false
+            }
+            binding.drawerLayout.closeDrawers()
+
             val sidebarTopLevelDestinations = setOf(
                 R.id.homeFragment, R.id.transactionsFragment, R.id.budgetFragment,
                 R.id.nav_categories, R.id.nav_expense_type, R.id.nav_income,
