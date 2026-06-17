@@ -8,6 +8,8 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -18,6 +20,15 @@ class NotesViewModel @Inject constructor(
 
     val notesState: StateFlow<List<NoteEntity>> = noteRepository.getNotesFlow()
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
+
+    private val _noteDetailState = MutableStateFlow<NoteEntity?>(null)
+    val noteDetailState: StateFlow<NoteEntity?> = _noteDetailState.asStateFlow()
+
+    fun loadNote(id: Long) {
+        viewModelScope.launch {
+            _noteDetailState.value = noteRepository.getNoteById(id)
+        }
+    }
 
     fun saveNote(id: Long, title: String, content: String) {
         viewModelScope.launch {

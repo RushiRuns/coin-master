@@ -73,4 +73,15 @@ class NotesViewModelTest {
         testScheduler.advanceUntilIdle()
         coVerify { noteRepository.softDeleteNote(1L) }
     }
+
+    @Test
+    fun testLoadNote() = runTest {
+        val expectedNote = NoteEntity(id = 5L, title = "Title 5", content = "Content 5", updatedAt = 5000L)
+        coEvery { noteRepository.getNoteById(5L) } returns expectedNote
+
+        viewModel.loadNote(5L)
+        testScheduler.advanceUntilIdle()
+
+        assertEquals(expectedNote, viewModel.noteDetailState.value)
+    }
 }

@@ -224,7 +224,38 @@
         android:id="@+id/nav_notes"
         android:name="com.rushi.coinmaster.ui.notes.NotesFragment"
         android:label="Notes"
-        tools:layout="@layout/fragment_notes" />
+        tools:layout="@layout/fragment_notes">
+        <action
+            android:id="@+id/action_notesFragment_to_addEditNoteFragment"
+            app:destination="@id/addEditNoteFragment" />
+        <action
+            android:id="@+id/action_notesFragment_to_noteDetailFragment"
+            app:destination="@id/noteDetailFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/addEditNoteFragment"
+        android:name="com.rushi.coinmaster.ui.notes.AddEditNoteFragment"
+        android:label="Note"
+        tools:layout="@layout/fragment_add_edit_note">
+        <argument
+            android:name="noteId"
+            app:argType="long"
+            android:defaultValue="0L" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/noteDetailFragment"
+        android:name="com.rushi.coinmaster.ui.notes.NoteDetailFragment"
+        android:label="Note Details"
+        tools:layout="@layout/fragment_note_detail">
+        <argument
+            android:name="noteId"
+            app:argType="long" />
+        <action
+            android:id="@+id/action_noteDetailFragment_to_addEditNoteFragment"
+            app:destination="@id/addEditNoteFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/nav_transfers"
