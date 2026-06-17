@@ -31,5 +31,5 @@ data class CategoryEntity(
     @ColumnInfo(name = "display_order") val displayOrder: Int,
     @ColumnInfo(name = "is_deleted") val isDeleted: Boolean = false,
     @ColumnInfo(name = "expense_category_id") val expenseCategoryId: Long? = null,
-    @ColumnInfo(name = "expense_type") val expenseType: ExpenseType = ExpenseType.VARIABLE
+    @ColumnInfo(name = "expense_type") val expenseType: ExpenseType? = null
 )

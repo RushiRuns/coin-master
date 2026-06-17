@@ -88,34 +88,6 @@ class TransactionsFragment : Fragment() {
         binding.rvTransactions.layoutManager = LinearLayoutManager(requireContext())
         binding.rvTransactions.adapter = adapter
 
-        // Set up Swipe Gestures (Left to Delete, Right to Edit)
-        val swipeCallback = object : androidx.recyclerview.widget.ItemTouchHelper.SimpleCallback(
-            0,
-            androidx.recyclerview.widget.ItemTouchHelper.LEFT or androidx.recyclerview.widget.ItemTouchHelper.RIGHT
-        ) {
-            override fun onMove(
-                recyclerView: androidx.recyclerview.widget.RecyclerView,
-                viewHolder: androidx.recyclerview.widget.RecyclerView.ViewHolder,
-                target: androidx.recyclerview.widget.RecyclerView.ViewHolder
-            ): Boolean = false
-
-            override fun onSwiped(
-                viewHolder: androidx.recyclerview.widget.RecyclerView.ViewHolder,
-                direction: Int
-            ) {
-                val position = viewHolder.adapterPosition
-                val transaction = adapter.currentList[position]
-
-                if (direction == androidx.recyclerview.widget.ItemTouchHelper.LEFT) {
-                    showDeleteConfirmationDialog(transaction, position)
-                } else if (direction == androidx.recyclerview.widget.ItemTouchHelper.RIGHT) {
-                    adapter.notifyItemChanged(position) // Reset item swipe state
-                    navigateToEditTransaction(transaction.id)
-                }
-            }
-        }
-        val itemTouchHelper = androidx.recyclerview.widget.ItemTouchHelper(swipeCallback)
-        itemTouchHelper.attachToRecyclerView(binding.rvTransactions)
     }
 
     private fun showTransactionOptions(transaction: com.rushi.coinmaster.ui.home.TransactionDisplayItem) {
@@ -125,7 +97,7 @@ class TransactionsFragment : Fragment() {
             .setItems(options) { _, which ->
                 when (which) {
                     0 -> navigateToEditTransaction(transaction.id)
-                    1 -> showDeleteConfirmationDialog(transaction, null)
+                    1 -> showDeleteConfirmationDialog(transaction)
                 }
             }
             .show()
@@ -139,8 +111,7 @@ class TransactionsFragment : Fragment() {
     }
 
     private fun showDeleteConfirmationDialog(
-        transaction: com.rushi.coinmaster.ui.home.TransactionDisplayItem,
-        swipePosition: Int?
+        transaction: com.rushi.coinmaster.ui.home.TransactionDisplayItem
     ) {
         android.app.AlertDialog.Builder(requireContext())
             .setTitle("Delete Transaction")
@@ -150,14 +121,6 @@ class TransactionsFragment : Fragment() {
             }
             .setNegativeButton("Cancel") { dialog, _ ->
                 dialog.dismiss()
-                if (swipePosition != null) {
-                    adapter.notifyItemChanged(swipePosition)
-                }
-            }
-            .setOnCancelListener {
-                if (swipePosition != null) {
-                    adapter.notifyItemChanged(swipePosition)
-                }
             }
             .show()
     }

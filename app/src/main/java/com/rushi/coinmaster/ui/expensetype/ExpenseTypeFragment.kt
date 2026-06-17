@@ -96,12 +96,25 @@ class ExpenseTypeFragment : Fragment() {
     }
 
     private fun renderCategories(categories: List<CategoryEntity>) {
+        binding.containerUnclassifiedEnvelopes.removeAllViews()
         binding.containerFixedEnvelopes.removeAllViews()
         binding.containerVariableEnvelopes.removeAllViews()
 
         val activeCategories = categories.filter { !it.isDeleted }
+        val unclassifiedCategories = activeCategories.filter { it.expenseType == null }
         val fixedCategories = activeCategories.filter { it.expenseType == ExpenseType.FIXED }
         val variableCategories = activeCategories.filter { it.expenseType == ExpenseType.VARIABLE }
+
+        // Render Unclassified/Unassigned list
+        if (unclassifiedCategories.isEmpty()) {
+            binding.tvEmptyUnclassified.visibility = View.VISIBLE
+        } else {
+            binding.tvEmptyUnclassified.visibility = View.GONE
+            for (category in unclassifiedCategories) {
+                val itemBinding = createItemView(category)
+                binding.containerUnclassifiedEnvelopes.addView(itemBinding.root)
+            }
+        }
 
         // Render Fixed list
         if (fixedCategories.isEmpty()) {

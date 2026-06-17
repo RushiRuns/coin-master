@@ -23,16 +23,7 @@
             android:background="?attr/colorSurface"
             app:navigationIcon="@drawable/ic_arrow_back"
             app:navigationIconTint="?attr/colorOnSurface"
-            app:navigationContentDescription="@string/btn_previous">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/menu_savings"
-                android:textColor="@color/text_primary"
-                android:textSize="20sp"
-                android:textStyle="bold" />
-        </com.google.android.material.appbar.MaterialToolbar>
+            app:navigationContentDescription="@string/btn_previous" />
     </com.google.android.material.appbar.AppBarLayout>
 
     <!-- Scrollable Content -->
@@ -185,14 +176,7 @@
                         android:text="+ Add Savings Envelope"
                         android:textColor="@color/color_wants" />
 
-                    <Button
-                        android:id="@+id/btn_manage_goals"
-                        style="@style/Widget.MaterialComponents.Button.TextButton"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:text="@string/btn_manage_goals"
-                        android:textColor="@color/color_wants" />
+
 
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>

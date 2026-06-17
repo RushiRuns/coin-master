@@ -9,5 +9,5 @@ data class EnvelopeWithAllocation(
     val allocatedAmountPaise: Long,
     val spentAmountPaise: Long,
     val expenseCategoryId: Long? = null,
-    val expenseType: ExpenseType = ExpenseType.VARIABLE
+    val expenseType: ExpenseType? = null
 )

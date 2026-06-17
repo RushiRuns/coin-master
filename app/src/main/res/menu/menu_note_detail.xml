@@ -5,10 +5,12 @@
         android:id="@+id/action_edit"
         android:icon="@drawable/ic_edit"
         android:title="Edit"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="ifRoom"
+        app:iconTint="?attr/colorOnSurface" />
     <item
         android:id="@+id/action_delete"
         android:icon="@android:drawable/ic_menu_delete"
         android:title="Delete"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="ifRoom"
+        app:iconTint="?attr/colorOnSurface" />
 </menu>

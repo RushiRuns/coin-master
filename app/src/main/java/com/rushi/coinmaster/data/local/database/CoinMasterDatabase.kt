@@ -22,7 +22,7 @@ import com.rushi.coinmaster.data.local.entity.*
         NoteEntity::class,
         TransferRecipientEntity::class
     ],
-    version = 6,
+    version = 7,
     exportSchema = false
 )
 @TypeConverters(AppConverters::class)

@@ -73,9 +73,7 @@ class SavingsFragment : Fragment() {
             showEnvelopeSelectionDialog()
         }
 
-        binding.btnManageGoals.setOnClickListener {
-            findNavController().navigate(R.id.nav_goals)
-        }
+
 
         // Observe ViewModel flows
         viewLifecycleOwner.lifecycleScope.launch {

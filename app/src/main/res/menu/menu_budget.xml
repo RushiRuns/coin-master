@@ -5,5 +5,6 @@
         android:id="@+id/action_manage_envelopes"
         android:title="Manage Envelopes"
         android:icon="@drawable/ic_edit"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="ifRoom"
+        app:iconTint="?attr/colorOnSurface" />
 </menu>

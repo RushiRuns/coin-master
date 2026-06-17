@@ -33,12 +33,14 @@ class AppConverters {
     fun toTransactionType(name: String): TransactionType = TransactionType.valueOf(name)
 
     @TypeConverter
-    fun fromExpenseType(type: ExpenseType): String = type.name
+    fun fromExpenseType(type: ExpenseType?): String? = type?.name
 
     @TypeConverter
-    fun toExpenseType(name: String): ExpenseType = try {
-        ExpenseType.valueOf(name)
-    } catch (e: Exception) {
-        ExpenseType.VARIABLE
+    fun toExpenseType(name: String?): ExpenseType? = name?.let {
+        try {
+            ExpenseType.valueOf(it)
+        } catch (e: Exception) {
+            null
+        }
     }
 }

@@ -23,16 +23,7 @@
             android:background="?attr/colorSurface"
             app:navigationIcon="@drawable/ic_arrow_back"
             app:navigationIconTint="?attr/colorOnSurface"
-            app:navigationContentDescription="@string/btn_previous">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/menu_transfers"
-                android:textColor="@color/text_primary"
-                android:textSize="20sp"
-                android:textStyle="bold" />
-        </com.google.android.material.appbar.MaterialToolbar>
+            app:navigationContentDescription="@string/btn_previous" />
     </com.google.android.material.appbar.AppBarLayout>
 
     <!-- Scrollable Content -->
