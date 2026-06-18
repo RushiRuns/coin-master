@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -32,6 +33,9 @@ class SetIncomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // Setup dropdown
+        setupAccountDropdown()
+
         // Bind clicks
         binding.btnAddStream.setOnClickListener {
             addIncomeStreamFromInput()
@@ -41,9 +45,25 @@ class SetIncomeFragment : Fragment() {
         renderIncomeStreams()
     }
 
+    override fun onResume() {
+        super.onResume()
+        // Account name might have changed if the user went back to Step 2
+        setupAccountDropdown()
+    }
+
+    private fun setupAccountDropdown() {
+        val accounts = listOf(viewModel.accountName)
+        val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, accounts)
+        binding.actvDepositAccount.setAdapter(adapter)
+        if (viewModel.accountName.isNotEmpty()) {
+            binding.actvDepositAccount.setText(viewModel.accountName, false)
+        }
+    }
+
     private fun addIncomeStreamFromInput() {
         val name = binding.etStreamName.text?.toString()?.trim() ?: ""
         val amountStr = binding.etIncome.text?.toString()?.trim() ?: ""
+        val selectedAccount = binding.actvDepositAccount.text?.toString() ?: ""
         
         var hasError = false
         if (name.isEmpty()) {
@@ -61,6 +81,13 @@ class SetIncomeFragment : Fragment() {
             binding.tilIncome.error = null
         }
 
+        if (selectedAccount.isEmpty() || selectedAccount != viewModel.accountName) {
+            binding.tilDepositAccount.error = "Please select a valid account"
+            hasError = true
+        } else {
+            binding.tilDepositAccount.error = null
+        }
+
         if (hasError) return
 
         viewModel.addIncomeStream(name, amount!!)
@@ -70,6 +97,8 @@ class SetIncomeFragment : Fragment() {
         binding.etIncome.text = null
         binding.tilStreamName.error = null
         binding.tilIncome.error = null
+        binding.tilDepositAccount.error = null
+        setupAccountDropdown()
 
         renderIncomeStreams()
     }
@@ -86,6 +115,11 @@ class SetIncomeFragment : Fragment() {
             )
             itemBinding.tvStreamName.text = stream.name
             itemBinding.tvStreamAmount.text = CurrencyFormatter.format(stream.amountPaise, languageCode)
+            
+            // Show selected account
+            itemBinding.tvStreamAccount.text = "Deposits to: ${viewModel.accountName}"
+            itemBinding.tvStreamAccount.visibility = View.VISIBLE
+
             itemBinding.btnDelete.setOnClickListener {
                 viewModel.removeIncomeStream(index)
                 renderIncomeStreams()
