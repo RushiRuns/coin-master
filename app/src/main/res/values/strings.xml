@@ -312,4 +312,9 @@
     <string name="widget_title">Quick Expense</string>
     <string name="widget_desc">Quickly view your net worth, monthly spent and record an expense.</string>
     <string name="widget_btn_record">+ Record Expense</string>
+
+    <!-- Spending Summary labels -->
+    <string name="label_today">Today</string>
+    <string name="label_this_week">This Week</string>
+    <string name="label_this_month">This Month</string>
 </resources>

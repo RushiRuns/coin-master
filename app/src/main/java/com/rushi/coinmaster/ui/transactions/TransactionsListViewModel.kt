@@ -23,6 +23,12 @@ data class TransactionsUiState(
     val selectedDateMillis: Long = System.currentTimeMillis()
 )
 
+data class SpendingSummary(
+    val todayPaise: Long = 0L,
+    val weeklyPaise: Long = 0L,
+    val monthlyPaise: Long = 0L
+)
+
 @OptIn(ExperimentalCoroutinesApi::class)
 @HiltViewModel
 class TransactionsListViewModel @Inject constructor(
@@ -39,6 +45,60 @@ class TransactionsListViewModel @Inject constructor(
 
     private val _activeTab = MutableStateFlow(0) // 0: All Transactions, 1: Daily Activity
     val activeTab: StateFlow<Int> = _activeTab.asStateFlow()
+
+    val spendingSummary: StateFlow<SpendingSummary> = flow {
+        val calendar = Calendar.getInstance()
+        val now = System.currentTimeMillis()
+
+        // Today Start
+        calendar.timeInMillis = now
+        calendar.set(Calendar.HOUR_OF_DAY, 0)
+        calendar.set(Calendar.MINUTE, 0)
+        calendar.set(Calendar.SECOND, 0)
+        calendar.set(Calendar.MILLISECOND, 0)
+        val todayStart = calendar.timeInMillis
+
+        // Week Start
+        val calWeek = Calendar.getInstance()
+        calWeek.timeInMillis = now
+        calWeek.set(Calendar.HOUR_OF_DAY, 0)
+        calWeek.set(Calendar.MINUTE, 0)
+        calWeek.set(Calendar.SECOND, 0)
+        calWeek.set(Calendar.MILLISECOND, 0)
+        calWeek.set(Calendar.DAY_OF_WEEK, calWeek.firstDayOfWeek)
+        val weekStart = calWeek.timeInMillis
+
+        // Month Start
+        val calMonth = Calendar.getInstance()
+        calMonth.timeInMillis = now
+        calMonth.set(Calendar.DAY_OF_MONTH, 1)
+        calMonth.set(Calendar.HOUR_OF_DAY, 0)
+        calMonth.set(Calendar.MINUTE, 0)
+        calMonth.set(Calendar.SECOND, 0)
+        calMonth.set(Calendar.MILLISECOND, 0)
+        val monthStart = calMonth.timeInMillis
+
+        val minStart = minOf(todayStart, weekStart, monthStart)
+
+        emitAll(
+            transactionRepository.getTransactionsBetweenDatesFlow(minStart, Long.MAX_VALUE).map { transactions ->
+                val todayTotal = transactions
+                    .filter { it.date >= todayStart && it.type == TransactionType.EXPENSE }
+                    .sumOf { it.amountPaise }
+                val weeklyTotal = transactions
+                    .filter { it.date >= weekStart && it.type == TransactionType.EXPENSE }
+                    .sumOf { it.amountPaise }
+                val monthlyTotal = transactions
+                    .filter { it.date >= monthStart && it.type == TransactionType.EXPENSE }
+                    .sumOf { it.amountPaise }
+                SpendingSummary(todayTotal, weeklyTotal, monthlyTotal)
+            }
+        )
+    }.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5000),
+        initialValue = SpendingSummary(0, 0, 0)
+    )
 
     val uiState: StateFlow<TransactionsUiState> = combine(
         _activeTab,

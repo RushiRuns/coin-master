@@ -308,4 +308,9 @@
     <string name="widget_title">त्वरित खर्च</string>
     <string name="widget_desc">अपनी कुल संपत्ति, मासिक खर्च को तुरंत देखें और खर्च दर्ज करें।</string>
     <string name="widget_btn_record">+ खर्च दर्ज करें</string>
+
+    <!-- Spending Summary labels -->
+    <string name="label_today">आज</string>
+    <string name="label_this_week">इस सप्ताह</string>
+    <string name="label_this_month">इस महीने</string>
 </resources>

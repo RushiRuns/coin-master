@@ -308,4 +308,9 @@
     <string name="widget_title">त्वरित खर्च</string>
     <string name="widget_desc">तुमची एकूण संपत्ती, मासिक खर्च त्वरीत पहा आणि खर्च रेकॉर्ड करा।</string>
     <string name="widget_btn_record">+ खर्च रेकॉर्ड करा</string>
+
+    <!-- Spending Summary labels -->
+    <string name="label_today">आज</string>
+    <string name="label_this_week">या आठवड्यात</string>
+    <string name="label_this_month">या महिन्यात</string>
 </resources>

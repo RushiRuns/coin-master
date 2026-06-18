@@ -17,6 +17,7 @@ import com.rushi.coinmaster.R
 import com.rushi.coinmaster.databinding.FragmentTransactionsBinding
 import com.rushi.coinmaster.ui.home.RecentTransactionsAdapter
 import com.rushi.coinmaster.util.DateFormatter
+import com.rushi.coinmaster.util.CurrencyFormatter
 import com.rushi.coinmaster.util.LocaleHelper
 import com.rushi.coinmaster.MainActivity
 import androidx.navigation.ui.setupWithNavController
@@ -60,20 +61,31 @@ class TransactionsFragment : Fragment() {
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.uiState.collect { uiState ->
-                    val languageCode = LocaleHelper.getLanguage(requireContext())
+                launch {
+                    viewModel.uiState.collect { uiState ->
+                        val languageCode = LocaleHelper.getLanguage(requireContext())
 
-                    // Format Date Selector button text
-                    binding.btnSelectDate.text = getRelativeDateString(uiState.selectedDateMillis)
+                        // Format Date Selector button text
+                        binding.btnSelectDate.text = getRelativeDateString(uiState.selectedDateMillis)
 
-                    adapter.submitList(uiState.transactions)
+                        adapter.submitList(uiState.transactions)
 
-                    if (uiState.transactions.isEmpty()) {
-                        binding.tvEmptyState.visibility = View.VISIBLE
-                        binding.rvTransactions.visibility = View.GONE
-                    } else {
-                        binding.tvEmptyState.visibility = View.GONE
-                        binding.rvTransactions.visibility = View.VISIBLE
+                        if (uiState.transactions.isEmpty()) {
+                            binding.tvEmptyState.visibility = View.VISIBLE
+                            binding.rvTransactions.visibility = View.GONE
+                        } else {
+                            binding.tvEmptyState.visibility = View.GONE
+                            binding.rvTransactions.visibility = View.VISIBLE
+                        }
+                    }
+                }
+
+                launch {
+                    viewModel.spendingSummary.collect { summary ->
+                        val languageCode = LocaleHelper.getLanguage(requireContext())
+                        binding.tvTotalToday.text = CurrencyFormatter.format(summary.todayPaise, languageCode)
+                        binding.tvTotalWeek.text = CurrencyFormatter.format(summary.weeklyPaise, languageCode)
+                        binding.tvTotalMonth.text = CurrencyFormatter.format(summary.monthlyPaise, languageCode)
                     }
                 }
             }
