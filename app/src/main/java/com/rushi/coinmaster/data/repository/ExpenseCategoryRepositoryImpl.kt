@@ -45,7 +45,8 @@ class ExpenseCategoryRepositoryImpl @Inject constructor(
             name = name,
             colorHex = colorHex,
             iconName = iconName,
-            isDeleted = isDeleted
+            isDeleted = isDeleted,
+            bucketType = bucketType
         )
     }
 
@@ -55,7 +56,8 @@ class ExpenseCategoryRepositoryImpl @Inject constructor(
             name = name,
             colorHex = colorHex,
             iconName = iconName,
-            isDeleted = isDeleted
+            isDeleted = isDeleted,
+            bucketType = bucketType
         )
     }
 }

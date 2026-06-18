@@ -294,8 +294,8 @@
     <string name="cd_previous_month">Previous Month</string>
     <string name="cd_next_month">Next Month</string>
     <string name="placeholder_left_to_budget">₹0.00 Left to Budget</string>
-    <string name="btn_add_needs_envelope">+ Add Envelope to Needs</string>
-    <string name="btn_add_wants_envelope">+ Add Envelope to Wants</string>
+    <string name="btn_add_needs_envelope">ADD CATEGORIES TO NEEDS</string>
+    <string name="btn_add_wants_envelope">ADD CATEGORIES TO WANTS</string>
     <string name="btn_add_savings_envelope">+ Add Envelope to Savings</string>
 
     <!-- Home Dashboard Additional Strings -->

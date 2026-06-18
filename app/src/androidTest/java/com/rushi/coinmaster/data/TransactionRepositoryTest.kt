@@ -10,7 +10,7 @@ import com.rushi.coinmaster.data.local.dao.CategoryDao
 import com.rushi.coinmaster.data.local.dao.TransactionDao
 import com.rushi.coinmaster.data.local.database.CoinMasterDatabase
 import com.rushi.coinmaster.data.local.entity.AccountEntity
-import com.rushi.coinmaster.data.local.entity.BudgetMonthEntity
+import com.rushi.coinmaster.data.local.entity.BudgetPeriodEntity
 import com.rushi.coinmaster.data.local.entity.CategoryEntity
 import com.rushi.coinmaster.data.local.entity.TransactionEntity
 import com.rushi.coinmaster.data.local.model.AccountType
@@ -38,7 +38,7 @@ class TransactionRepositoryTest {
     private var accountId1: Long = 0
     private var accountId2: Long = 0
     private var categoryId: Long = 0
-    private val budgetMonthId = 202606
+    private val budgetPeriodId = 202606
 
     @Before
     fun createDb() = runBlocking {
@@ -60,8 +60,13 @@ class TransactionRepositoryTest {
         categoryId = categoryDao.insertCategory(
             CategoryEntity(name = "Groceries", bucketType = BucketType.NEEDS, colorHex = "#FF0000", iconName = "groceries", displayOrder = 0)
         )
-        budgetDao.insertBudgetMonth(
-            BudgetMonthEntity(id = budgetMonthId, month = 6, year = 2026, incomePaise = 100000L)
+        budgetDao.insertBudgetPeriod(
+            BudgetPeriodEntity(
+                id = budgetPeriodId,
+                startDate = System.currentTimeMillis() - 1000000L,
+                endDate = System.currentTimeMillis() + 1000000L,
+                incomePaise = 100000L
+            )
         )
     }
 
@@ -78,7 +83,7 @@ class TransactionRepositoryTest {
             type = TransactionType.EXPENSE,
             accountId = accountId1,
             categoryId = categoryId,
-            budgetMonthId = budgetMonthId,
+            budgetPeriodId = budgetPeriodId,
             date = System.currentTimeMillis()
         )
 
@@ -129,7 +134,7 @@ class TransactionRepositoryTest {
             type = TransactionType.EXPENSE,
             accountId = accountId1,
             categoryId = categoryId,
-            budgetMonthId = budgetMonthId,
+            budgetPeriodId = budgetPeriodId,
             date = System.currentTimeMillis()
         )
 

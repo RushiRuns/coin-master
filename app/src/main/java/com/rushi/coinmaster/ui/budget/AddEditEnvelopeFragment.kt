@@ -138,7 +138,16 @@ class AddEditEnvelopeFragment : Fragment() {
                             } ?: binding.actvParentCategory.setText("None", false)
                         }
                     } else {
-                        binding.actvParentCategory.setText("None", false)
+                        if (args.parentCategoryId != 0L) {
+                            val selectedIndex = list.indexOfFirst { it.id == args.parentCategoryId }
+                            if (selectedIndex != -1) {
+                                binding.actvParentCategory.setText(list[selectedIndex].name, false)
+                            } else {
+                                binding.actvParentCategory.setText("None", false)
+                            }
+                        } else {
+                            binding.actvParentCategory.setText("None", false)
+                        }
                     }
                 }
             }

@@ -22,7 +22,7 @@ import com.rushi.coinmaster.data.local.entity.*
         NoteEntity::class,
         TransferRecipientEntity::class
     ],
-    version = 7,
+    version = 8,
     exportSchema = false
 )
 @TypeConverters(AppConverters::class)
@@ -92,6 +92,12 @@ abstract class CoinMasterDatabase : RoomDatabase() {
 
                 // Alter transactions table to add new column
                 db.execSQL("ALTER TABLE `transactions` ADD COLUMN `transfer_recipient_id` INTEGER DEFAULT NULL")
+            }
+        }
+
+        val MIGRATION_7_8 = object : Migration(7, 8) {
+            override fun migrate(db: SupportSQLiteDatabase) {
+                db.execSQL("ALTER TABLE `expense_categories` ADD COLUMN `bucket_type` TEXT DEFAULT NULL")
             }
         }
     }

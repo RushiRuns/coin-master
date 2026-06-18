@@ -57,6 +57,8 @@ class AddTransactionFragment : Fragment() {
             requireActivity().onBackPressedDispatcher.onBackPressed()
         }
 
+        binding.actvCategory.threshold = 1
+
         setupTypeDropdown()
         setupDatePicker()
 

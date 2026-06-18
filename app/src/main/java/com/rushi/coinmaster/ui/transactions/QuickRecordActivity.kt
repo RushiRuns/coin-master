@@ -64,6 +64,8 @@ class QuickRecordActivity : AppCompatActivity() {
     }
 
     private fun setupUI() {
+        binding.actvCategory.threshold = 1
+
         binding.btnCancel.setOnClickListener {
             finish()
         }

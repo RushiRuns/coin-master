@@ -290,8 +290,8 @@
     <string name="cd_previous_month">मागील महिना</string>
     <string name="cd_next_month">पुढील महिना</string>
     <string name="placeholder_left_to_budget">₹0.00 बजेट शिल्लक</string>
-    <string name="btn_add_needs_envelope">+ गरजांमध्ये लिफाफा जोडा</string>
-    <string name="btn_add_wants_envelope">+ इच्छांमध्ये लिफाफा जोडा</string>
+    <string name="btn_add_needs_envelope">गरजांमध्ये श्रेणी जोडा</string>
+    <string name="btn_add_wants_envelope">इच्छांमध्ये श्रेणी जोडा</string>
     <string name="btn_add_savings_envelope">+ बचतीमध्ये लिफाफा जोडा</string>
 
     <!-- Home Dashboard Additional Strings -->
