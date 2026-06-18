@@ -92,6 +92,10 @@
             android:name="bucketTypeOrdinal"
             app:argType="integer"
             android:defaultValue="-1" />
+        <argument
+            android:name="parentCategoryId"
+            app:argType="long"
+            android:defaultValue="0L" />
     </fragment>
 
     <fragment

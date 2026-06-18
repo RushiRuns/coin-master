@@ -49,6 +49,7 @@ dependencies {
     implementation(libs.androidx.room.runtime)
     implementation(libs.androidx.room.ktx)
     ksp(libs.androidx.room.compiler)
+    androidTestImplementation(libs.androidx.room.testing)
 
     // Hilt Dependency Injection
     implementation(libs.hilt.android)

@@ -284,14 +284,14 @@
     <string name="hint_transaction_type">लेनदेन का प्रकार</string>
     <string name="hint_source_account">स्रोत खाता</string>
     <string name="hint_destination_account">गंतव्य खाता</string>
-    <string name="hint_category_envelope">श्रेणी (लिफाफा)</string>
+    <string name="hint_category_envelope">लिफाफा</string>
 
     <!-- Budget Screen Additional Strings -->
     <string name="cd_previous_month">पिछला महीना</string>
     <string name="cd_next_month">अगला महीना</string>
     <string name="placeholder_left_to_budget">₹0.00 बजट में शेष</string>
-    <string name="btn_add_needs_envelope">+ आवश्यकताओं में लिफाफा जोड़ें</string>
-    <string name="btn_add_wants_envelope">+ चाहतों में लिफाफा जोड़ें</string>
+    <string name="btn_add_needs_envelope">आवश्यकताओं में श्रेणियां जोड़ें</string>
+    <string name="btn_add_wants_envelope">चाहतों में श्रेणियां जोड़ें</string>
     <string name="btn_add_savings_envelope">+ बचत में लिफाफा जोड़ें</string>
 
     <!-- Home Dashboard Additional Strings -->

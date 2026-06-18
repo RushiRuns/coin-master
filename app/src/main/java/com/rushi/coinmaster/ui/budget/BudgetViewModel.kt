@@ -78,10 +78,9 @@ class BudgetViewModel @Inject constructor(
 
         parentMap.forEach { (parentId, parentCategory) ->
             val list = groupedEnvelopes[parentId] ?: emptyList()
-            val needsEnvelopes = list.filter { it.bucketType == BucketType.NEEDS }
-            val wantsEnvelopes = list.filter { it.bucketType == BucketType.WANTS }
 
-            if (needsEnvelopes.isNotEmpty()) {
+            if (parentCategory.bucketType == BucketType.NEEDS) {
+                val needsEnvelopes = list.filter { it.bucketType == BucketType.NEEDS }
                 resultList.add(
                     com.rushi.coinmaster.data.local.model.GroupedCategory(
                         id = parentId,
@@ -94,8 +93,8 @@ class BudgetViewModel @Inject constructor(
                         envelopes = needsEnvelopes
                     )
                 )
-            }
-            if (wantsEnvelopes.isNotEmpty()) {
+            } else if (parentCategory.bucketType == BucketType.WANTS) {
+                val wantsEnvelopes = list.filter { it.bucketType == BucketType.WANTS }
                 resultList.add(
                     com.rushi.coinmaster.data.local.model.GroupedCategory(
                         id = parentId,
@@ -108,41 +107,44 @@ class BudgetViewModel @Inject constructor(
                         envelopes = wantsEnvelopes
                     )
                 )
+            } else {
+                // Fallback for implicit categories matching child envelopes
+                val needsEnvelopes = list.filter { it.bucketType == BucketType.NEEDS }
+                val wantsEnvelopes = list.filter { it.bucketType == BucketType.WANTS }
+
+                if (needsEnvelopes.isNotEmpty()) {
+                    resultList.add(
+                        com.rushi.coinmaster.data.local.model.GroupedCategory(
+                            id = parentId,
+                            name = parentCategory.name,
+                            colorHex = parentCategory.colorHex,
+                            iconName = parentCategory.iconName,
+                            bucketType = BucketType.NEEDS,
+                            allocatedAmountPaise = needsEnvelopes.sumOf { it.allocatedAmountPaise },
+                            spentAmountPaise = needsEnvelopes.sumOf { it.spentAmountPaise },
+                            envelopes = needsEnvelopes
+                        )
+                    )
+                }
+                if (wantsEnvelopes.isNotEmpty()) {
+                    resultList.add(
+                        com.rushi.coinmaster.data.local.model.GroupedCategory(
+                            id = parentId,
+                            name = parentCategory.name,
+                            colorHex = parentCategory.colorHex,
+                            iconName = parentCategory.iconName,
+                            bucketType = BucketType.WANTS,
+                            allocatedAmountPaise = wantsEnvelopes.sumOf { it.allocatedAmountPaise },
+                            spentAmountPaise = wantsEnvelopes.sumOf { it.spentAmountPaise },
+                            envelopes = wantsEnvelopes
+                        )
+                    )
+                }
             }
         }
 
-        val uncategorized = groupedEnvelopes[null] ?: emptyList()
-        val uncategorizedNeeds = uncategorized.filter { it.bucketType == BucketType.NEEDS }
-        val uncategorizedWants = uncategorized.filter { it.bucketType == BucketType.WANTS }
-
-        if (uncategorizedNeeds.isNotEmpty()) {
-            resultList.add(
-                com.rushi.coinmaster.data.local.model.GroupedCategory(
-                    id = -1L,
-                    name = "Other Envelopes",
-                    colorHex = "#90A4AE",
-                    iconName = "ic_category",
-                    bucketType = BucketType.NEEDS,
-                    allocatedAmountPaise = uncategorizedNeeds.sumOf { it.allocatedAmountPaise },
-                    spentAmountPaise = uncategorizedNeeds.sumOf { it.spentAmountPaise },
-                    envelopes = uncategorizedNeeds
-                )
-            )
-        }
-        if (uncategorizedWants.isNotEmpty()) {
-            resultList.add(
-                com.rushi.coinmaster.data.local.model.GroupedCategory(
-                    id = -2L,
-                    name = "Other Envelopes",
-                    colorHex = "#90A4AE",
-                    iconName = "ic_category",
-                    bucketType = BucketType.WANTS,
-                    allocatedAmountPaise = uncategorizedWants.sumOf { it.allocatedAmountPaise },
-                    spentAmountPaise = uncategorizedWants.sumOf { it.spentAmountPaise },
-                    envelopes = uncategorizedWants
-                )
-            )
-        }
+        // Envelopes without a parent category are not shown in Needs/Wants sections.
+        // Users must assign an envelope to a named category via the category detail dialog.
 
         resultList
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
@@ -401,6 +403,16 @@ class BudgetViewModel @Inject constructor(
             val existing = budgetRepository.getCategoriesFlow().first().find { it.id == categoryId }
             if (existing != null) {
                 budgetRepository.updateCategory(existing.copy(bucketType = bucketType))
+                _uiEvent.emit(BudgetUiEvent.SuccessSave)
+            }
+        }
+    }
+
+    fun assignExpenseCategoryToBucket(expenseCategoryId: Long, bucketType: BucketType) {
+        viewModelScope.launch {
+            val existing = expenseCategoryRepository.getExpenseCategoryById(expenseCategoryId)
+            if (existing != null) {
+                expenseCategoryRepository.updateExpenseCategory(existing.copy(bucketType = bucketType))
                 _uiEvent.emit(BudgetUiEvent.SuccessSave)
             }
         }

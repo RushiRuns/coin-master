@@ -105,11 +105,11 @@ class BudgetFragment : Fragment() {
 
         // Add Envelopes Buttons
         binding.btnAddNeedsEnvelope.setOnClickListener {
-            showEnvelopeSelectionDialog(BucketType.NEEDS)
+            showCategorySelectionDialog(BucketType.NEEDS)
         }
 
         binding.btnAddWantsEnvelope.setOnClickListener {
-            showEnvelopeSelectionDialog(BucketType.WANTS)
+            showCategorySelectionDialog(BucketType.WANTS)
         }
 
         binding.btnAddSavingsEnvelope.setOnClickListener {
@@ -426,6 +426,36 @@ class BudgetFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private fun showCategorySelectionDialog(bucketType: BucketType) {
+        val unassignedCategories = viewModel.parentCategoriesState.value.filter {
+            it.bucketType == null && !it.isDeleted
+        }
+
+        if (unassignedCategories.isEmpty()) {
+            AlertDialog.Builder(requireContext())
+                .setTitle("No Unassigned Categories")
+                .setMessage("All categories have been allocated to a bucket. Please create new categories first.")
+                .setPositiveButton("Manage Categories") { _, _ ->
+                    findNavController().navigate(R.id.nav_categories)
+                }
+                .setNegativeButton("Cancel", null)
+                .show()
+        } else {
+            val names = unassignedCategories.map { it.name }.toTypedArray()
+            AlertDialog.Builder(requireContext())
+                .setTitle("Select Category for $bucketType")
+                .setItems(names) { _, which ->
+                    val selectedCategory = unassignedCategories[which]
+                    viewModel.assignExpenseCategoryToBucket(selectedCategory.id, bucketType)
+                }
+                .setNeutralButton("Manage Categories") { _, _ ->
+                    findNavController().navigate(R.id.nav_categories)
+                }
+                .setNegativeButton("Cancel", null)
+                .show()
+        }
     }
 
     private fun showEnvelopeSelectionDialog(bucketType: BucketType) {

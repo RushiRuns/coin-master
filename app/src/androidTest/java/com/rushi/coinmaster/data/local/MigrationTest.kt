@@ -53,4 +53,26 @@ class MigrationTest {
         assert(recipientIdCol != -1)
         cursorTransactions.close()
     }
+
+    @Test
+    @Throws(IOException::class)
+    fun migrate7To8() {
+        // Create database with version 7
+        var db = helper.createDatabase(TEST_DB, 7)
+
+        // Insert compatible dummy data for v7
+        db.execSQL("INSERT INTO expense_categories (name, color_hex, icon_name, is_deleted) VALUES ('Food Category', '#FFFFFF', 'food', 0)")
+        db.close()
+
+        // Migrate to version 8
+        db = helper.runMigrationsAndValidate(TEST_DB, 8, true, CoinMasterDatabase.MIGRATION_7_8)
+
+        // Verify that expense_categories table now has the new column bucket_type
+        val cursor = db.query("SELECT * FROM expense_categories LIMIT 1")
+        val bucketTypeCol = cursor.getColumnIndex("bucket_type")
+        assert(bucketTypeCol != -1)
+        cursor.moveToFirst()
+        assert(cursor.isNull(bucketTypeCol)) // default should be null
+        cursor.close()
+    }
 }

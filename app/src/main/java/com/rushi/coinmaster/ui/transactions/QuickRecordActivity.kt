@@ -64,6 +64,8 @@ class QuickRecordActivity : AppCompatActivity() {
     }
 
     private fun setupUI() {
+        binding.actvCategory.threshold = 1
+
         binding.btnCancel.setOnClickListener {
             finish()
         }
@@ -103,10 +105,6 @@ class QuickRecordActivity : AppCompatActivity() {
                             categoryNames
                         )
                         binding.actvCategory.setAdapter(categoryAdapter)
-
-                        if (categoryNames.isNotEmpty() && binding.actvCategory.text.isEmpty()) {
-                            binding.actvCategory.setText(categoryNames[0], false)
-                        }
                     }
                 }
 

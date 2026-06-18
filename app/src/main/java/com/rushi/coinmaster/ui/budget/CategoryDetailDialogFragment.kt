@@ -70,6 +70,16 @@ class CategoryDetailDialogFragment : DialogFragment() {
             dismiss()
         }
 
+        binding.btnAddEnvelope.setOnClickListener {
+            dismiss()
+            val action = BudgetFragmentDirections.actionBudgetFragmentToAddEditEnvelopeFragment(
+                categoryId = 0L,
+                bucketTypeOrdinal = bucketType?.ordinal ?: -1,
+                parentCategoryId = categoryId
+            )
+            findNavController().navigate(action)
+        }
+
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.groupedCategoriesState.collect { groupedList ->

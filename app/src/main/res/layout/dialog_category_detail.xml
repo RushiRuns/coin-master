@@ -51,13 +51,27 @@
         android:layout_marginTop="8dp"
         android:background="@color/divider" />
 
-    <Button
-        android:id="@+id/btn_close"
-        style="@style/Widget.MaterialComponents.Button.TextButton"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="end"
-        android:layout_marginTop="8dp"
-        android:text="Close" />
+        android:orientation="horizontal"
+        android:gravity="end"
+        android:layout_marginTop="8dp">
+
+        <Button
+            android:id="@+id/btn_add_envelope"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="+ ADD ENVELOPE"
+            android:textColor="@color/primary" />
+
+        <Button
+            android:id="@+id/btn_close"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Close" />
+    </LinearLayout>
 
 </LinearLayout>

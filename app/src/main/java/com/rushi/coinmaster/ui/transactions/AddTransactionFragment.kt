@@ -57,6 +57,8 @@ class AddTransactionFragment : Fragment() {
             requireActivity().onBackPressedDispatcher.onBackPressed()
         }
 
+        binding.actvCategory.threshold = 1
+
         setupTypeDropdown()
         setupDatePicker()
 
@@ -107,8 +109,6 @@ class AddTransactionFragment : Fragment() {
                             if (cat != null) {
                                 binding.actvCategory.setText(cat.name, false)
                             }
-                        } else if (categoryNames.isNotEmpty() && binding.actvCategory.text.isEmpty()) {
-                            binding.actvCategory.setText(categoryNames[0], false)
                         }
                     }
                 }
