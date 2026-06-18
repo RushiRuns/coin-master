@@ -43,7 +43,7 @@
         android:textStyle="bold"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toEndOf="@id/iv_envelope_icon"
-        app:layout_constraintEnd_toStartOf="@id/layout_allocation_click" />
+        app:layout_constraintEnd_toStartOf="@id/btn_withdraw_envelope" />
 
     <!-- Spent breakdown indicator (Caption) -->
     <TextView
@@ -57,6 +57,21 @@
         android:textSize="12sp"
         app:layout_constraintTop_toBottomOf="@id/tv_envelope_name"
         app:layout_constraintStart_toEndOf="@id/iv_envelope_icon"
+        app:layout_constraintEnd_toStartOf="@id/btn_withdraw_envelope" />
+
+    <!-- Withdraw button (only visible in Savings) -->
+    <ImageButton
+        android:id="@+id/btn_withdraw_envelope"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:padding="12dp"
+        android:background="?android:attr/selectableItemBackgroundBorderless"
+        android:src="@drawable/ic_transfer"
+        android:contentDescription="Withdraw from Savings"
+        android:visibility="gone"
+        app:tint="@color/secondary"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/layout_allocation_click" />
 
     <!-- Clickable Allocation Input Box (48dp min touch target) -->

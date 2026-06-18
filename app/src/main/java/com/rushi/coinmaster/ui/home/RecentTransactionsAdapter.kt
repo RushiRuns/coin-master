@@ -80,9 +80,8 @@ class RecentTransactionsAdapter :
                     binding.viewTypeDot.setBackgroundColor(ContextCompat.getColor(context, R.color.primary))
                 }
                 TransactionType.TRANSFER -> {
-                    binding.tvTransactionTitle.text = context.getString(R.string.acc_type_cash) // Fallback title
-                    binding.tvTransactionTitle.setText(R.string.text_expense_desc) // Wait, let's look at the label
-                    binding.tvTransactionTitle.text = "Transfer"
+                    val categorySuffix = if (!item.categoryName.isNullOrBlank()) " (${item.categoryName})" else ""
+                    binding.tvTransactionTitle.text = "Transfer$categorySuffix"
 
                     val desc = context.getString(
                         R.string.text_transfer_desc,
@@ -95,8 +94,16 @@ class RecentTransactionsAdapter :
                     binding.tvTransactionAmount.setTextColor(ContextCompat.getColor(context, R.color.text_secondary))
                     binding.tvTransactionAmount.text = CurrencyFormatter.format(item.amountPaise, languageCode)
 
-                    // Set Dot Color to Gray
-                    binding.viewTypeDot.setBackgroundColor(ContextCompat.getColor(context, R.color.text_secondary))
+                    // Set Dot Color to Category Color if present
+                    if (!item.categoryColorHex.isNullOrBlank()) {
+                        try {
+                            binding.viewTypeDot.setBackgroundColor(Color.parseColor(item.categoryColorHex))
+                        } catch (e: Exception) {
+                            binding.viewTypeDot.setBackgroundColor(ContextCompat.getColor(context, R.color.text_secondary))
+                        }
+                    } else {
+                        binding.viewTypeDot.setBackgroundColor(ContextCompat.getColor(context, R.color.text_secondary))
+                    }
                 }
                 TransactionType.BALANCE_CORRECTION -> {
                     binding.tvTransactionTitle.text = "Correction"

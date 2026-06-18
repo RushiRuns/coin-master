@@ -124,7 +124,7 @@ class TransactionViewModel @Inject constructor(
                 accountId = accountId,
                 transferToAccountId = if (type == TransactionType.TRANSFER) transferToAccountId else null,
                 transferRecipientId = if (type == TransactionType.EXTERNAL_TRANSFER) transferRecipientId else null,
-                categoryId = if (type == TransactionType.EXPENSE) categoryId else null,
+                categoryId = if (type == TransactionType.EXPENSE || type == TransactionType.TRANSFER) categoryId else null,
                 date = date,
                 note = note?.trim()?.takeIf { it.isNotEmpty() }
             )

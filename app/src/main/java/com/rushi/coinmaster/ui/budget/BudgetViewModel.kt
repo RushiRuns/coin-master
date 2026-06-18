@@ -8,6 +8,11 @@ import com.rushi.coinmaster.data.local.model.BucketType
 import com.rushi.coinmaster.data.local.model.ExpenseType
 import com.rushi.coinmaster.data.local.model.EnvelopeWithAllocation
 import com.rushi.coinmaster.data.repository.BudgetRepository
+import com.rushi.coinmaster.data.repository.AccountRepository
+import com.rushi.coinmaster.domain.usecase.AddTransactionUseCase
+import com.rushi.coinmaster.data.local.entity.TransactionEntity
+import com.rushi.coinmaster.data.local.entity.AccountEntity
+import com.rushi.coinmaster.data.local.model.TransactionType
 import com.rushi.coinmaster.domain.usecase.BudgetValidationResult
 import com.rushi.coinmaster.domain.usecase.ValidateZeroBalanceUseCase
 import com.rushi.coinmaster.util.MoneyMath
@@ -34,8 +39,64 @@ class BudgetViewModel @Inject constructor(
     private val budgetRepository: BudgetRepository,
     private val validateZeroBalanceUseCase: ValidateZeroBalanceUseCase,
     private val expenseCategoryRepository: com.rushi.coinmaster.data.repository.ExpenseCategoryRepository,
-    private val incomeStreamRepository: com.rushi.coinmaster.data.repository.IncomeStreamRepository
+    private val incomeStreamRepository: com.rushi.coinmaster.data.repository.IncomeStreamRepository,
+    private val accountRepository: AccountRepository,
+    private val addTransactionUseCase: AddTransactionUseCase
 ) : ViewModel() {
+
+    // Expose all active accounts
+    val activeAccountsState: StateFlow<List<AccountEntity>> = accountRepository.getAccountsFlow()
+        .map { accounts -> accounts.filter { !it.isDeleted } }
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
+
+    fun withdrawFromSavings(
+        categoryId: Long,
+        sourceAccountId: Long,
+        destAccountId: Long,
+        amountStr: String,
+        onResult: (Result<Long>) -> Unit
+    ) {
+        viewModelScope.launch {
+            if (amountStr.isBlank()) {
+                onResult(Result.failure(IllegalArgumentException("Amount cannot be empty.")))
+                return@launch
+            }
+            val amountPaise = try {
+                MoneyMath.rupeesToPaise(amountStr)
+            } catch (e: Exception) {
+                onResult(Result.failure(IllegalArgumentException("Invalid amount format.")))
+                return@launch
+            }
+            if (amountPaise <= 0L) {
+                onResult(Result.failure(IllegalArgumentException("Amount must be greater than zero.")))
+                return@launch
+            }
+            if (sourceAccountId == destAccountId) {
+                onResult(Result.failure(IllegalArgumentException("Source and destination accounts must be different.")))
+                return@launch
+            }
+
+            val budgetPeriod = budgetPeriodState.value ?: budgetRepository.getOrCreateBudgetPeriodForDate(System.currentTimeMillis())
+
+            val transaction = TransactionEntity(
+                amountPaise = amountPaise,
+                type = TransactionType.TRANSFER,
+                accountId = sourceAccountId,
+                transferToAccountId = destAccountId,
+                categoryId = categoryId,
+                budgetPeriodId = budgetPeriod.id,
+                date = System.currentTimeMillis(),
+                note = "Withdrawal from savings"
+            )
+
+            try {
+                val result = addTransactionUseCase(transaction)
+                onResult(result)
+            } catch (e: Exception) {
+                onResult(Result.failure(e))
+            }
+        }
+    }
 
     // Expose the computed sum of all active income streams
     val totalIncomeStreamsPaise: StateFlow<Long> = incomeStreamRepository.getIncomeStreamsFlow()

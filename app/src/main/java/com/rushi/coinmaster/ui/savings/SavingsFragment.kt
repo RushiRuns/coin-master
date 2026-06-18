@@ -8,6 +8,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import android.widget.ArrayAdapter
+import android.widget.AutoCompleteTextView
+import com.rushi.coinmaster.data.local.entity.AccountEntity
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -40,6 +43,7 @@ class SavingsFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val viewModel: BudgetViewModel by activityViewModels()
+    private var activeAccounts: List<AccountEntity> = emptyList()
 
     @Inject
     lateinit var computeBucketSplitUseCase: ComputeBucketSplitUseCase
@@ -81,6 +85,12 @@ class SavingsFragment : Fragment() {
                 launch {
                     viewModel.budgetPeriodState.collect { period ->
                         updateSavingsUi(period)
+                    }
+                }
+
+                launch {
+                    viewModel.activeAccountsState.collect { accounts ->
+                        activeAccounts = accounts
                     }
                 }
 
@@ -219,6 +229,12 @@ class SavingsFragment : Fragment() {
                     findNavController().navigate(R.id.addEditEnvelopeFragment, bundle)
                 }
 
+                // Withdraw Button (visible only in Savings screen)
+                itemBinding.btnWithdrawEnvelope.visibility = View.VISIBLE
+                itemBinding.btnWithdrawEnvelope.setOnClickListener {
+                    showWithdrawDialog(envelope)
+                }
+
                 binding.containerSavingsEnvelopes.addView(itemBinding.root)
             }
         }
@@ -262,6 +278,70 @@ class SavingsFragment : Fragment() {
                 .setNegativeButton("Cancel", null)
                 .show()
         }
+    }
+
+    private fun showWithdrawDialog(envelope: EnvelopeWithAllocation) {
+        val accounts = activeAccounts
+        if (accounts.isEmpty()) {
+            Toast.makeText(requireContext(), "Please create an account first.", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        val dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_withdraw_savings, null)
+        val etAmount = dialogView.findViewById<com.google.android.material.textfield.TextInputEditText>(R.id.et_amount)
+        val actvSource = dialogView.findViewById<AutoCompleteTextView>(R.id.actv_source_account)
+        val actvDest = dialogView.findViewById<AutoCompleteTextView>(R.id.actv_dest_account)
+
+        val accountNames = accounts.map { it.name }
+        val sourceAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, accountNames)
+        val destAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, accountNames)
+
+        actvSource.setAdapter(sourceAdapter)
+        actvDest.setAdapter(destAdapter)
+
+        // Pre-select accounts
+        actvSource.setText(accounts[0].name, false)
+        if (accounts.size > 1) {
+            actvDest.setText(accounts[1].name, false)
+        } else {
+            actvDest.setText(accounts[0].name, false)
+        }
+
+        AlertDialog.Builder(requireContext())
+            .setTitle("Withdraw from ${envelope.categoryName}")
+            .setView(dialogView)
+            .setPositiveButton("Withdraw") { dialog, _ ->
+                val amountStr = etAmount.text.toString()
+                val selectedSourceName = actvSource.text.toString()
+                val selectedDestName = actvDest.text.toString()
+
+                val sourceAccount = accounts.find { it.name == selectedSourceName }
+                val destAccount = accounts.find { it.name == selectedDestName }
+
+                if (sourceAccount == null || destAccount == null) {
+                    Toast.makeText(requireContext(), "Please select valid accounts.", Toast.LENGTH_SHORT).show()
+                    return@setPositiveButton
+                }
+
+                viewModel.withdrawFromSavings(
+                    categoryId = envelope.categoryId,
+                    sourceAccountId = sourceAccount.id,
+                    destAccountId = destAccount.id,
+                    amountStr = amountStr
+                ) { result ->
+                    result.fold(
+                        onSuccess = {
+                            Toast.makeText(requireContext(), "Withdrawal successful", Toast.LENGTH_SHORT).show()
+                            dialog.dismiss()
+                        },
+                        onFailure = { error ->
+                            Toast.makeText(requireContext(), "Error: ${error.message}", Toast.LENGTH_LONG).show()
+                        }
+                    )
+                }
+            }
+            .setNegativeButton("Cancel", null)
+            .show()
     }
 
     private fun getIconDrawableResId(iconName: String): Int {

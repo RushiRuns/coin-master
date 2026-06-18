@@ -81,7 +81,7 @@ interface BudgetDao {
                 FROM transactions t 
                 WHERE t.category_id = c.id 
                   AND t.budget_period_id = :budgetPeriodId 
-                  AND t.type = 'EXPENSE' 
+                  AND (t.type = 'EXPENSE' OR t.type = 'TRANSFER') 
                   AND t.is_deleted = 0
             ), 0) AS spentAmountPaise,
             c.expense_category_id AS expenseCategoryId,

@@ -15,7 +15,7 @@ interface SinkingFundDao {
     @Query("""
         SELECT sf.*, c.name AS category_name,
                (COALESCE((SELECT SUM(ea.allocated_amount_paise) FROM envelope_allocations ea WHERE ea.category_id = sf.category_id), 0) - 
-                COALESCE((SELECT SUM(t.amount_paise) FROM transactions t WHERE t.category_id = sf.category_id AND t.type = 'EXPENSE' AND t.is_deleted = 0), 0) +
+                COALESCE((SELECT SUM(t.amount_paise) FROM transactions t WHERE t.category_id = sf.category_id AND (t.type = 'EXPENSE' OR t.type = 'TRANSFER') AND t.is_deleted = 0), 0) +
                 COALESCE((SELECT SUM(t.amount_paise) FROM transactions t WHERE t.category_id = sf.category_id AND t.type = 'INCOME' AND t.is_deleted = 0), 0)
                ) AS computed_saved_amount
         FROM sinking_funds sf
