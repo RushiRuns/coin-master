@@ -469,6 +469,21 @@ class BudgetViewModel @Inject constructor(
         }
     }
 
+    fun assignCategoryToParent(categoryId: Long, parentCategoryId: Long, bucketType: BucketType) {
+        viewModelScope.launch {
+            val existing = budgetRepository.getCategoriesFlow().first().find { it.id == categoryId }
+            if (existing != null) {
+                budgetRepository.updateCategory(
+                    existing.copy(
+                        expenseCategoryId = parentCategoryId,
+                        bucketType = bucketType
+                    )
+                )
+                _uiEvent.emit(BudgetUiEvent.SuccessSave)
+            }
+        }
+    }
+
     fun assignExpenseCategoryToBucket(expenseCategoryId: Long, bucketType: BucketType) {
         viewModelScope.launch {
             val existing = expenseCategoryRepository.getExpenseCategoryById(expenseCategoryId)

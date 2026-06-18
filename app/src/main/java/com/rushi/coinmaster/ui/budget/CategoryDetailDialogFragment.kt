@@ -1,5 +1,6 @@
 package com.rushi.coinmaster.ui.budget
 
+import android.app.AlertDialog
 import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
@@ -71,13 +72,7 @@ class CategoryDetailDialogFragment : DialogFragment() {
         }
 
         binding.btnAddEnvelope.setOnClickListener {
-            dismiss()
-            val action = BudgetFragmentDirections.actionBudgetFragmentToAddEditEnvelopeFragment(
-                categoryId = 0L,
-                bucketTypeOrdinal = bucketType?.ordinal ?: -1,
-                parentCategoryId = categoryId
-            )
-            findNavController().navigate(action)
+            showEnvelopeSelectionDialog(categoryId, bucketType)
         }
 
         viewLifecycleOwner.lifecycleScope.launch {
@@ -188,6 +183,47 @@ class CategoryDetailDialogFragment : DialogFragment() {
 
     private fun getIconDrawableResId(iconName: String): Int {
         return com.rushi.coinmaster.util.IconHelper.getIconDrawableResId(requireContext(), iconName)
+    }
+
+    private fun showEnvelopeSelectionDialog(parentCategoryId: Long, bucketType: BucketType?) {
+        if (bucketType == null) return
+
+        val allEnvelopes = viewModel.allCategoriesState.value
+        val availableEnvelopes = allEnvelopes.filter {
+            !it.isDeleted &&
+            it.expenseCategoryId == null &&
+            (it.bucketType == null || it.bucketType == bucketType)
+        }
+
+        val categoryName = binding.tvDialogTitle.text.toString()
+
+        if (availableEnvelopes.isEmpty()) {
+            AlertDialog.Builder(requireContext())
+                .setTitle("No Available Envelopes")
+                .setMessage("All envelopes are either deleted or assigned to other categories. Please manage envelopes to create or edit them.")
+                .setPositiveButton("Manage Envelopes") { _, _ ->
+                    dismiss()
+                    val action = BudgetFragmentDirections.actionBudgetFragmentToManageEnvelopesFragment()
+                    findNavController().navigate(action)
+                }
+                .setNegativeButton("Cancel", null)
+                .show()
+        } else {
+            val names = availableEnvelopes.map { it.name }.toTypedArray()
+            AlertDialog.Builder(requireContext())
+                .setTitle("Select Envelope for $categoryName")
+                .setItems(names) { _, which ->
+                    val selectedEnvelope = availableEnvelopes[which]
+                    viewModel.assignCategoryToParent(selectedEnvelope.id, parentCategoryId, bucketType)
+                }
+                .setNeutralButton("Manage Envelopes") { _, _ ->
+                    dismiss()
+                    val action = BudgetFragmentDirections.actionBudgetFragmentToManageEnvelopesFragment()
+                    findNavController().navigate(action)
+                }
+                .setNegativeButton("Cancel", null)
+                .show()
+        }
     }
 
     override fun onDestroyView() {
