@@ -1,10 +1,12 @@
 package com.rushi.coinmaster.ui.income
 
 import com.rushi.coinmaster.data.local.entity.AccountEntity
+import com.rushi.coinmaster.data.local.entity.BudgetPeriodEntity
 import com.rushi.coinmaster.data.local.entity.TransactionEntity
 import com.rushi.coinmaster.data.local.model.AccountType
 import com.rushi.coinmaster.data.local.model.TransactionType
 import com.rushi.coinmaster.data.repository.AccountRepository
+import com.rushi.coinmaster.data.repository.BudgetRepository
 import com.rushi.coinmaster.data.repository.IncomeStreamRepository
 import com.rushi.coinmaster.domain.model.IncomeStream
 import com.rushi.coinmaster.domain.usecase.AddTransactionUseCase
@@ -28,6 +30,7 @@ class IncomeViewModelTest {
     private val incomeStreamRepository: IncomeStreamRepository = mockk(relaxed = true)
     private val accountRepository: AccountRepository = mockk(relaxed = true)
     private val addTransactionUseCase: AddTransactionUseCase = mockk(relaxed = true)
+    private val budgetRepository: BudgetRepository = mockk(relaxed = true)
 
     private lateinit var viewModel: IncomeViewModel
 
@@ -39,11 +42,13 @@ class IncomeViewModelTest {
         Dispatchers.setMain(testDispatcher)
         every { incomeStreamRepository.getIncomeStreamsFlow() } returns MutableStateFlow(listOf(stream1, stream2))
         every { accountRepository.getAccountsFlow() } returns MutableStateFlow(emptyList())
+        coEvery { budgetRepository.getBudgetPeriods() } returns emptyList()
 
         viewModel = IncomeViewModel(
             incomeStreamRepository,
             accountRepository,
-            addTransactionUseCase
+            addTransactionUseCase,
+            budgetRepository
         )
     }
 
@@ -58,7 +63,7 @@ class IncomeViewModelTest {
         every { incomeStreamRepository.getIncomeStreamsFlow() } returns MutableStateFlow(listOf(stream1, stream2, deletedStream))
 
         // Create new viewmodel to trigger fresh collection of streams flow
-        val freshViewModel = IncomeViewModel(incomeStreamRepository, accountRepository, addTransactionUseCase)
+        val freshViewModel = IncomeViewModel(incomeStreamRepository, accountRepository, addTransactionUseCase, budgetRepository)
         backgroundScope.launch(UnconfinedTestDispatcher(testScheduler)) {
             freshViewModel.incomeStreams.collect {}
         }
@@ -72,7 +77,7 @@ class IncomeViewModelTest {
     @Test
     fun `totalIncomePaise computes total sum of active streams`() = runTest {
         // stream1 (50000.00) + stream2 (10000.00) = 60000.00 paise (6_000_000 paise)
-        val freshViewModel = IncomeViewModel(incomeStreamRepository, accountRepository, addTransactionUseCase)
+        val freshViewModel = IncomeViewModel(incomeStreamRepository, accountRepository, addTransactionUseCase, budgetRepository)
         backgroundScope.launch(UnconfinedTestDispatcher(testScheduler)) {
             freshViewModel.totalIncomePaise.collect {}
         }
@@ -150,5 +155,43 @@ class IncomeViewModelTest {
 
         coVerify(exactly = 0) { addTransactionUseCase(any()) }
         assertTrue(events.any { it is IncomeUiEvent.ShowToast && it.message.contains("No account linked") })
+    }
+
+    @Test
+    fun `addIncomeStream updates inactive budget periods to match total active income streams`() = runTest {
+        val inactivePeriod = BudgetPeriodEntity(id = 1, startDate = 1000L, endDate = 2000L, incomePaise = 100000L, isActive = false)
+        val activePeriod = BudgetPeriodEntity(id = 2, startDate = 3000L, endDate = 4000L, incomePaise = 200000L, isActive = true)
+
+        coEvery { budgetRepository.getBudgetPeriods() } returns listOf(inactivePeriod, activePeriod)
+        coEvery { incomeStreamRepository.getIncomeStreams() } returns listOf(stream1, stream2) // total = 6_000_000L paise
+
+        viewModel.addIncomeStream("Rental", 1500.00, 10L)
+        testScheduler.advanceUntilIdle()
+
+        coVerify(exactly = 1) {
+            budgetRepository.updateBudgetPeriod(match { it.id == 1 && it.incomePaise == 6_000_000L })
+        }
+        coVerify(exactly = 0) {
+            budgetRepository.updateBudgetPeriod(match { it.id == 2 })
+        }
+    }
+
+    @Test
+    fun `deleteIncomeStream updates inactive budget periods to match total active income streams`() = runTest {
+        val inactivePeriod = BudgetPeriodEntity(id = 1, startDate = 1000L, endDate = 2000L, incomePaise = 100000L, isActive = false)
+        val activePeriod = BudgetPeriodEntity(id = 2, startDate = 3000L, endDate = 4000L, incomePaise = 200000L, isActive = true)
+
+        coEvery { budgetRepository.getBudgetPeriods() } returns listOf(inactivePeriod, activePeriod)
+        coEvery { incomeStreamRepository.getIncomeStreams() } returns listOf(stream1) // total = 5_000_000L paise
+
+        viewModel.deleteIncomeStream(2L)
+        testScheduler.advanceUntilIdle()
+
+        coVerify(exactly = 1) {
+            budgetRepository.updateBudgetPeriod(match { it.id == 1 && it.incomePaise == 5_000_000L })
+        }
+        coVerify(exactly = 0) {
+            budgetRepository.updateBudgetPeriod(match { it.id == 2 })
+        }
     }
 }

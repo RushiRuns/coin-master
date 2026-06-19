@@ -6,6 +6,7 @@ import com.rushi.coinmaster.data.local.entity.AccountEntity
 import com.rushi.coinmaster.data.local.entity.TransactionEntity
 import com.rushi.coinmaster.data.local.model.TransactionType
 import com.rushi.coinmaster.data.repository.AccountRepository
+import com.rushi.coinmaster.data.repository.BudgetRepository
 import com.rushi.coinmaster.data.repository.IncomeStreamRepository
 import com.rushi.coinmaster.domain.model.IncomeStream
 import com.rushi.coinmaster.domain.usecase.AddTransactionUseCase
@@ -25,7 +26,8 @@ import javax.inject.Inject
 class IncomeViewModel @Inject constructor(
     private val incomeStreamRepository: IncomeStreamRepository,
     private val accountRepository: AccountRepository,
-    private val addTransactionUseCase: AddTransactionUseCase
+    private val addTransactionUseCase: AddTransactionUseCase,
+    private val budgetRepository: BudgetRepository
 ) : ViewModel() {
 
     /** Live list of active (non-deleted) income streams. */
@@ -72,6 +74,7 @@ class IncomeViewModel @Inject constructor(
                 note = "Income Stream: $name"
             )
             addTransactionUseCase(transaction)
+            syncPlannedBudgetPeriods()
             _uiEvent.emit(IncomeUiEvent.ShowToast("Income stream added"))
         }
     }
@@ -80,6 +83,7 @@ class IncomeViewModel @Inject constructor(
     fun deleteIncomeStream(id: Long) {
         viewModelScope.launch {
             incomeStreamRepository.softDeleteIncomeStream(id)
+            syncPlannedBudgetPeriods()
             _uiEvent.emit(IncomeUiEvent.ShowToast("Income stream deleted"))
         }
     }
@@ -112,6 +116,21 @@ class IncomeViewModel @Inject constructor(
                 val errorMsg = result.exceptionOrNull()?.message ?: "Unknown error"
                 _uiEvent.emit(IncomeUiEvent.ShowToast("Failed to deposit: $errorMsg"))
             }
+        }
+    }
+
+    private suspend fun syncPlannedBudgetPeriods() {
+        try {
+            val activeStreams = incomeStreamRepository.getIncomeStreams()
+            val totalIncomePaise = activeStreams.filter { !it.isDeleted }.sumOf { it.amountPaise }
+            val periods = budgetRepository.getBudgetPeriods()
+            periods.forEach { period ->
+                if (!period.isActive && period.incomePaise != totalIncomePaise) {
+                    budgetRepository.updateBudgetPeriod(period.copy(incomePaise = totalIncomePaise))
+                }
+            }
+        } catch (e: Exception) {
+            // Ignore/handle silently
         }
     }
 }
