@@ -136,7 +136,6 @@ class OnboardingViewModelTest {
         coVerify { accountRepository.insertAccount(match { 
             it.name == "Primary Bank" && it.type == AccountType.BANK_ACCOUNT && it.balancePaise == 100050L
         }) }
-        coVerify { budgetRepository.seedDefaultCategories() }
         
         // Assert income streams stored
         coVerify { incomeStreamRepository.insertIncomeStream(match {

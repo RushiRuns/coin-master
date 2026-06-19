@@ -99,8 +99,6 @@ class OnboardingViewModel @Inject constructor(
             )
             val firstAccountId = accountRepository.insertAccount(firstAccount)
 
-            // 3. Seed default envelopes
-            budgetRepository.seedDefaultCategories()
 
             // 4. Save income streams linked to the first account
             val totalIncomePaise = incomeStreams.sumOf { it.amountPaise }
