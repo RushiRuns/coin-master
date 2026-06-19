@@ -63,6 +63,7 @@ class HomeFragment : Fragment() {
             (requireActivity() as MainActivity).drawerLayout
         )
         binding.toolbar.setupWithNavController(navController, appBarConfiguration)
+        setupToolbarMenu()
 
         setupRecyclerView()
         setupPieCharts()
@@ -293,6 +294,19 @@ class HomeFragment : Fragment() {
         binding.fabAddTransaction.setOnClickListener {
             val action = HomeFragmentDirections.actionHomeFragmentToAddTransactionFragment()
             findNavController().navigate(action)
+        }
+    }
+
+    private fun setupToolbarMenu() {
+        binding.toolbar.inflateMenu(R.menu.menu_home)
+        binding.toolbar.setOnMenuItemClickListener { menuItem ->
+            if (menuItem.itemId == R.id.action_search_envelopes) {
+                val dialog = SearchEnvelopesBottomSheetDialogFragment()
+                dialog.show(childFragmentManager, "SearchEnvelopesBottomSheet")
+                true
+            } else {
+                false
+            }
         }
     }
 
