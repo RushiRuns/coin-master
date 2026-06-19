@@ -22,7 +22,6 @@ class AccountsViewModelTest {
     private val testDispatcher = StandardTestDispatcher()
 
     private val accountRepository: AccountRepository = mockk(relaxed = true)
-    private val incomeStreamRepository: IncomeStreamRepository = mockk()
     private val getNetWorthUseCase: GetNetWorthUseCase = mockk()
 
     private lateinit var viewModel: AccountsViewModel
@@ -36,10 +35,9 @@ class AccountsViewModelTest {
     fun setUp() {
         Dispatchers.setMain(testDispatcher)
         every { accountRepository.getAccountsFlow() } returns flowOf(testAccounts)
-        every { incomeStreamRepository.getIncomeStreamsFlow() } returns flowOf(emptyList())
-        every { getNetWorthUseCase(testAccounts, any(), any()) } returns 60000L
+        every { getNetWorthUseCase(testAccounts, any()) } returns 60000L
         
-        viewModel = AccountsViewModel(accountRepository, incomeStreamRepository, getNetWorthUseCase)
+        viewModel = AccountsViewModel(accountRepository, getNetWorthUseCase)
     }
 
     @After

@@ -37,7 +37,6 @@ class HomeViewModelTest {
     private val budgetRepository: BudgetRepository = mockk()
     private val transactionRepository: TransactionRepository = mockk()
     private val debtRepository: DebtRepository = mockk()
-    private val incomeStreamRepository: IncomeStreamRepository = mockk()
     private val getNetWorthUseCase: GetNetWorthUseCase = mockk()
 
     private lateinit var viewModel: HomeViewModel
@@ -101,15 +100,13 @@ class HomeViewModelTest {
         every { budgetRepository.getCategoriesFlow() } returns flowOf(testCategories)
         every { transactionRepository.getTransactionsBetweenDatesFlow(any(), any()) } returns flowOf(testTransactions)
         every { debtRepository.getDebtsFlow() } returns flowOf(emptyList())
-        every { incomeStreamRepository.getIncomeStreamsFlow() } returns flowOf(emptyList())
-        every { getNetWorthUseCase(testAccounts, any(), any()) } returns 60000L
+        every { getNetWorthUseCase(testAccounts, any()) } returns 60000L
  
         viewModel = HomeViewModel(
             accountRepository = accountRepository,
             budgetRepository = budgetRepository,
             transactionRepository = transactionRepository,
             debtRepository = debtRepository,
-            incomeStreamRepository = incomeStreamRepository,
             getNetWorthUseCase = getNetWorthUseCase
         )
     }

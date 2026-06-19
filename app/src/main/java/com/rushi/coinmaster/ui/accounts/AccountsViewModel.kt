@@ -5,13 +5,11 @@ import androidx.lifecycle.viewModelScope
 import com.rushi.coinmaster.data.local.entity.AccountEntity
 import com.rushi.coinmaster.data.local.model.AccountType
 import com.rushi.coinmaster.data.repository.AccountRepository
-import com.rushi.coinmaster.data.repository.IncomeStreamRepository
 import com.rushi.coinmaster.domain.usecase.GetNetWorthUseCase
 import com.rushi.coinmaster.util.MoneyMath
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
@@ -25,17 +23,12 @@ data class AccountsUiState(
 @HiltViewModel
 class AccountsViewModel @Inject constructor(
     private val accountRepository: AccountRepository,
-    private val incomeStreamRepository: IncomeStreamRepository,
     private val getNetWorthUseCase: GetNetWorthUseCase
 ) : ViewModel() {
 
-    // Expose UI state by combining account and income stream flows
-    val uiState: StateFlow<AccountsUiState> = combine(
-        accountRepository.getAccountsFlow(),
-        incomeStreamRepository.getIncomeStreamsFlow()
-    ) { accounts, incomeStreams ->
-        val activeIncome = incomeStreams.filter { !it.isDeleted }
-        val netWorth = getNetWorthUseCase(accounts, emptyList(), activeIncome)
+    // Expose UI state by mapping accounts flow
+    val uiState: StateFlow<AccountsUiState> = accountRepository.getAccountsFlow().map { accounts ->
+        val netWorth = getNetWorthUseCase(accounts, emptyList())
         AccountsUiState(accounts, netWorth)
     }.stateIn(
         scope = viewModelScope,

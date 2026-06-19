@@ -48,19 +48,6 @@ class GetNetWorthUseCaseTest {
     }
 
     @Test
-    fun testNetWorthCalculationWithIncomeStreams() {
-        val accounts = listOf(
-            AccountEntity(id = 1L, name = "Cash", type = AccountType.CASH, balancePaise = 10000L, colorHex = "", iconName = "")
-        )
-        val incomeStreams = listOf(
-            com.rushi.coinmaster.domain.model.IncomeStream(id = 1L, name = "Salary", amountPaise = 25000L, accountId = null)
-        )
-        // Expected Net Worth: Accounts (10000) + Income (25000) = 35000 paise
-        val netWorth = getNetWorthUseCase(accounts, emptyList(), incomeStreams)
-        assertEquals(35000L, netWorth)
-    }
-
-    @Test
     fun testEmptyAccountsYieldZero() {
         val netWorth = getNetWorthUseCase(emptyList())
         assertEquals(0L, netWorth)
