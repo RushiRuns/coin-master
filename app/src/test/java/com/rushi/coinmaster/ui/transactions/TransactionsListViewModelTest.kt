@@ -114,4 +114,50 @@ class TransactionsListViewModelTest {
 
         coVerify { transactionRepository.deleteTransaction(123L) }
     }
+
+    @Test
+    fun testSearchQueryFiltersTransactions() = runTest {
+        val extraTransactions = listOf(
+            TransactionEntity(id = 1L, amountPaise = 10000L, type = TransactionType.EXPENSE, accountId = 1L, categoryId = 1L, date = System.currentTimeMillis(), note = "Burger"),
+            TransactionEntity(id = 2L, amountPaise = 15000L, type = TransactionType.EXPENSE, accountId = 1L, categoryId = 1L, date = System.currentTimeMillis(), note = "Pizza")
+        )
+        every { transactionRepository.getTransactionsBetweenDatesFlow(any(), any()) } returns flowOf(extraTransactions)
+
+        val freshViewModel = TransactionsListViewModel(transactionRepository, accountRepository, budgetRepository)
+
+        backgroundScope.launch(UnconfinedTestDispatcher(testScheduler)) {
+            freshViewModel.uiState.collect {}
+        }
+        testScheduler.advanceUntilIdle()
+
+        // 1. Initial State: both show
+        assertEquals(2, freshViewModel.uiState.value.transactions.size)
+
+        // 2. Search for "Burger": only Burger matches
+        freshViewModel.setSearchQuery("Burger")
+        testScheduler.advanceUntilIdle()
+        assertEquals(1, freshViewModel.uiState.value.transactions.size)
+        assertEquals("Burger", freshViewModel.uiState.value.transactions.first().note)
+
+        // 3. Search case-insensitively: "pizza"
+        freshViewModel.setSearchQuery("pizza")
+        testScheduler.advanceUntilIdle()
+        assertEquals(1, freshViewModel.uiState.value.transactions.size)
+        assertEquals("Pizza", freshViewModel.uiState.value.transactions.first().note)
+
+        // 4. Search for category name "Food" (matches categoryName "Food")
+        freshViewModel.setSearchQuery("Food")
+        testScheduler.advanceUntilIdle()
+        assertEquals(2, freshViewModel.uiState.value.transactions.size)
+
+        // 5. Search for account "Cash"
+        freshViewModel.setSearchQuery("Cash")
+        testScheduler.advanceUntilIdle()
+        assertEquals(2, freshViewModel.uiState.value.transactions.size)
+
+        // 6. Search for non-matching query
+        freshViewModel.setSearchQuery("Salad")
+        testScheduler.advanceUntilIdle()
+        assertEquals(0, freshViewModel.uiState.value.transactions.size)
+    }
 }

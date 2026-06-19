@@ -52,6 +52,7 @@ class TransactionsFragment : Fragment() {
             (requireActivity() as MainActivity).drawerLayout
         )
         binding.toolbar.setupWithNavController(navController, appBarConfiguration)
+        setupSearch()
 
         setupRecyclerView()
         setupTabLayout()
@@ -211,6 +212,34 @@ class TransactionsFragment : Fragment() {
             isYesterday -> getString(R.string.text_yesterday)
             else -> DateFormatter.formatDate(dateMillis, languageCode)
         }
+    }
+
+    private fun setupSearch() {
+        binding.toolbar.inflateMenu(R.menu.menu_transactions)
+        val searchItem = binding.toolbar.menu.findItem(R.id.action_search)
+        val searchView = searchItem?.actionView as? androidx.appcompat.widget.SearchView
+
+        searchView?.setOnQueryTextListener(object : androidx.appcompat.widget.SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                viewModel.setSearchQuery(newText.orEmpty())
+                return true
+            }
+        })
+
+        searchItem?.setOnActionExpandListener(object : android.view.MenuItem.OnActionExpandListener {
+            override fun onMenuItemActionExpand(item: android.view.MenuItem): Boolean {
+                return true
+            }
+
+            override fun onMenuItemActionCollapse(item: android.view.MenuItem): Boolean {
+                viewModel.setSearchQuery("")
+                return true
+            }
+        })
     }
 
     override fun onDestroyView() {

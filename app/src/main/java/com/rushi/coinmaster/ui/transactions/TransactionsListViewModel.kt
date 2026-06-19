@@ -100,14 +100,18 @@ class TransactionsListViewModel @Inject constructor(
         initialValue = SpendingSummary(0, 0, 0)
     )
 
+    private val _searchQuery = MutableStateFlow("")
+    val searchQuery: StateFlow<String> = _searchQuery.asStateFlow()
+
     val uiState: StateFlow<TransactionsUiState> = combine(
         _activeTab,
         _selectedFilter,
-        _selectedDateMillis
-    ) { tab, filter, dateMillis ->
-        Triple(tab, filter, dateMillis)
-    }.flatMapLatest { (tab, filter, dateMillis) ->
-        val range = getRange(tab, filter, dateMillis)
+        _selectedDateMillis,
+        _searchQuery
+    ) { tab, filter, dateMillis, query ->
+        QueryParameters(tab, filter, dateMillis, query)
+    }.flatMapLatest { params ->
+        val range = getRange(params.tab, params.filter, params.dateMillis)
         combine(
             transactionRepository.getTransactionsBetweenDatesFlow(range.first, range.second),
             accountRepository.getAccountsFlow(),
@@ -128,14 +132,31 @@ class TransactionsListViewModel @Inject constructor(
                     dateMillis = t.date,
                     note = t.note
                 )
+            }.filter { item ->
+                if (params.query.isBlank()) {
+                    true
+                } else {
+                    val q = params.query.trim().lowercase()
+                    val noteMatch = item.note?.lowercase()?.contains(q) == true
+                    val categoryMatch = item.categoryName?.lowercase()?.contains(q) == true
+                    val accountMatch = item.accountName.lowercase().contains(q)
+                    val transferMatch = item.transferToAccountName?.lowercase()?.contains(q) == true
+                    val amountStr = String.format("%.2f", item.amountPaise / 100.0)
+                    val amountMatch = amountStr.contains(q)
+                    noteMatch || categoryMatch || accountMatch || transferMatch || amountMatch
+                }
             }
-            TransactionsUiState(displayItems, dateMillis)
+            TransactionsUiState(displayItems, params.dateMillis)
         }
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5000),
         initialValue = TransactionsUiState()
     )
+
+    fun setSearchQuery(query: String) {
+        _searchQuery.value = query
+    }
 
     fun setFilter(filter: TransactionFilter) {
         _selectedFilter.value = filter
@@ -206,3 +227,10 @@ class TransactionsListViewModel @Inject constructor(
         }
     }
 }
+
+private data class QueryParameters(
+    val tab: Int,
+    val filter: TransactionFilter,
+    val dateMillis: Long,
+    val query: String
+)
