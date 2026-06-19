@@ -85,7 +85,7 @@ class ManageEnvelopesFragment : Fragment() {
 
     private fun renderCategories(categories: List<CategoryEntity>) {
         binding.containerEnvelopes.removeAllViews()
-        val activeCategories = categories.filter { !it.isDeleted }
+        val activeCategories = categories.filter { !it.isDeleted && it.expenseCategoryId == null }
         for (category in activeCategories) {
             val itemBinding = ItemManageEnvelopeBinding.inflate(layoutInflater, null, false)
             itemBinding.tvEnvelopeName.text = category.name
