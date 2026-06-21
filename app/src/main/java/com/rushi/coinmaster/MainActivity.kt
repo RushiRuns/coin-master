@@ -83,6 +83,7 @@ class MainActivity : AppCompatActivity() {
                 if (destination.id in sidebarTopLevelDestinations) {
                     binding.drawerLayout.setDrawerLockMode(androidx.drawerlayout.widget.DrawerLayout.LOCK_MODE_UNLOCKED)
                 } else if (destination.id == R.id.onboardingFragment
+                    || destination.id == R.id.welcomeFragment
                     || destination.id == R.id.addEditAccountFragment
                     || destination.id == R.id.addEditEnvelopeFragment
                     || destination.id == R.id.addEditGoalFragment
@@ -105,7 +106,7 @@ class MainActivity : AppCompatActivity() {
                     if (complete) {
                         graph.setStartDestination(R.id.homeFragment)
                     } else {
-                        graph.setStartDestination(R.id.onboardingFragment)
+                        graph.setStartDestination(R.id.welcomeFragment)
                     }
                     navController.graph = graph
 

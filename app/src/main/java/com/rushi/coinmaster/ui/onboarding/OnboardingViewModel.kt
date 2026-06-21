@@ -18,12 +18,21 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.launch
+import android.content.Context
+import com.rushi.coinmaster.data.local.database.CoinMasterDatabase
+import com.rushi.coinmaster.util.DatabaseBackupHelper
+import dagger.hilt.android.qualifiers.ApplicationContext
+import java.io.InputStream
 import java.util.Calendar
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
 class OnboardingViewModel @Inject constructor(
+    @ApplicationContext private val context: Context,
     private val appPreferences: AppPreferences,
+    private val database: CoinMasterDatabase,
     private val accountRepository: AccountRepository,
     private val budgetRepository: BudgetRepository,
     private val incomeStreamRepository: IncomeStreamRepository,
@@ -150,6 +159,29 @@ class OnboardingViewModel @Inject constructor(
             appPreferences.setOnboardingComplete(true)
             
             _onboardingSuccess.emit(Unit)
+        }
+    }
+
+    /**
+     * Validates the input stream, closes the database, replaces the database file,
+     * and marks onboarding complete.
+     */
+    fun importDatabase(inputStream: InputStream, onSuccess: () -> Unit, onError: (Exception) -> Unit) {
+        viewModelScope.launch {
+            try {
+                val tempFile = withContext(Dispatchers.IO) {
+                    DatabaseBackupHelper.validateBackup(context, inputStream)
+                }
+                withContext(Dispatchers.IO) {
+                    database.close()
+                    DatabaseBackupHelper.restoreDatabase(context, tempFile)
+                }
+                // Mark onboarding complete on successful restore
+                appPreferences.setOnboardingComplete(true)
+                onSuccess()
+            } catch (e: Exception) {
+                onError(e)
+            }
         }
     }
 }
