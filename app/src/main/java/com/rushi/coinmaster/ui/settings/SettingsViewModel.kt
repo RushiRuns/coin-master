@@ -15,6 +15,9 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
+import com.rushi.coinmaster.util.DatabaseBackupHelper
+import java.io.InputStream
+import java.io.OutputStream
 
 @HiltViewModel
 class SettingsViewModel @Inject constructor(
@@ -70,6 +73,42 @@ class SettingsViewModel @Inject constructor(
             }
             appPreferences.clearUserData()
             WidgetUpdater.updateWidget(context)
+        }
+     }
+
+    /**
+     * Checkpoints the database and copies its content to the destination output stream.
+     */
+    fun exportDatabase(outputStream: OutputStream, onSuccess: () -> Unit, onError: (Exception) -> Unit) {
+        viewModelScope.launch {
+            try {
+                withContext(Dispatchers.IO) {
+                    DatabaseBackupHelper.exportDatabase(context, database, outputStream)
+                }
+                onSuccess()
+            } catch (e: Exception) {
+                onError(e)
+            }
+        }
+    }
+
+    /**
+     * Validates the input stream, closes the database, and replaces the database file.
+     */
+    fun importDatabase(inputStream: InputStream, onSuccess: () -> Unit, onError: (Exception) -> Unit) {
+        viewModelScope.launch {
+            try {
+                val tempFile = withContext(Dispatchers.IO) {
+                    DatabaseBackupHelper.validateBackup(context, inputStream)
+                }
+                withContext(Dispatchers.IO) {
+                    database.close()
+                    DatabaseBackupHelper.restoreDatabase(context, tempFile)
+                }
+                onSuccess()
+            } catch (e: Exception) {
+                onError(e)
+            }
         }
     }
 }

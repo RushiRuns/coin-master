@@ -19,6 +19,10 @@ import com.rushi.coinmaster.databinding.FragmentSettingsBinding
 import com.rushi.coinmaster.util.CurrencyFormatter
 import com.rushi.coinmaster.util.LocaleHelper
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import androidx.activity.result.contract.ActivityResultContracts
+import android.net.Uri
+import android.content.Intent
+import android.widget.Toast
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -32,6 +36,18 @@ class SettingsFragment : Fragment() {
 
     // Flag to prevent triggering a locale change when we're just syncing the UI
     private var isInitializing = true
+
+    private val exportLauncher = registerForActivityResult(
+        ActivityResultContracts.CreateDocument("application/octet-stream")
+    ) { uri ->
+        uri?.let { exportData(it) }
+    }
+
+    private val importLauncher = registerForActivityResult(
+        ActivityResultContracts.OpenDocument()
+    ) { uri ->
+        uri?.let { confirmImport(it) }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -139,6 +155,17 @@ class SettingsFragment : Fragment() {
                 }
                 .show()
         }
+
+        // Listen for export data button click
+        binding.btnExportData.setOnClickListener {
+            val dateStr = java.text.SimpleDateFormat("yyyyMMdd_HHmmss", java.util.Locale.getDefault()).format(java.util.Date())
+            exportLauncher.launch("coinmaster_backup_$dateStr.db")
+        }
+
+        // Listen for import data button click
+        binding.btnImportData.setOnClickListener {
+            importLauncher.launch(arrayOf("*/*"))
+        }
     }
 
     private fun syncRadioButtons(langCode: String) {
@@ -169,5 +196,95 @@ class SettingsFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private fun exportData(uri: Uri) {
+        val contentResolver = requireContext().contentResolver
+        val outputStream = try {
+            contentResolver.openOutputStream(uri)
+        } catch (e: Exception) {
+            Toast.makeText(requireContext(), getString(R.string.toast_export_error, e.message ?: "Unknown error"), Toast.LENGTH_LONG).show()
+            return
+        }
+
+        if (outputStream == null) {
+            Toast.makeText(requireContext(), getString(R.string.toast_export_error, "Output stream unavailable"), Toast.LENGTH_LONG).show()
+            return
+        }
+
+        setBackupButtonsEnabled(false)
+
+        viewModel.exportDatabase(
+            outputStream,
+            onSuccess = {
+                setBackupButtonsEnabled(true)
+                Toast.makeText(requireContext(), getString(R.string.toast_export_success), Toast.LENGTH_SHORT).show()
+            },
+            onError = { error ->
+                setBackupButtonsEnabled(true)
+                Toast.makeText(requireContext(), getString(R.string.toast_export_error, error.message ?: "Unknown error"), Toast.LENGTH_LONG).show()
+            }
+        )
+    }
+
+    private fun confirmImport(uri: Uri) {
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle(R.string.title_import_warning_dialog)
+            .setMessage(R.string.msg_import_warning_dialog)
+            .setNegativeButton(R.string.btn_cancel, null)
+            .setPositiveButton(R.string.btn_restore) { dialog, _ ->
+                performImport(uri)
+                dialog.dismiss()
+            }
+            .show()
+    }
+
+    private fun performImport(uri: Uri) {
+        val contentResolver = requireContext().contentResolver
+        val inputStream = try {
+            contentResolver.openInputStream(uri)
+        } catch (e: Exception) {
+            Toast.makeText(requireContext(), getString(R.string.toast_import_error, e.message ?: "Unknown error"), Toast.LENGTH_LONG).show()
+            return
+        }
+
+        if (inputStream == null) {
+            Toast.makeText(requireContext(), getString(R.string.toast_import_error, "Input stream unavailable"), Toast.LENGTH_LONG).show()
+            return
+        }
+
+        setBackupButtonsEnabled(false)
+
+        viewModel.importDatabase(
+            inputStream,
+            onSuccess = {
+                Toast.makeText(requireContext(), getString(R.string.toast_import_success), Toast.LENGTH_SHORT).show()
+                restartApp()
+            },
+            onError = { error ->
+                setBackupButtonsEnabled(true)
+                if (error.message?.contains("required CoinMaster database tables") == true || error.message?.contains("invalid") == true) {
+                    Toast.makeText(requireContext(), getString(R.string.toast_invalid_backup), Toast.LENGTH_LONG).show()
+                } else {
+                    Toast.makeText(requireContext(), getString(R.string.toast_import_error, error.message ?: "Unknown error"), Toast.LENGTH_LONG).show()
+                }
+            }
+        )
+    }
+
+    private fun setBackupButtonsEnabled(enabled: Boolean) {
+        if (_binding != null) {
+            binding.btnExportData.isEnabled = enabled
+            binding.btnImportData.isEnabled = enabled
+        }
+    }
+
+    private fun restartApp() {
+        val context = requireContext()
+        val intent = context.packageManager.getLaunchIntentForPackage(context.packageName)?.apply {
+            addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+        }
+        context.startActivity(intent)
+        Runtime.getRuntime().exit(0)
     }
 }

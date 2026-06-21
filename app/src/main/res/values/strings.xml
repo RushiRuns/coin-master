@@ -152,6 +152,21 @@
     <string name="msg_clear_data_dialog">This will permanently delete all your accounts, categories, transactions, budgets, goals, notes, and user profile data. This action cannot be undone.</string>
     <string name="btn_clear">Clear</string>
 
+    <!-- Backup and Restore -->
+    <string name="label_backup_restore">Backup &amp; Restore</string>
+    <string name="text_backup_restore_desc">Export your data to a backup file to keep it safe, or import a backup file to restore your previous entries.</string>
+    <string name="btn_export_data">Export Data</string>
+    <string name="btn_import_data">Import Data</string>
+    <string name="title_import_warning_dialog">Restore Data?</string>
+    <string name="msg_import_warning_dialog">Restoring a backup will overwrite all current accounts, transactions, budgets, goals, and notes. This action cannot be undone. Are you sure you want to proceed?</string>
+    <string name="btn_restore">Restore</string>
+    <string name="toast_export_success">Backup exported successfully</string>
+    <string name="toast_export_error">Failed to export backup: %s</string>
+    <string name="toast_import_success">Data restored. Restarting app...</string>
+    <string name="toast_import_error">Failed to import backup: %s</string>
+    <string name="toast_invalid_backup">Invalid backup file</string>
+
+
     <!-- Goals / Sinking Funds Screen -->
     <string name="title_goals">My Goals</string>
     <string name="title_savings_goals">Savings Goals</string>
