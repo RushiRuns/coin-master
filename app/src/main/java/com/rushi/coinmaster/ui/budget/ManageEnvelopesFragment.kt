@@ -18,6 +18,12 @@ import com.rushi.coinmaster.databinding.ItemManageEnvelopeBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import com.rushi.coinmaster.data.local.model.BucketType
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import android.widget.ArrayAdapter
+import android.widget.CheckBox
+import android.widget.AutoCompleteTextView
+import com.google.android.material.textfield.TextInputLayout
 
 @AndroidEntryPoint
 class ManageEnvelopesFragment : Fragment() {
@@ -26,6 +32,9 @@ class ManageEnvelopesFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val viewModel: BudgetViewModel by activityViewModels()
+
+    private var isSelectionMode = false
+    private val selectedEnvelopeIds = mutableSetOf<Long>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -40,7 +49,26 @@ class ManageEnvelopesFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.toolbar.setNavigationOnClickListener {
-            requireActivity().onBackPressedDispatcher.onBackPressed()
+            if (isSelectionMode) {
+                exitSelectionMode()
+            } else {
+                requireActivity().onBackPressedDispatcher.onBackPressed()
+            }
+        }
+
+        binding.toolbar.inflateMenu(R.menu.menu_manage_envelopes)
+        binding.toolbar.setOnMenuItemClickListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.action_bulk_edit -> {
+                    showBulkEditDialog()
+                    true
+                }
+                R.id.action_cancel_selection -> {
+                    exitSelectionMode()
+                    true
+                }
+                else -> false
+            }
         }
 
         binding.btnAddEnvelope.setOnClickListener {
@@ -95,6 +123,21 @@ class ManageEnvelopesFragment : Fragment() {
             )
             itemBinding.ivEnvelopeIcon.setImageResource(getIconDrawableResId(category.iconName))
 
+            val isSelected = selectedEnvelopeIds.contains(category.id)
+
+            if (isSelectionMode) {
+                itemBinding.btnEditEnvelope.visibility = View.GONE
+                itemBinding.cbSelectEnvelope.visibility = View.VISIBLE
+                itemBinding.cbSelectEnvelope.isChecked = isSelected
+                itemBinding.root.setBackgroundColor(
+                    if (isSelected) android.graphics.Color.parseColor("#E8F5E9") else android.graphics.Color.TRANSPARENT
+                )
+            } else {
+                itemBinding.btnEditEnvelope.visibility = View.VISIBLE
+                itemBinding.cbSelectEnvelope.visibility = View.GONE
+                itemBinding.root.setBackground(null)
+            }
+
             itemBinding.btnEditEnvelope.setOnClickListener {
                 val action = ManageEnvelopesFragmentDirections.actionManageEnvelopesFragmentToAddEditEnvelopeFragment(
                     categoryId = category.id,
@@ -103,8 +146,128 @@ class ManageEnvelopesFragment : Fragment() {
                 findNavController().navigate(action)
             }
 
+            itemBinding.root.setOnLongClickListener {
+                if (!isSelectionMode) {
+                    enterSelectionMode(category.id)
+                }
+                true
+            }
+
+            itemBinding.root.setOnClickListener {
+                if (isSelectionMode) {
+                    toggleSelection(category.id)
+                }
+            }
+
+            itemBinding.cbSelectEnvelope.setOnClickListener {
+                toggleSelection(category.id)
+            }
+
             binding.containerEnvelopes.addView(itemBinding.root)
         }
+    }
+
+    private fun enterSelectionMode(firstSelectedId: Long) {
+        isSelectionMode = true
+        selectedEnvelopeIds.clear()
+        selectedEnvelopeIds.add(firstSelectedId)
+        
+        binding.cardQuickCreate.visibility = View.GONE
+        
+        updateSelectionToolbar()
+        viewModel.allCategoriesState.value.let { renderCategories(it) }
+    }
+
+    private fun toggleSelection(id: Long) {
+        if (selectedEnvelopeIds.contains(id)) {
+            selectedEnvelopeIds.remove(id)
+            if (selectedEnvelopeIds.isEmpty()) {
+                exitSelectionMode()
+                return
+            }
+        } else {
+            selectedEnvelopeIds.add(id)
+        }
+        updateSelectionToolbar()
+        viewModel.allCategoriesState.value.let { renderCategories(it) }
+    }
+
+    private fun exitSelectionMode() {
+        isSelectionMode = false
+        selectedEnvelopeIds.clear()
+        
+        binding.cardQuickCreate.visibility = View.VISIBLE
+        
+        binding.tvToolbarTitle.text = "Manage Envelopes"
+        binding.toolbar.setNavigationIcon(R.drawable.ic_arrow_back)
+        binding.toolbar.menu.findItem(R.id.action_bulk_edit)?.isVisible = false
+        binding.toolbar.menu.findItem(R.id.action_cancel_selection)?.isVisible = false
+        
+        viewModel.allCategoriesState.value.let { renderCategories(it) }
+    }
+
+    private fun updateSelectionToolbar() {
+        binding.tvToolbarTitle.text = "Selected: ${selectedEnvelopeIds.size}"
+        binding.toolbar.navigationIcon = null
+        binding.toolbar.menu.findItem(R.id.action_bulk_edit)?.isVisible = true
+        binding.toolbar.menu.findItem(R.id.action_cancel_selection)?.isVisible = true
+    }
+
+    private fun showBulkEditDialog() {
+        val dialogView = layoutInflater.inflate(R.layout.dialog_bulk_edit_envelopes, null)
+        
+        val cbUpdateBucket = dialogView.findViewById<CheckBox>(R.id.cb_update_bucket)
+        val tilBucketType = dialogView.findViewById<TextInputLayout>(R.id.til_bucket_type)
+        val actvBucketType = dialogView.findViewById<AutoCompleteTextView>(R.id.actv_bucket_type)
+        
+        val cbUpdateCategory = dialogView.findViewById<CheckBox>(R.id.cb_update_category)
+        val tilParentCategory = dialogView.findViewById<TextInputLayout>(R.id.til_parent_category)
+        val actvParentCategory = dialogView.findViewById<AutoCompleteTextView>(R.id.actv_parent_category)
+        
+        cbUpdateBucket.setOnCheckedChangeListener { _, isChecked ->
+            tilBucketType.isEnabled = isChecked
+        }
+        cbUpdateCategory.setOnCheckedChangeListener { _, isChecked ->
+            tilParentCategory.isEnabled = isChecked
+        }
+        
+        val buckets = listOf("UNASSIGNED") + BucketType.values().map { it.name }
+        val bucketAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, buckets)
+        actvBucketType.setAdapter(bucketAdapter)
+        actvBucketType.setText(buckets[0], false)
+        
+        val list = viewModel.expenseCategoriesState.value
+        val categoryNames = listOf("None") + list.map { it.name }
+        val categoryAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, categoryNames)
+        actvParentCategory.setAdapter(categoryAdapter)
+        actvParentCategory.setText("None", false)
+        
+        MaterialAlertDialogBuilder(requireContext())
+            .setView(dialogView)
+            .setNegativeButton("Cancel", null)
+            .setPositiveButton("Save") { _, _ ->
+                val updateBucket = cbUpdateBucket.isChecked
+                val bucketType = if (updateBucket) {
+                    val bucketStr = actvBucketType.text.toString()
+                    if (bucketStr == "UNASSIGNED") null else BucketType.valueOf(bucketStr)
+                } else null
+                
+                val updateCategory = cbUpdateCategory.isChecked
+                val parentId = if (updateCategory) {
+                    val parentName = actvParentCategory.text.toString()
+                    if (parentName == "None") null else list.find { it.name == parentName }?.id
+                } else null
+                
+                viewModel.bulkUpdateCategories(
+                    categoryIds = selectedEnvelopeIds.toList(),
+                    newBucket = bucketType,
+                    updateBucket = updateBucket,
+                    newParentId = parentId,
+                    updateCategory = updateCategory
+                )
+                exitSelectionMode()
+            }
+            .show()
     }
 
     private fun getIconDrawableResId(iconName: String): Int {

@@ -513,4 +513,30 @@ class BudgetViewModel @Inject constructor(
             }
         }
     }
+
+    fun bulkUpdateCategories(
+        categoryIds: List<Long>,
+        newBucket: BucketType?,
+        updateBucket: Boolean,
+        newParentId: Long?,
+        updateCategory: Boolean
+    ) {
+        viewModelScope.launch {
+            try {
+                val allCategories = budgetRepository.getCategoriesFlow().first()
+                val categoriesToUpdate = allCategories.filter { it.id in categoryIds }.map {
+                    it.copy(
+                        bucketType = if (updateBucket) newBucket else it.bucketType,
+                        expenseCategoryId = if (updateCategory) newParentId else it.expenseCategoryId
+                    )
+                }
+                if (categoriesToUpdate.isNotEmpty()) {
+                    budgetRepository.updateCategories(categoriesToUpdate)
+                    _uiEvent.emit(BudgetUiEvent.SuccessSave)
+                }
+            } catch (e: Exception) {
+                _uiEvent.emit(BudgetUiEvent.Error(e.message ?: "Failed to perform bulk update"))
+            }
+        }
+    }
 }

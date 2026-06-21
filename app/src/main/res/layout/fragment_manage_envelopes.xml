@@ -25,6 +25,7 @@
             app:navigationContentDescription="@string/btn_previous">
 
             <TextView
+                android:id="@+id/tv_toolbar_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Manage Envelopes"
