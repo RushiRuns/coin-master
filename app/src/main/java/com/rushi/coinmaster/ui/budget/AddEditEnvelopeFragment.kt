@@ -60,7 +60,6 @@ class AddEditEnvelopeFragment : Fragment() {
             requireActivity().onBackPressedDispatcher.onBackPressed()
         }
 
-        setupBucketDropdown()
         setupColorSelection()
         setupIconSelection()
 
@@ -82,12 +81,6 @@ class AddEditEnvelopeFragment : Fragment() {
             binding.tvTitle.text = "New Envelope"
             binding.btnDeleteCategory.visibility = View.GONE
             binding.tilEnvelopeAmount.visibility = View.VISIBLE
-            
-            // Pre-select bucket type if passed
-            if (args.bucketTypeOrdinal != -1) {
-                val bucketType = BucketType.values()[args.bucketTypeOrdinal]
-                binding.actvBucketType.setText(bucketType.name, false)
-            }
             highlightSelectedColor()
             highlightSelectedIcon()
 
@@ -107,9 +100,10 @@ class AddEditEnvelopeFragment : Fragment() {
                 }
             }
 
-            binding.actvBucketType.setOnItemClickListener { _, _, _, _ ->
-                updateBucketRemainingHint()
-            }
+        }
+
+        binding.actvParentCategory.setOnItemClickListener { _, _, _, _ ->
+            updateBucketRemainingHint()
         }
 
         // Save Category
@@ -121,8 +115,15 @@ class AddEditEnvelopeFragment : Fragment() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.expenseCategoriesState.collect { list ->
-                    parentCategories = list
-                    val categoryNames = listOf("None") + list.map { it.name }
+                    val filteredList = if (args.bucketTypeOrdinal != -1 && !isEditMode) {
+                        val targetBucket = BucketType.values()[args.bucketTypeOrdinal]
+                        list.filter { it.bucketType == targetBucket }
+                    } else {
+                        list
+                    }
+
+                    parentCategories = filteredList
+                    val categoryNames = listOf("None") + filteredList.map { it.name }
                     val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, categoryNames)
                     binding.actvParentCategory.setAdapter(adapter)
 
@@ -139,9 +140,9 @@ class AddEditEnvelopeFragment : Fragment() {
                         }
                     } else {
                         if (args.parentCategoryId != 0L) {
-                            val selectedIndex = list.indexOfFirst { it.id == args.parentCategoryId }
+                            val selectedIndex = filteredList.indexOfFirst { it.id == args.parentCategoryId }
                             if (selectedIndex != -1) {
-                                binding.actvParentCategory.setText(list[selectedIndex].name, false)
+                                binding.actvParentCategory.setText(filteredList[selectedIndex].name, false)
                             } else {
                                 binding.actvParentCategory.setText("None", false)
                             }
@@ -149,6 +150,8 @@ class AddEditEnvelopeFragment : Fragment() {
                             binding.actvParentCategory.setText("None", false)
                         }
                     }
+
+                    updateBucketRemainingHint()
                 }
             }
         }
@@ -178,16 +181,7 @@ class AddEditEnvelopeFragment : Fragment() {
         }
     }
 
-    private fun setupBucketDropdown() {
-        val buckets = listOf("UNASSIGNED") + BucketType.values().map { it.name }
-        val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, buckets)
-        binding.actvBucketType.setAdapter(adapter)
-        
-        // Default select the first one
-        if (buckets.isNotEmpty()) {
-            binding.actvBucketType.setText(buckets[0], false)
-        }
-    }
+
 
     private fun setupColorSelection() {
         colorViews = listOf(
@@ -293,7 +287,6 @@ class AddEditEnvelopeFragment : Fragment() {
             val category = viewModel.getCategoryById(categoryId)
             if (category != null) {
                 binding.etEnvelopeName.setText(category.name)
-                binding.actvBucketType.setText(category.bucketType?.name ?: "UNASSIGNED", false)
                 selectedColor = category.colorHex
                 selectedIcon = when (category.iconName) {
                     "ic_rent" -> "ic_home"
@@ -314,12 +307,6 @@ class AddEditEnvelopeFragment : Fragment() {
 
     private fun saveCategory() {
         val name = binding.etEnvelopeName.text.toString()
-        val bucketStr = binding.actvBucketType.text.toString()
-        val bucket = try {
-            if (bucketStr == "UNASSIGNED") null else BucketType.valueOf(bucketStr)
-        } catch (e: Exception) {
-            null
-        }
 
         val amountStr = binding.etEnvelopeAmount.text.toString()
         val initialAllocationPaise = if (amountStr.isNotBlank()) {
@@ -339,6 +326,12 @@ class AddEditEnvelopeFragment : Fragment() {
             parentCategories.find { it.name == selectedParentCategoryName }?.id
         }
 
+        val bucket = if (selectedParentCategoryName == "None") {
+            null
+        } else {
+            parentCategories.find { it.name == selectedParentCategoryName }?.bucketType
+        }
+
         viewModel.saveCategory(
             id = args.categoryId,
             name = name,
@@ -353,11 +346,12 @@ class AddEditEnvelopeFragment : Fragment() {
     private fun updateBucketRemainingHint() {
         val period = viewModel.budgetPeriodState.value ?: return
         val envelopes = viewModel.envelopesState.value
-        val bucketStr = binding.actvBucketType.text.toString()
-        val selectedBucket = try {
-            if (bucketStr == "UNASSIGNED") null else BucketType.valueOf(bucketStr)
-        } catch (e: Exception) {
+        
+        val selectedParentCategoryName = binding.actvParentCategory.text.toString()
+        val selectedBucket = if (selectedParentCategoryName == "None") {
             null
+        } else {
+            parentCategories.find { it.name == selectedParentCategoryName }?.bucketType
         }
 
         if (selectedBucket == null) {
@@ -377,6 +371,7 @@ class AddEditEnvelopeFragment : Fragment() {
 
         val languageCode = com.rushi.coinmaster.util.LocaleHelper.getLanguage(requireContext())
         val remainingStr = com.rushi.coinmaster.util.CurrencyFormatter.format(remainingPaise, languageCode)
+        val bucketStr = selectedBucket.name
         binding.tilEnvelopeAmount.helperText = "Limit: $remainingStr remaining in $bucketStr bucket"
     }
 

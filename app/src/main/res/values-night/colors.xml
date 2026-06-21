@@ -25,4 +25,7 @@
     <!-- Semantic Colors -->
     <color name="color_positive">#81C784</color>
     <color name="color_negative">#E57373</color> <!-- Red 300 -->
+    
+    <!-- Selection highlight color (dark mode) -->
+    <color name="selected_item_background">#2E4A32</color>
 </resources>

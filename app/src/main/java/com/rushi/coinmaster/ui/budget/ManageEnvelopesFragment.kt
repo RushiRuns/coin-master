@@ -57,6 +57,11 @@ class ManageEnvelopesFragment : Fragment() {
         }
 
         binding.toolbar.inflateMenu(R.menu.menu_manage_envelopes)
+        val colorOnSurface = getColorOnSurface()
+        binding.toolbar.menu.findItem(R.id.action_bulk_edit)?.icon?.setTint(colorOnSurface)
+        binding.toolbar.menu.findItem(R.id.action_cancel_selection)?.icon?.setTint(colorOnSurface)
+        binding.toolbar.navigationIcon?.setTint(colorOnSurface)
+
         binding.toolbar.setOnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.action_bulk_edit -> {
@@ -130,7 +135,11 @@ class ManageEnvelopesFragment : Fragment() {
                 itemBinding.cbSelectEnvelope.visibility = View.VISIBLE
                 itemBinding.cbSelectEnvelope.isChecked = isSelected
                 itemBinding.root.setBackgroundColor(
-                    if (isSelected) android.graphics.Color.parseColor("#E8F5E9") else android.graphics.Color.TRANSPARENT
+                    if (isSelected) {
+                        androidx.core.content.ContextCompat.getColor(requireContext(), R.color.selected_item_background)
+                    } else {
+                        android.graphics.Color.TRANSPARENT
+                    }
                 )
             } else {
                 itemBinding.btnEditEnvelope.visibility = View.VISIBLE
@@ -199,7 +208,10 @@ class ManageEnvelopesFragment : Fragment() {
         binding.cardQuickCreate.visibility = View.VISIBLE
         
         binding.tvToolbarTitle.text = "Manage Envelopes"
-        binding.toolbar.setNavigationIcon(R.drawable.ic_arrow_back)
+        val navIcon = androidx.core.content.ContextCompat.getDrawable(requireContext(), R.drawable.ic_arrow_back)?.apply {
+            setTint(getColorOnSurface())
+        }
+        binding.toolbar.navigationIcon = navIcon
         binding.toolbar.menu.findItem(R.id.action_bulk_edit)?.isVisible = false
         binding.toolbar.menu.findItem(R.id.action_cancel_selection)?.isVisible = false
         
@@ -216,25 +228,13 @@ class ManageEnvelopesFragment : Fragment() {
     private fun showBulkEditDialog() {
         val dialogView = layoutInflater.inflate(R.layout.dialog_bulk_edit_envelopes, null)
         
-        val cbUpdateBucket = dialogView.findViewById<CheckBox>(R.id.cb_update_bucket)
-        val tilBucketType = dialogView.findViewById<TextInputLayout>(R.id.til_bucket_type)
-        val actvBucketType = dialogView.findViewById<AutoCompleteTextView>(R.id.actv_bucket_type)
-        
         val cbUpdateCategory = dialogView.findViewById<CheckBox>(R.id.cb_update_category)
         val tilParentCategory = dialogView.findViewById<TextInputLayout>(R.id.til_parent_category)
         val actvParentCategory = dialogView.findViewById<AutoCompleteTextView>(R.id.actv_parent_category)
         
-        cbUpdateBucket.setOnCheckedChangeListener { _, isChecked ->
-            tilBucketType.isEnabled = isChecked
-        }
         cbUpdateCategory.setOnCheckedChangeListener { _, isChecked ->
             tilParentCategory.isEnabled = isChecked
         }
-        
-        val buckets = listOf("UNASSIGNED") + BucketType.values().map { it.name }
-        val bucketAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, buckets)
-        actvBucketType.setAdapter(bucketAdapter)
-        actvBucketType.setText(buckets[0], false)
         
         val list = viewModel.expenseCategoriesState.value
         val categoryNames = listOf("None") + list.map { it.name }
@@ -246,12 +246,6 @@ class ManageEnvelopesFragment : Fragment() {
             .setView(dialogView)
             .setNegativeButton("Cancel", null)
             .setPositiveButton("Save") { _, _ ->
-                val updateBucket = cbUpdateBucket.isChecked
-                val bucketType = if (updateBucket) {
-                    val bucketStr = actvBucketType.text.toString()
-                    if (bucketStr == "UNASSIGNED") null else BucketType.valueOf(bucketStr)
-                } else null
-                
                 val updateCategory = cbUpdateCategory.isChecked
                 val parentId = if (updateCategory) {
                     val parentName = actvParentCategory.text.toString()
@@ -260,8 +254,8 @@ class ManageEnvelopesFragment : Fragment() {
                 
                 viewModel.bulkUpdateCategories(
                     categoryIds = selectedEnvelopeIds.toList(),
-                    newBucket = bucketType,
-                    updateBucket = updateBucket,
+                    newBucket = null,
+                    updateBucket = false,
                     newParentId = parentId,
                     updateCategory = updateCategory
                 )
@@ -272,6 +266,12 @@ class ManageEnvelopesFragment : Fragment() {
 
     private fun getIconDrawableResId(iconName: String): Int {
         return com.rushi.coinmaster.util.IconHelper.getIconDrawableResId(requireContext(), iconName)
+    }
+
+    private fun getColorOnSurface(): Int {
+        val typedValue = android.util.TypedValue()
+        requireContext().theme.resolveAttribute(com.google.android.material.R.attr.colorOnSurface, typedValue, true)
+        return typedValue.data
     }
 
     override fun onDestroyView() {

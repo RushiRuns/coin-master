@@ -25,4 +25,7 @@
     <!-- Semantic Colors -->
     <color name="color_positive">#2E7D32</color> <!-- Income -->
     <color name="color_negative">#C62828</color> <!-- Expense -->
+    
+    <!-- Selection highlight color -->
+    <color name="selected_item_background">#E8F5E9</color>
 </resources>

@@ -524,10 +524,18 @@ class BudgetViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 val allCategories = budgetRepository.getCategoriesFlow().first()
-                val categoriesToUpdate = allCategories.filter { it.id in categoryIds }.map {
-                    it.copy(
-                        bucketType = if (updateBucket) newBucket else it.bucketType,
-                        expenseCategoryId = if (updateCategory) newParentId else it.expenseCategoryId
+                val parentCategories = expenseCategoryRepository.getExpenseCategories()
+
+                val categoriesToUpdate = allCategories.filter { it.id in categoryIds }.map { category ->
+                    val resolvedBucket = if (updateCategory) {
+                        if (newParentId == null) null else parentCategories.find { it.id == newParentId }?.bucketType
+                    } else {
+                        category.bucketType
+                    }
+
+                    category.copy(
+                        bucketType = resolvedBucket,
+                        expenseCategoryId = if (updateCategory) newParentId else category.expenseCategoryId
                     )
                 }
                 if (categoriesToUpdate.isNotEmpty()) {

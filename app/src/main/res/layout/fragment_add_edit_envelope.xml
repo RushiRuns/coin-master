@@ -64,24 +64,6 @@
                     android:textColor="@color/text_primary" />
             </com.google.android.material.textfield.TextInputLayout>
 
-            <!-- Bucket Selection -->
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/til_bucket_selection"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:hint="@string/hint_budget_bucket_type"
-                app:layout_constraintTop_toBottomOf="@id/til_envelope_name">
-
-                <AutoCompleteTextView
-                    android:id="@+id/actv_bucket_type"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="none"
-                    android:textColor="@color/text_primary" />
-            </com.google.android.material.textfield.TextInputLayout>
-
             <!-- Parent Category Selection -->
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/til_parent_category"
@@ -90,7 +72,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:hint="Parent Category (Optional)"
-                app:layout_constraintTop_toBottomOf="@id/til_bucket_selection">
+                app:layout_constraintTop_toBottomOf="@id/til_envelope_name">
 
                 <AutoCompleteTextView
                     android:id="@+id/actv_parent_category"
