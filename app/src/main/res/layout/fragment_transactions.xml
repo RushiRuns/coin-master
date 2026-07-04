@@ -52,6 +52,54 @@
         android:padding="16dp"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
+        <!-- Deep Link Active Filter layout -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/card_active_filter"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:visibility="gone"
+            app:cardCornerRadius="4dp"
+            app:cardElevation="0dp"
+            app:strokeWidth="1dp"
+            app:strokeColor="@color/primary"
+            app:cardBackgroundColor="#0D1E88E5">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:padding="8dp">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/ic_compare"
+                    app:tint="@color/primary" />
+
+                <TextView
+                    android:id="@+id/tv_active_filter_label"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginStart="8dp"
+                    android:textColor="@color/primary"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    tools:text="Filtered: Groceries" />
+
+                <ImageButton
+                    android:id="@+id/btn_clear_filter"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:background="?android:attr/selectableItemBackgroundBorderless"
+                    android:src="@drawable/ic_delete"
+                    app:tint="@color/primary"
+                    android:contentDescription="Clear filter" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
         <!-- Filters for Tab 1 (All Transactions) -->
         <com.google.android.material.chip.ChipGroup
             android:id="@+id/cg_filters"

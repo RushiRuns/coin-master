@@ -65,7 +65,7 @@ class MainActivity : AppCompatActivity() {
             binding.drawerLayout.closeDrawers()
 
             val sidebarTopLevelDestinations = setOf(
-                R.id.homeFragment, R.id.transactionsFragment, R.id.budgetFragment,
+                R.id.homeFragment, R.id.transactionsFragment, R.id.budgetFragment, R.id.budgetAnalysisFragment,
                 R.id.nav_categories, R.id.nav_expense_type, R.id.nav_income,
                 R.id.nav_savings, R.id.nav_accounts, R.id.nav_notes,
                 R.id.nav_transfers, R.id.nav_goals, R.id.nav_settings
@@ -74,6 +74,7 @@ class MainActivity : AppCompatActivity() {
             if (destination.id == R.id.homeFragment
                 || destination.id == R.id.transactionsFragment
                 || destination.id == R.id.budgetFragment
+                || destination.id == R.id.budgetAnalysisFragment
             ) {
                 binding.bottomNavigation.visibility = View.VISIBLE
                 binding.drawerLayout.setDrawerLockMode(androidx.drawerlayout.widget.DrawerLayout.LOCK_MODE_UNLOCKED)

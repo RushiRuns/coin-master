@@ -80,7 +80,8 @@ interface BudgetDao {
                 SELECT SUM(t.amount_paise) 
                 FROM transactions t 
                 WHERE t.category_id = c.id 
-                  AND t.budget_period_id = :budgetPeriodId 
+                  AND t.date >= (SELECT start_date FROM budget_periods WHERE id = :budgetPeriodId)
+                  AND t.date <= (SELECT end_date FROM budget_periods WHERE id = :budgetPeriodId)
                   AND (t.type = 'EXPENSE' OR t.type = 'TRANSFER') 
                   AND t.is_deleted = 0
             ), 0) AS spentAmountPaise,

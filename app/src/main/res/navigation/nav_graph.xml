@@ -144,7 +144,25 @@
         android:id="@+id/transactionsFragment"
         android:name="com.rushi.coinmaster.ui.transactions.TransactionsFragment"
         android:label="Transactions"
-        tools:layout="@layout/fragment_transactions" />
+        tools:layout="@layout/fragment_transactions">
+        <argument
+            android:name="envelopeIds"
+            app:argType="long[]"
+            android:defaultValue="@null"
+            app:nullable="true" />
+        <argument
+            android:name="startMillis"
+            app:argType="long"
+            android:defaultValue="-1L" />
+        <argument
+            android:name="endMillis"
+            app:argType="long"
+            android:defaultValue="-1L" />
+        <argument
+            android:name="filterLabel"
+            app:argType="string"
+            android:defaultValue="" />
+    </fragment>
 
     <fragment
         android:id="@+id/nav_settings"
@@ -276,5 +294,18 @@
         android:name="com.rushi.coinmaster.ui.transfers.ManageTransfersFragment"
         android:label="Transfers"
         tools:layout="@layout/fragment_manage_transfers" />
+
+    <fragment
+        android:id="@+id/budgetAnalysisFragment"
+        android:name="com.rushi.coinmaster.ui.analysis.BudgetAnalysisFragment"
+        android:label="Analysis"
+        tools:layout="@layout/fragment_budget_analysis">
+        <action
+            android:id="@+id/action_analysisFragment_to_transactionsFragment"
+            app:destination="@id/transactionsFragment" />
+        <action
+            android:id="@+id/action_analysisFragment_to_addTransactionFragment"
+            app:destination="@id/addTransactionFragment" />
+    </fragment>
 
 </navigation>

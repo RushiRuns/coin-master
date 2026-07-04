@@ -20,6 +20,20 @@ interface TransactionDao {
     @Query("SELECT * FROM transactions WHERE is_deleted = 0 ORDER BY date DESC")
     suspend fun getTransactions(): List<TransactionEntity>
 
+    @Query("""
+        SELECT * FROM transactions 
+        WHERE category_id IN (:categoryIds) 
+          AND date >= :startMillis 
+          AND date <= :endMillis 
+          AND is_deleted = 0 
+        ORDER BY date DESC
+    """)
+    fun getTransactionsByCategoryIdsFlow(
+        categoryIds: List<Long>,
+        startMillis: Long,
+        endMillis: Long
+    ): Flow<List<TransactionEntity>>
+
     @Query("SELECT * FROM transactions WHERE account_id = :accountId AND is_deleted = 0 ORDER BY date DESC")
     fun getTransactionsForAccountFlow(accountId: Long): Flow<List<TransactionEntity>>
 

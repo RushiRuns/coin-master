@@ -15,13 +15,17 @@ import org.junit.After
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
+import android.content.Context
+import com.rushi.coinmaster.data.local.database.CoinMasterDatabase
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class OnboardingViewModelTest {
 
     private val testDispatcher = StandardTestDispatcher()
 
+    private val context: Context = mockk(relaxed = true)
     private val appPreferences: AppPreferences = mockk(relaxed = true)
+    private val database: CoinMasterDatabase = mockk(relaxed = true)
     private val accountRepository: AccountRepository = mockk(relaxed = true)
     private val budgetRepository: BudgetRepository = mockk(relaxed = true)
     private val incomeStreamRepository: IncomeStreamRepository = mockk(relaxed = true)
@@ -33,7 +37,9 @@ class OnboardingViewModelTest {
     fun setUp() {
         Dispatchers.setMain(testDispatcher)
         viewModel = OnboardingViewModel(
+            context,
             appPreferences,
+            database,
             accountRepository,
             budgetRepository,
             incomeStreamRepository,

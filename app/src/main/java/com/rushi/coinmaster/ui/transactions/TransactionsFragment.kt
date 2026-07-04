@@ -60,6 +60,28 @@ class TransactionsFragment : Fragment() {
         setupDatePicker()
         setupFAB()
 
+        // Read navigation arguments for deep-link filtering
+        val envelopeIds = arguments?.getLongArray("envelopeIds")
+        val startMillis = arguments?.getLong("startMillis", -1L) ?: -1L
+        val endMillis = arguments?.getLong("endMillis", -1L) ?: -1L
+        val filterLabel = arguments?.getString("filterLabel") ?: ""
+
+        if (envelopeIds != null && startMillis != -1L && endMillis != -1L) {
+            viewModel.applyDeepLinkFilter(
+                TransactionsListViewModel.DeepLinkFilter(
+                    categoryIds = envelopeIds.toList(),
+                    startMillis = startMillis,
+                    endMillis = endMillis,
+                    displayLabel = filterLabel
+                )
+            )
+        }
+
+        binding.btnClearFilter.setOnClickListener {
+            viewModel.clearDeepLinkFilter()
+            arguments?.clear()
+        }
+
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 launch {
@@ -87,6 +109,26 @@ class TransactionsFragment : Fragment() {
                         binding.tvTotalToday.text = CurrencyFormatter.format(summary.todayPaise, languageCode)
                         binding.tvTotalWeek.text = CurrencyFormatter.format(summary.weeklyPaise, languageCode)
                         binding.tvTotalMonth.text = CurrencyFormatter.format(summary.monthlyPaise, languageCode)
+                    }
+                }
+
+                launch {
+                    viewModel.deepLinkFilter.collect { deepLink ->
+                        if (deepLink != null) {
+                            binding.cardActiveFilter.visibility = View.VISIBLE
+                            binding.tvActiveFilterLabel.text = "Filtered: ${deepLink.displayLabel}"
+                            binding.cgFilters.visibility = View.GONE
+                            binding.layoutDateSelector.visibility = View.GONE
+                        } else {
+                            binding.cardActiveFilter.visibility = View.GONE
+                            if (viewModel.activeTab.value == 0) {
+                                binding.cgFilters.visibility = View.VISIBLE
+                                binding.layoutDateSelector.visibility = View.GONE
+                            } else {
+                                binding.cgFilters.visibility = View.GONE
+                                binding.layoutDateSelector.visibility = View.VISIBLE
+                            }
+                        }
                     }
                 }
             }

@@ -103,17 +103,46 @@ class TransactionsListViewModel @Inject constructor(
     private val _searchQuery = MutableStateFlow("")
     val searchQuery: StateFlow<String> = _searchQuery.asStateFlow()
 
+    data class DeepLinkFilter(
+        val categoryIds: List<Long>,
+        val startMillis: Long,
+        val endMillis: Long,
+        val displayLabel: String
+    )
+
+    private val _deepLinkFilter = MutableStateFlow<DeepLinkFilter?>(null)
+    val deepLinkFilter: StateFlow<DeepLinkFilter?> = _deepLinkFilter.asStateFlow()
+
+    fun applyDeepLinkFilter(filter: DeepLinkFilter) {
+        _deepLinkFilter.value = filter
+    }
+
+    fun clearDeepLinkFilter() {
+        _deepLinkFilter.value = null
+    }
+
     val uiState: StateFlow<TransactionsUiState> = combine(
         _activeTab,
         _selectedFilter,
         _selectedDateMillis,
-        _searchQuery
-    ) { tab, filter, dateMillis, query ->
-        QueryParameters(tab, filter, dateMillis, query)
+        _searchQuery,
+        _deepLinkFilter
+    ) { tab, filter, dateMillis, query, deepLink ->
+        QueryParameters(tab, filter, dateMillis, query, deepLink)
     }.flatMapLatest { params ->
-        val range = getRange(params.tab, params.filter, params.dateMillis)
+        val transactionsFlow = if (params.deepLink != null) {
+            transactionRepository.getTransactionsByCategoryIdsFlow(
+                params.deepLink.categoryIds,
+                params.deepLink.startMillis,
+                params.deepLink.endMillis
+            )
+        } else {
+            val range = getRange(params.tab, params.filter, params.dateMillis)
+            transactionRepository.getTransactionsBetweenDatesFlow(range.first, range.second)
+        }
+
         combine(
-            transactionRepository.getTransactionsBetweenDatesFlow(range.first, range.second),
+            transactionsFlow,
             accountRepository.getAccountsFlow(),
             budgetRepository.getCategoriesFlow()
         ) { transactions, accounts, categories ->
@@ -232,5 +261,6 @@ private data class QueryParameters(
     val tab: Int,
     val filter: TransactionFilter,
     val dateMillis: Long,
-    val query: String
+    val query: String,
+    val deepLink: TransactionsListViewModel.DeepLinkFilter? = null
 )

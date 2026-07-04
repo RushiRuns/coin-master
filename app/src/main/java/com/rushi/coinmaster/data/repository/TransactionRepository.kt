@@ -23,6 +23,9 @@ class TransactionRepository @Inject constructor(
     fun getTransactionsBetweenDatesFlow(startMillis: Long, endMillis: Long): Flow<List<TransactionEntity>> =
         transactionDao.getTransactionsBetweenDatesFlow(startMillis, endMillis)
 
+    fun getTransactionsByCategoryIdsFlow(categoryIds: List<Long>, startMillis: Long, endMillis: Long): Flow<List<TransactionEntity>> =
+        transactionDao.getTransactionsByCategoryIdsFlow(categoryIds, startMillis, endMillis)
+
     suspend fun getTransactions(): List<TransactionEntity> = transactionDao.getTransactions()
 
     fun getTransactionsForAccountFlow(accountId: Long): Flow<List<TransactionEntity>> =

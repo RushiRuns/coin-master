@@ -18,6 +18,7 @@ import com.rushi.coinmaster.data.local.model.BucketType
 import com.rushi.coinmaster.data.local.model.TransactionType
 import com.rushi.coinmaster.data.repository.TransactionRepository
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.flow.first
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Before
@@ -41,33 +42,35 @@ class TransactionRepositoryTest {
     private val budgetPeriodId = 202606
 
     @Before
-    fun createDb() = runBlocking {
-        val context = ApplicationProvider.getApplicationContext<Context>()
-        db = Room.inMemoryDatabaseBuilder(context, CoinMasterDatabase::class.java).build()
-        accountDao = db.accountDao()
-        categoryDao = db.categoryDao()
-        budgetDao = db.budgetDao()
-        transactionDao = db.transactionDao()
-        repository = TransactionRepository(transactionDao)
+    fun createDb() {
+        runBlocking {
+            val context = ApplicationProvider.getApplicationContext<Context>()
+            db = Room.inMemoryDatabaseBuilder(context, CoinMasterDatabase::class.java).build()
+            accountDao = db.accountDao()
+            categoryDao = db.categoryDao()
+            budgetDao = db.budgetDao()
+            transactionDao = db.transactionDao()
+            repository = TransactionRepository(transactionDao)
 
-        // Seed initial data to satisfy Foreign Key constraints
-        accountId1 = accountDao.insertAccount(
-            AccountEntity(name = "Bank", type = AccountType.BANK_ACCOUNT, balancePaise = 100000L, colorHex = "#0000FF", iconName = "bank")
-        )
-        accountId2 = accountDao.insertAccount(
-            AccountEntity(name = "Cash", type = AccountType.CASH, balancePaise = 20000L, colorHex = "#00FF00", iconName = "cash")
-        )
-        categoryId = categoryDao.insertCategory(
-            CategoryEntity(name = "Groceries", bucketType = BucketType.NEEDS, colorHex = "#FF0000", iconName = "groceries", displayOrder = 0)
-        )
-        budgetDao.insertBudgetPeriod(
-            BudgetPeriodEntity(
-                id = budgetPeriodId,
-                startDate = System.currentTimeMillis() - 1000000L,
-                endDate = System.currentTimeMillis() + 1000000L,
-                incomePaise = 100000L
+            // Seed initial data to satisfy Foreign Key constraints
+            accountId1 = accountDao.insertAccount(
+                AccountEntity(name = "Bank", type = AccountType.BANK_ACCOUNT, balancePaise = 100000L, colorHex = "#0000FF", iconName = "bank")
             )
-        )
+            accountId2 = accountDao.insertAccount(
+                AccountEntity(name = "Cash", type = AccountType.CASH, balancePaise = 20000L, colorHex = "#00FF00", iconName = "cash")
+            )
+            categoryId = categoryDao.insertCategory(
+                CategoryEntity(name = "Groceries", bucketType = BucketType.NEEDS, colorHex = "#FF0000", iconName = "groceries", displayOrder = 0)
+            )
+            budgetDao.insertBudgetPeriod(
+                BudgetPeriodEntity(
+                    id = budgetPeriodId,
+                    startDate = System.currentTimeMillis() - 1000000L,
+                    endDate = System.currentTimeMillis() + 1000000L,
+                    incomePaise = 100000L
+                )
+            )
+        }
     }
 
     @After
@@ -91,6 +94,59 @@ class TransactionRepositoryTest {
 
         val account = accountDao.getAccountById(accountId1)
         assertEquals(85000L, account?.balancePaise)
+    }
+
+    @Test
+    fun getEnvelopesWithAllocations_calculatesSpentCorrectly() = runBlocking {
+        // Add allocation for the envelope
+        budgetDao.insertAllocation(
+            com.rushi.coinmaster.data.local.entity.EnvelopeAllocationEntity(
+                budgetPeriodId = budgetPeriodId,
+                categoryId = categoryId,
+                allocatedAmountPaise = 50000L
+            )
+        )
+
+        // Add a transaction for this envelope
+        val transaction = TransactionEntity(
+            amountPaise = 15000L,
+            type = TransactionType.EXPENSE,
+            accountId = accountId1,
+            categoryId = categoryId,
+            budgetPeriodId = budgetPeriodId,
+            date = System.currentTimeMillis()
+        )
+        transactionDao.insertTransaction(transaction)
+
+        // Query the envelopes with allocations
+        val envelopes = budgetDao.getEnvelopesWithAllocationsFlow(budgetPeriodId).first()
+        assertEquals(1, envelopes.size)
+        assertEquals(15000L, envelopes[0].spentAmountPaise)
+    }
+
+    @Test
+    fun recalculateTransactionBudgetPeriods_setsPeriodIdCorrectly() = runBlocking {
+        // Add a transaction with null budgetPeriodId
+        val transaction = TransactionEntity(
+            amountPaise = 15000L,
+            type = TransactionType.EXPENSE,
+            accountId = accountId1,
+            categoryId = categoryId,
+            budgetPeriodId = null,
+            date = System.currentTimeMillis()
+        )
+        val txId = transactionDao.insertTransaction(transaction)
+
+        // Verify budgetPeriodId is null initially
+        val txBefore = transactionDao.getTransactionById(txId)
+        org.junit.Assert.assertNull(txBefore?.budgetPeriodId)
+
+        // Recalculate
+        budgetDao.recalculateTransactionBudgetPeriods()
+
+        // Verify budgetPeriodId is now set to budgetPeriodId
+        val txAfter = transactionDao.getTransactionById(txId)
+        assertEquals(budgetPeriodId, txAfter?.budgetPeriodId)
     }
 
     @Test

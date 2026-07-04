@@ -22,7 +22,6 @@
             android:background="?attr/colorSurface"
             app:navigationIcon="@drawable/ic_arrow_back"
             app:navigationIconTint="?attr/colorOnSurface"
-            app:menuIconTint="?attr/colorOnSurface"
             app:navigationContentDescription="@string/btn_previous">
 
             <TextView
