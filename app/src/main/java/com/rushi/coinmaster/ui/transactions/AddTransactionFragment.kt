@@ -358,7 +358,7 @@ class PrefixFilterAdapter(
                 val results = FilterResults()
                 val prefix = constraint?.toString()?.trim() ?: ""
                 val filtered = if (prefix.isEmpty()) {
-                    originalItems
+                    emptyList()
                 } else {
                     originalItems.filter {
                         it.startsWith(prefix, ignoreCase = true)
