@@ -87,7 +87,7 @@ class SemiCircleProgressView @JvmOverloads constructor(
         progressPaint.strokeWidth = strokeWidth
 
         val margin = strokeWidth / 2f
-        rectF.set(margin, margin, width - margin, width * 2f - margin)
+        rectF.set(margin, margin, width - margin, width - margin)
 
         // Draw arc from 180 degrees sweeping 180 degrees
         canvas.drawArc(rectF, 180f, 180f, false, backgroundPaint)

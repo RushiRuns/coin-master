@@ -76,12 +76,12 @@ class CategoryAnalysisAdapter(
                     else -> Color.parseColor("#F44336") // Red
                 }
 
-                binding.progressBar.progressTintList = ColorStateList.valueOf(progressColor)
+                binding.progressBar.setIndicatorColor(progressColor)
                 binding.tvPercentage.setTextColor(progressColor)
             } else {
                 binding.tvPercentage.text = "0%"
                 binding.progressBar.progress = 0
-                binding.progressBar.progressTintList = ColorStateList.valueOf(Color.GRAY)
+                binding.progressBar.setIndicatorColor(Color.GRAY)
                 binding.tvPercentage.setTextColor(Color.GRAY)
             }
 
