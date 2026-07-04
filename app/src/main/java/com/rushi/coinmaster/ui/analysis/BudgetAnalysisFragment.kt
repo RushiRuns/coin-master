@@ -17,7 +17,6 @@ import com.rushi.coinmaster.data.local.entity.BudgetPeriodEntity
 import com.rushi.coinmaster.databinding.FragmentBudgetAnalysisBinding
 import com.rushi.coinmaster.ui.budget.BudgetViewModel
 import com.rushi.coinmaster.util.CurrencyFormatter
-import com.rushi.coinmaster.util.DateFormatter
 import com.rushi.coinmaster.util.LocaleHelper
 import androidx.navigation.ui.setupWithNavController
 import kotlinx.coroutines.flow.combine
@@ -96,8 +95,8 @@ class BudgetAnalysisFragment : Fragment() {
             onViewTransactionsClick = { group ->
                 val period = viewModel.budgetPeriodState.value
                 if (period != null) {
-                    val context = requireContext()
-                    val languageCode = LocaleHelper.getLanguage(context)
+                    val sdf = java.text.SimpleDateFormat("dd MMM yyyy", java.util.Locale.getDefault())
+                    val rangeLabel = "${sdf.format(period.startDate)} - ${sdf.format(period.endDate)}"
 
                     val envelopeIds = group.envelopes.map { it.categoryId }.toLongArray()
 
@@ -105,7 +104,7 @@ class BudgetAnalysisFragment : Fragment() {
                         envelopeIds = envelopeIds,
                         startMillis = period.startDate,
                         endMillis = period.endDate,
-                        filterLabel = "${group.name} · ${DateFormatter.formatMonthYear(period.startDate, languageCode)}"
+                        filterLabel = "${group.name} · $rangeLabel"
                     )
                     findNavController().navigate(action)
                 }
@@ -117,12 +116,14 @@ class BudgetAnalysisFragment : Fragment() {
     }
 
     private fun updatePeriodLabel(period: BudgetPeriodEntity?) {
-        val languageCode = LocaleHelper.getLanguage(requireContext())
         if (period != null) {
-            val label = DateFormatter.formatMonthYear(period.startDate, languageCode)
+            val sdf = java.text.SimpleDateFormat("dd MMM yyyy", java.util.Locale.getDefault())
+            val startStr = sdf.format(period.startDate)
+            val endStr = sdf.format(period.endDate)
+            val label = "$startStr - $endStr"
             binding.tvMonthYear.text = label
             binding.tvTotalPeriodLabel.text = label
-            binding.toolbar.title = "$label Budget"
+            binding.toolbar.title = "Analysis"
             binding.cardTotalBudget.visibility = View.VISIBLE
             binding.layoutMonthSwitcher.visibility = View.VISIBLE
         } else {
