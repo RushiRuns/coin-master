@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.Filter
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -100,7 +101,7 @@ class AddTransactionFragment : Fragment() {
                     viewModel.categoriesState.collect { categories ->
                         categoriesList = categories
                         val categoryNames = categories.map { it.name }
-                        val categoryAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, categoryNames)
+                        val categoryAdapter = PrefixFilterAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, categoryNames)
                         binding.actvCategory.setAdapter(categoryAdapter)
 
                         val editTx = editingTransaction
@@ -334,5 +335,47 @@ class AddTransactionFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+}
+
+class PrefixFilterAdapter(
+    context: android.content.Context,
+    resource: Int,
+    private val originalItems: List<String>
+) : ArrayAdapter<String>(context, resource, ArrayList(originalItems)) {
+
+    private var filteredItems: List<String> = originalItems
+
+    override fun getCount(): Int = filteredItems.size
+
+    override fun getItem(position: Int): String? {
+        return if (position in filteredItems.indices) filteredItems[position] else null
+    }
+
+    override fun getFilter(): Filter {
+        return object : Filter() {
+            override fun performFiltering(constraint: CharSequence?): FilterResults {
+                val results = FilterResults()
+                val prefix = constraint?.toString()?.trim() ?: ""
+                val filtered = if (prefix.isEmpty()) {
+                    originalItems
+                } else {
+                    originalItems.filter {
+                        it.startsWith(prefix, ignoreCase = true)
+                    }
+                }
+                results.values = filtered
+                results.count = filtered.size
+                return results
+            }
+
+            @Suppress("UNCHECKED_CAST")
+            override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
+                filteredItems = (results?.values as? List<String>) ?: originalItems
+                clear()
+                addAll(filteredItems)
+                notifyDataSetChanged()
+            }
+        }
     }
 }
