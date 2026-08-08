@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Apple HIG Semantic Spacing System -->
+    <!-- Spacing Scale (Apple HIG Semantic System) -->
     <dimen name="spacing_inline">4dp</dimen>
     <dimen name="spacing_related">8dp</dimen>
     <dimen name="spacing_list_item">12dp</dimen>
@@ -8,9 +8,9 @@
     <dimen name="spacing_grouped">16dp</dimen>
     <dimen name="spacing_input_vertical">16dp</dimen>
     <dimen name="spacing_input_horizontal">16dp</dimen>
-    <dimen name="spacing_section">20dp</dimen>
     <dimen name="spacing_screen_edge">20dp</dimen>
     <dimen name="spacing_card_inset">20dp</dimen>
+    <dimen name="spacing_section">20dp</dimen>
     <dimen name="spacing_large">24dp</dimen>
     <dimen name="spacing_extra_large">32dp</dimen>
     
