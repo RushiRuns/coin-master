@@ -1,31 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Brand Colors (Strict MD2 Palette) -->
-    <color name="primary">#1B5E20</color> <!-- Green 900 -->
-    <color name="primary_variant">#003300</color> <!-- Darkened Primary -->
-    <color name="secondary">#1565C0</color> <!-- Blue 800 -->
-    <color name="secondary_variant">#003C8F</color> <!-- Darkened Secondary -->
+    <!-- Brand Colors (Clarity Design System) -->
+    <color name="primary">#4F5BD5</color> <!-- Clarity Indigo -->
+    <color name="primary_variant">#3A46C0</color>
+    <color name="secondary">#5C5F7A</color>
+    <color name="secondary_variant">#3A3D55</color>
     
     <!-- UI Element Colors -->
-    <color name="background">#EEEEEE</color>
+    <color name="background">#F2F2F7</color>
     <color name="surface">#FFFFFF</color>
-    <color name="error">#B00020</color> <!-- MD2 Spec Error Red -->
-    <color name="text_primary">#212121</color> <!-- High-emphasis (87%) -->
-    <color name="text_secondary">#757575</color> <!-- Medium-emphasis (60%) -->
-    <color name="divider">#CCCCCC</color> <!-- MD2 divider -->
-    <color name="light_gray">#EEEEEE</color>
+    <color name="error">#FF3B30</color> <!-- Clarity expense red -->
+    <color name="text_primary">#1A1A1A</color>
+    <color name="text_secondary">#7C7C82</color>
+    <color name="divider">#D8D8E0</color>
+    <color name="light_gray">#F2F2F7</color>
     <color name="white">#FFFFFFFF</color>
     <color name="black">#FF000000</color>
     
-    <!-- Indicator/Chart Colors (Aligned with Palette) -->
-    <color name="color_needs">#1B5E20</color> <!-- Primary Green -->
-    <color name="color_wants">#F57C00</color> <!-- Amber 700 -->
-    <color name="color_savings">#1565C0</color> <!-- Secondary Blue -->
+    <!-- Indicator/Chart Colors -->
+    <color name="color_needs">#4F5BD5</color>
+    <color name="color_wants">#FF9500</color>
+    <color name="color_savings">#5AC8FA</color>
     
     <!-- Semantic Colors -->
-    <color name="color_positive">#2E7D32</color> <!-- Income -->
-    <color name="color_negative">#C62828</color> <!-- Expense -->
+    <color name="color_positive">#34C759</color> <!-- Clarity income green -->
+    <color name="color_negative">#FF3B30</color> <!-- Clarity expense red -->
     
     <!-- Selection highlight color -->
-    <color name="selected_item_background">#E8F5E9</color>
+    <color name="selected_item_background">#E6E8FF</color>
+
+    <!-- NEW Clarity Tokens -->
+    <color name="color_income_container">#E8F9ED</color>
+    <color name="color_expense_container">#FFF0EE</color>
+    <color name="color_transfer">#007AFF</color>
+    <color name="color_envelope">#AF52DE</color>
+    <color name="color_envelope_container">#F5EAFF</color>
+    <color name="color_warning">#FF9500</color>
+    <color name="color_warning_container">#FFF8E6</color>
+    <color name="color_surface_variant">#E8E8EF</color>
+    <color name="color_outline">#B0B0BE</color>
+    <color name="color_outline_variant">#D8D8E0</color>
+    <color name="color_primary_container">#E6E8FF</color>
 </resources>

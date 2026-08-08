@@ -1,31 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Brand Colors (Desaturated MD2 Dark Palette) -->
-    <color name="primary">#81C784</color> <!-- Green 300 -->
-    <color name="primary_variant">#1B5E20</color> <!-- Green 900 -->
-    <color name="secondary">#90CAF9</color> <!-- Blue 200 -->
-    <color name="secondary_variant">#1565C0</color> <!-- Blue 800 -->
+    <!-- Brand Colors (Clarity Design System) -->
+    <color name="primary">#8B95F5</color>
+    <color name="primary_variant">#7080F0</color>
+    <color name="secondary">#C2C3DC</color>
+    <color name="secondary_variant">#3A3D55</color>
     
     <!-- UI Element Colors -->
-    <color name="background">#121212</color> <!-- Standard Dark Background -->
-    <color name="surface">#1E1E1E</color> <!-- Elevated Dark Surface -->
-    <color name="error">#CF6679</color> <!-- MD2 Spec Dark Error Red -->
-    <color name="text_primary">#DEFFFFFF</color> <!-- High-emphasis (87% white) -->
-    <color name="text_secondary">#99FFFFFF</color> <!-- Medium-emphasis (60% white) -->
-    <color name="divider">#2C2C2C</color> <!-- Subtle dark theme divider/outline -->
-    <color name="light_gray">#2C2C2C</color>
+    <color name="background">#000000</color>
+    <color name="surface">#1C1C1E</color>
+    <color name="error">#FF453A</color>
+    <color name="text_primary">#DEDEDE</color>
+    <color name="text_secondary">#9898A8</color>
+    <color name="divider">#3A3A3C</color>
+    <color name="light_gray">#1C1C1E</color>
     <color name="white">#FFFFFFFF</color>
     <color name="black">#FF000000</color>
     
-    <!-- Indicator/Chart Colors (Desaturated) -->
-    <color name="color_needs">#81C784</color>
-    <color name="color_wants">#FFB74D</color> <!-- Orange 300 -->
-    <color name="color_savings">#90CAF9</color>
+    <!-- Indicator/Chart Colors -->
+    <color name="color_needs">#8B95F5</color>
+    <color name="color_wants">#FF9F0A</color>
+    <color name="color_savings">#64D2FF</color>
     
     <!-- Semantic Colors -->
-    <color name="color_positive">#81C784</color>
-    <color name="color_negative">#E57373</color> <!-- Red 300 -->
+    <color name="color_positive">#30DB5B</color>
+    <color name="color_negative">#FF453A</color>
     
     <!-- Selection highlight color (dark mode) -->
-    <color name="selected_item_background">#2E4A32</color>
+    <color name="selected_item_background">#1E2560</color>
+
+    <!-- NEW Clarity Tokens -->
+    <color name="color_income_container">#0D3D1D</color>
+    <color name="color_expense_container">#4A1210</color>
+    <color name="color_transfer">#0A84FF</color>
+    <color name="color_envelope">#BF5AF2</color>
+    <color name="color_envelope_container">#341545</color>
+    <color name="color_warning">#FF9F0A</color>
+    <color name="color_warning_container">#3D2800</color>
+    <color name="color_surface_variant">#2C2C2E</color>
+    <color name="color_outline">#58585A</color>
+    <color name="color_outline_variant">#3A3A3C</color>
+    <color name="color_primary_container">#1E2560</color>
 </resources>

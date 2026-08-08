@@ -23,6 +23,11 @@
         <item name="colorOnBackground">@color/text_primary</item>
         <item name="colorError">@color/error</item>
         <item name="colorOnError">@color/black</item>
+        
+        <!-- Shape Overrides (Clarity Design System) -->
+        <item name="shapeAppearanceSmallComponent">@style/ShapeAppearance.Clarity.Small</item>
+        <item name="shapeAppearanceMediumComponent">@style/ShapeAppearance.Clarity.Medium</item>
+        <item name="shapeAppearanceLargeComponent">@style/ShapeAppearance.Clarity.Large</item>
     </style>
 
     <!-- Dialog theme for QuickRecordActivity (Dark) -->
