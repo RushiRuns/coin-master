@@ -73,6 +73,7 @@
         android:src="@drawable/ic_add"
         android:contentDescription="Create Note"
         app:tint="@color/white"
-        app:backgroundTint="@color/secondary" />
+        app:backgroundTint="@color/primary"
+        app:shapeAppearanceOverlay="@style/ShapeAppearance.Clarity.Large" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

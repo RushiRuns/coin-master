@@ -15,7 +15,7 @@
         android:id="@+id/view_type_dot"
         android:layout_width="12dp"
         android:layout_height="12dp"
-        app:cardCornerRadius="6dp"
+        app:cardCornerRadius="@dimen/shape_large"
         app:cardElevation="0dp"
         app:strokeWidth="0dp"
         app:cardBackgroundColor="@color/secondary"

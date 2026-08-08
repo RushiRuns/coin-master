@@ -44,7 +44,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
-                app:cardCornerRadius="4dp"
+                app:cardCornerRadius="@dimen/shape_large"
                 app:cardElevation="1dp"
                 app:strokeWidth="1dp"
                 app:strokeColor="@color/divider"
@@ -67,7 +67,7 @@
 
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/til_recipient_name"
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        app:boxBackgroundMode="filled" app:boxBackgroundColor="@color/color_surface_variant" app:boxCornerRadiusTopStart="@dimen/shape_medium" app:boxCornerRadiusTopEnd="@dimen/shape_medium" app:boxCornerRadiusBottomStart="@dimen/shape_medium" app:boxCornerRadiusBottomEnd="@dimen/shape_medium" app:boxStrokeWidth="0dp" app:boxStrokeWidthFocused="0dp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="12dp"
@@ -118,7 +118,7 @@
 
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/til_bank_details"
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        app:boxBackgroundMode="filled" app:boxBackgroundColor="@color/color_surface_variant" app:boxCornerRadiusTopStart="@dimen/shape_medium" app:boxCornerRadiusTopEnd="@dimen/shape_medium" app:boxCornerRadiusBottomStart="@dimen/shape_medium" app:boxCornerRadiusBottomEnd="@dimen/shape_medium" app:boxStrokeWidth="0dp" app:boxStrokeWidthFocused="0dp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="12dp"
@@ -140,7 +140,7 @@
                         android:orientation="horizontal"
                         android:gravity="end">
 
-                        <Button
+                        <Button app:backgroundTint="@null" android:background="@drawable/bg_primary_button" 
                             android:id="@+id/btn_cancel"
                             style="@style/Widget.MaterialComponents.Button.TextButton"
                             android:layout_width="wrap_content"
@@ -149,12 +149,12 @@
                             android:visibility="gone"
                             android:layout_marginEnd="8dp" />
 
-                        <Button
+                        <Button app:backgroundTint="@null" android:background="@drawable/bg_primary_button" 
                             android:id="@+id/btn_save_recipient"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/btn_save"
-                            app:backgroundTint="@color/primary" />
+                             />
                     </LinearLayout>
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>

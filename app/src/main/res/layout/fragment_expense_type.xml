@@ -70,7 +70,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                app:cardCornerRadius="4dp"
+                app:cardCornerRadius="@dimen/shape_large"
                 app:cardElevation="1dp"
                 app:strokeWidth="1dp"
                 app:strokeColor="@color/divider"
@@ -120,7 +120,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                app:cardCornerRadius="4dp"
+                app:cardCornerRadius="@dimen/shape_large"
                 app:cardElevation="1dp"
                 app:strokeWidth="1dp"
                 app:strokeColor="@color/divider"
@@ -171,7 +171,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="32dp"
-                app:cardCornerRadius="4dp"
+                app:cardCornerRadius="@dimen/shape_large"
                 app:cardElevation="1dp"
                 app:strokeWidth="1dp"
                 app:strokeColor="@color/divider"
@@ -212,7 +212,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
         android:visibility="gone"
-        app:cardCornerRadius="0dp"
+        app:cardCornerRadius="@dimen/shape_large"
         app:cardElevation="8dp"
         app:strokeWidth="1dp"
         app:strokeColor="@color/divider"
@@ -240,7 +240,7 @@
                 android:layout_marginTop="12dp"
                 android:weightSum="2">
 
-                <Button
+                <Button app:backgroundTint="@null" android:background="@drawable/bg_primary_button" 
                     android:id="@+id/btn_assign_fixed"
                     style="@style/Widget.MaterialComponents.Button"
                     android:layout_width="0dp"
@@ -249,9 +249,9 @@
                     android:layout_marginEnd="8dp"
                     android:text="Assign Fixed"
                     android:textStyle="bold"
-                    app:backgroundTint="@color/primary" />
+                     />
 
-                <Button
+                <Button app:backgroundTint="@null" android:background="@drawable/bg_primary_button" 
                     android:id="@+id/btn_assign_variable"
                     style="@style/Widget.MaterialComponents.Button"
                     android:layout_width="0dp"
@@ -260,7 +260,7 @@
                     android:layout_marginStart="8dp"
                     android:text="Assign Variable"
                     android:textStyle="bold"
-                    app:backgroundTint="@color/secondary" />
+                     />
             </LinearLayout>
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>

@@ -23,6 +23,9 @@
         <item name="colorOnBackground">@color/text_primary</item>
         <item name="colorError">@color/error</item>
         <item name="colorOnError">@color/black</item>
+
+        <!-- Default Typography -->
+        <item name="android:fontFamily">@font/inter_regular</item>
         
         <!-- Shape Overrides (Clarity Design System) -->
         <item name="shapeAppearanceSmallComponent">@style/ShapeAppearance.Clarity.Small</item>

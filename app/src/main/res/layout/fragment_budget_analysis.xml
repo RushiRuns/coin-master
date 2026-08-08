@@ -45,7 +45,7 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
                 android:layout_marginTop="16dp"
-                app:cardCornerRadius="4dp"
+                app:cardCornerRadius="@dimen/shape_large"
                 app:cardElevation="1dp"
                 app:strokeWidth="1dp"
                 app:strokeColor="@color/divider"
@@ -181,7 +181,8 @@
         android:layout_margin="16dp"
         android:src="@drawable/ic_add"
         android:contentDescription="@string/cd_add_transaction"
-        app:backgroundTint="@color/secondary"
-        app:tint="@color/white" />
+        app:backgroundTint="@color/primary"
+        app:tint="@color/white"
+        app:shapeAppearanceOverlay="@style/ShapeAppearance.Clarity.Large" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

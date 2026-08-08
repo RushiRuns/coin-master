@@ -11,7 +11,7 @@
     android:layout_marginBottom="8dp"
     android:clickable="true"
     android:focusable="true"
-    app:cardCornerRadius="4dp"
+    app:cardCornerRadius="@dimen/shape_large"
     app:cardElevation="1dp"
     app:strokeWidth="1dp"
     app:strokeColor="@color/divider">

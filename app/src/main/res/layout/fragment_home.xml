@@ -40,42 +40,41 @@
             android:orientation="vertical"
             android:padding="16dp">
 
-            <!-- Net Worth Card -->
+            <!-- Net Worth Card (Hero Card) -->
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/card_net_worth"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
-                app:cardCornerRadius="4dp"
-                app:cardElevation="1dp"
-                app:strokeWidth="1dp"
-                app:strokeColor="@color/divider">
+                app:cardCornerRadius="@dimen/shape_extra_large"
+                app:cardElevation="0dp"
+                app:strokeWidth="0dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="@drawable/bg_hero_card"
                     android:orientation="vertical"
-                    android:padding="16dp">
+                    android:padding="24dp">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/label_net_worth"
-                        android:textColor="@color/text_secondary"
-                        android:textSize="10sp"
+                        android:textColor="@color/white"
+                        android:alpha="0.8"
+                        android:textAppearance="@style/TextAppearance.Clarity.Caption1"
                         android:textStyle="bold"
-                        android:letterSpacing="0.15"
                         android:textAllCaps="true" />
 
                     <TextView
                         android:id="@+id/tv_net_worth"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
+                        android:layout_marginTop="8dp"
                         android:text="₹ 0.00"
-                        android:textColor="@color/primary"
-                        android:textSize="34sp"
-                        android:textStyle="bold" />
+                        android:textColor="@color/white"
+                        android:textAppearance="@style/TextAppearance.Clarity.AmountHero" />
 
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
@@ -88,7 +87,7 @@
                 android:layout_marginBottom="16dp"
                 android:clickable="true"
                 android:focusable="true"
-                app:cardCornerRadius="4dp"
+                app:cardCornerRadius="@dimen/shape_large"
                 app:cardElevation="1dp"
                 app:strokeWidth="1dp"
                 app:strokeColor="@color/divider">
@@ -198,7 +197,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
-                app:cardCornerRadius="4dp"
+                app:cardCornerRadius="@dimen/shape_large"
                 app:cardElevation="1dp"
                 app:strokeWidth="1dp"
                 app:strokeColor="@color/divider">
@@ -232,10 +231,11 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
-                        app:trackThickness="4dp"
-                        app:trackCornerRadius="0dp"
+                        app:trackThickness="8dp"
+                        app:trackCornerRadius="4dp"
                         android:max="100"
-                        android:progress="0" />
+                        android:progress="0"
+        app:trackColor="@color/color_outline_variant" />
 
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
@@ -246,7 +246,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
-                app:cardCornerRadius="4dp"
+                app:cardCornerRadius="@dimen/shape_large"
                 app:cardElevation="1dp"
                 app:strokeWidth="1dp"
                 app:strokeColor="@color/divider">
@@ -280,7 +280,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
-                app:cardCornerRadius="4dp"
+                app:cardCornerRadius="@dimen/shape_large"
                 app:cardElevation="1dp"
                 app:strokeWidth="1dp"
                 app:strokeColor="@color/divider">
@@ -314,7 +314,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
-                app:cardCornerRadius="4dp"
+                app:cardCornerRadius="@dimen/shape_large"
                 app:cardElevation="1dp"
                 app:strokeWidth="1dp"
                 app:strokeColor="@color/divider">
@@ -346,7 +346,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
-                        app:cardCornerRadius="4dp"
+                        app:cardCornerRadius="@dimen/shape_large"
                         app:cardBackgroundColor="@color/surface"
                         app:strokeWidth="1dp"
                         app:strokeColor="@color/divider">
@@ -379,7 +379,8 @@
         android:layout_margin="16dp"
         android:src="@drawable/ic_add"
         android:contentDescription="@string/cd_add_transaction"
-        app:backgroundTint="@color/secondary"
-        app:tint="@color/white" />
+        app:backgroundTint="@color/primary"
+        app:tint="@color/white"
+        app:shapeAppearanceOverlay="@style/ShapeAppearance.Clarity.Large" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

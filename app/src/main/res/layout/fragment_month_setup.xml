@@ -43,7 +43,7 @@
                 android:id="@+id/card_date_selection"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:cardCornerRadius="4dp"
+                app:cardCornerRadius="@dimen/shape_large"
                 app:cardElevation="1dp"
                 app:strokeWidth="1dp"
                 app:strokeColor="@color/divider"
@@ -128,7 +128,7 @@
             <!-- Income TextInputLayout -->
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/til_monthly_income"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                app:boxBackgroundMode="filled" app:boxBackgroundColor="@color/color_surface_variant" app:boxCornerRadiusTopStart="@dimen/shape_medium" app:boxCornerRadiusTopEnd="@dimen/shape_medium" app:boxCornerRadiusBottomStart="@dimen/shape_medium" app:boxCornerRadiusBottomEnd="@dimen/shape_medium" app:boxStrokeWidth="0dp" app:boxStrokeWidthFocused="0dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
@@ -183,7 +183,7 @@
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/til_needs_percent"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    app:boxBackgroundMode="filled" app:boxBackgroundColor="@color/color_surface_variant" app:boxCornerRadiusTopStart="@dimen/shape_medium" app:boxCornerRadiusTopEnd="@dimen/shape_medium" app:boxCornerRadiusBottomStart="@dimen/shape_medium" app:boxCornerRadiusBottomEnd="@dimen/shape_medium" app:boxStrokeWidth="0dp" app:boxStrokeWidthFocused="0dp"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -202,7 +202,7 @@
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/til_wants_percent"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    app:boxBackgroundMode="filled" app:boxBackgroundColor="@color/color_surface_variant" app:boxCornerRadiusTopStart="@dimen/shape_medium" app:boxCornerRadiusTopEnd="@dimen/shape_medium" app:boxCornerRadiusBottomStart="@dimen/shape_medium" app:boxCornerRadiusBottomEnd="@dimen/shape_medium" app:boxStrokeWidth="0dp" app:boxStrokeWidthFocused="0dp"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -222,7 +222,7 @@
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/til_savings_percent"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    app:boxBackgroundMode="filled" app:boxBackgroundColor="@color/color_surface_variant" app:boxCornerRadiusTopStart="@dimen/shape_medium" app:boxCornerRadiusTopEnd="@dimen/shape_medium" app:boxCornerRadiusBottomStart="@dimen/shape_medium" app:boxCornerRadiusBottomEnd="@dimen/shape_medium" app:boxStrokeWidth="0dp" app:boxStrokeWidthFocused="0dp"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -266,7 +266,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
-                    app:cardCornerRadius="4dp"
+                    app:cardCornerRadius="@dimen/shape_large"
                     app:cardElevation="1dp"
                     app:strokeWidth="1dp"
                     app:strokeColor="@color/divider">
@@ -300,7 +300,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
-                    app:cardCornerRadius="4dp"
+                    app:cardCornerRadius="@dimen/shape_large"
                     app:cardElevation="1dp"
                     app:strokeWidth="1dp"
                     app:strokeColor="@color/divider">
@@ -333,7 +333,7 @@
                 <com.google.android.material.card.MaterialCardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:cardCornerRadius="4dp"
+                    app:cardCornerRadius="@dimen/shape_large"
                     app:cardElevation="1dp"
                     app:strokeWidth="1dp"
                     app:strokeColor="@color/divider">
@@ -372,7 +372,7 @@
                 android:text="@string/btn_save_setup"
                 android:textSize="14sp"
                 android:textStyle="bold"
-                app:cornerRadius="4dp"
+                app:cornerRadius="@dimen/shape_small"
                 app:layout_constraintTop_toBottomOf="@id/layout_computed_targets" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>

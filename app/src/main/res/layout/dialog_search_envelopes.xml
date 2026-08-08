@@ -27,19 +27,19 @@
         android:textStyle="bold" />
 
     <!-- Search Input -->
-    <com.google.android.material.textfield.TextInputLayout
+    <com.google.android.material.textfield.TextInputLayout app:boxCornerRadiusBottomEnd="@dimen/shape_medium" app:boxCornerRadiusBottomStart="@dimen/shape_medium" app:boxCornerRadiusTopEnd="@dimen/shape_medium" app:boxCornerRadiusTopStart="@dimen/shape_medium"
         android:id="@+id/til_search"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        app:boxBackgroundMode="filled" app:boxBackgroundColor="@color/color_surface_variant"     app:boxStrokeWidth="0dp" app:boxStrokeWidthFocused="0dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="12dp"
         android:hint="Type envelope name..."
         app:startIconDrawable="@drawable/ic_search"
         app:endIconMode="clear_text"
-        app:boxCornerRadiusTopStart="24dp"
-        app:boxCornerRadiusTopEnd="24dp"
-        app:boxCornerRadiusBottomStart="24dp"
-        app:boxCornerRadiusBottomEnd="24dp">
+        
+        
+        
+        >
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/et_search"
