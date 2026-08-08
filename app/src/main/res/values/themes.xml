@@ -25,7 +25,7 @@
         <item name="colorOnError">@color/white</item>
 
         <!-- Default Typography -->
-        <item name="android:fontFamily">@font/inter_regular</item>
+        <item name="android:fontFamily">@font/inter_medium</item>
         
         <!-- Shape Overrides (Clarity Design System) -->
         <item name="shapeAppearanceSmallComponent">@style/ShapeAppearance.Clarity.Small</item>
