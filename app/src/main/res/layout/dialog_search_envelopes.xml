@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="16dp"
+    android:padding="@dimen/spacing_screen_edge"
     android:background="@color/surface">
 
     <!-- Bottom Sheet Drag Handle -->
@@ -13,7 +13,7 @@
         android:layout_width="32dp"
         android:layout_height="4dp"
         android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="@dimen/spacing_grouped"
         android:background="@color/divider" />
 
     <!-- Title -->

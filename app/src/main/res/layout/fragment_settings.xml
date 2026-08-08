@@ -35,14 +35,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="16dp">
+            android:padding="@dimen/spacing_screen_edge">
 
             <!-- Language Selection Card -->
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/card_language"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
+                android:layout_marginBottom="@dimen/spacing_grouped"
                 app:cardCornerRadius="@dimen/shape_large"
                 app:cardElevation="1dp"
                 app:strokeWidth="1dp"
@@ -52,7 +52,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:padding="16dp">
+                    android:padding="@dimen/spacing_screen_edge">
 
                     <TextView
                         android:layout_width="match_parent"
@@ -118,7 +118,7 @@
                 android:id="@+id/card_theme"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
+                android:layout_marginBottom="@dimen/spacing_grouped"
                 app:cardCornerRadius="@dimen/shape_large"
                 app:cardElevation="1dp"
                 app:strokeWidth="1dp"
@@ -128,7 +128,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:padding="16dp">
+                    android:padding="@dimen/spacing_screen_edge">
 
                     <TextView
                         android:layout_width="match_parent"
@@ -183,7 +183,7 @@
                 android:id="@+id/card_currency"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
+                android:layout_marginBottom="@dimen/spacing_grouped"
                 app:cardCornerRadius="@dimen/shape_large"
                 app:cardElevation="1dp"
                 app:strokeWidth="1dp"
@@ -193,7 +193,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:padding="16dp">
+                    android:padding="@dimen/spacing_screen_edge">
 
                     <TextView
                         android:layout_width="match_parent"
@@ -219,7 +219,7 @@
                 android:id="@+id/card_backup_restore"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
+                android:layout_marginBottom="@dimen/spacing_grouped"
                 app:cardCornerRadius="@dimen/shape_large"
                 app:cardElevation="1dp"
                 app:strokeWidth="1dp"
@@ -229,7 +229,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:padding="16dp">
+                    android:padding="@dimen/spacing_screen_edge">
 
                     <TextView
                         android:layout_width="match_parent"
@@ -243,7 +243,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="16dp"
+                        android:layout_marginBottom="@dimen/spacing_grouped"
                         android:text="@string/text_backup_restore_desc"
                         android:textColor="@color/text_secondary"
                         android:textSize="14sp" />
@@ -281,7 +281,7 @@
                 android:id="@+id/card_data_management"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
+                android:layout_marginBottom="@dimen/spacing_grouped"
                 app:cardCornerRadius="@dimen/shape_large"
                 app:cardElevation="1dp"
                 app:strokeWidth="1dp"
@@ -291,7 +291,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:padding="16dp">
+                    android:padding="@dimen/spacing_screen_edge">
 
                     <TextView
                         android:layout_width="match_parent"
@@ -335,7 +335,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:padding="16dp">
+                    android:padding="@dimen/spacing_screen_edge">
 
                     <TextView
                         android:layout_width="match_parent"

@@ -17,7 +17,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="16dp">
+        android:padding="@dimen/spacing_screen_edge">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -53,7 +53,7 @@
                 android:layout_marginEnd="-8dp"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentTop="true"
-                android:padding="12dp"
+                android:padding="@dimen/spacing_list_item"
                 android:background="?android:attr/selectableItemBackgroundBorderless"
                 android:src="@drawable/ic_delete"
                 android:contentDescription="@string/cd_delete_goal"
@@ -67,7 +67,7 @@
                 android:layout_marginBottom="-8dp"
                 android:layout_toStartOf="@id/btn_delete_goal"
                 android:layout_alignParentTop="true"
-                android:padding="12dp"
+                android:padding="@dimen/spacing_list_item"
                 android:background="?android:attr/selectableItemBackgroundBorderless"
                 android:src="@drawable/ic_edit"
                 android:contentDescription="@string/cd_edit_goal"
@@ -77,7 +77,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp">
+            android:layout_marginTop="@dimen/spacing_grouped">
 
             <TextView
                 android:id="@+id/tv_goal_saved"
@@ -137,8 +137,8 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="16dp"
+            android:layout_marginTop="@dimen/spacing_grouped"
+            android:layout_marginBottom="@dimen/spacing_grouped"
             android:background="@color/divider" />
 
         <!-- Monthly Savings Needed (Body 2) -->

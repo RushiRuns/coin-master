@@ -37,7 +37,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="16dp"
+            android:padding="@dimen/spacing_screen_edge"
             android:paddingBottom="120dp">
 
             <TextView
@@ -56,7 +56,7 @@
                 android:id="@+id/tv_unclassified_header"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
+                android:layout_marginTop="@dimen/spacing_large"
                 android:text="Unassigned Expenses"
                 android:textColor="@color/text_primary"
                 android:textSize="16sp"
@@ -86,7 +86,7 @@
                         android:id="@+id/tv_empty_unclassified"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:padding="16dp"
+                        android:padding="@dimen/spacing_screen_edge"
                         android:gravity="center"
                         android:text="No unclassified expenses."
                         android:textColor="@color/text_secondary"
@@ -106,7 +106,7 @@
                 android:id="@+id/tv_fixed_header"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
+                android:layout_marginTop="@dimen/spacing_large"
                 android:text="Fixed Expenses"
                 android:textColor="@color/primary"
                 android:textSize="16sp"
@@ -136,7 +136,7 @@
                         android:id="@+id/tv_empty_fixed"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:padding="16dp"
+                        android:padding="@dimen/spacing_screen_edge"
                         android:gravity="center"
                         android:text="No fixed expenses. Select variable envelopes below and assign them to Fixed."
                         android:textColor="@color/text_secondary"
@@ -156,7 +156,7 @@
                 android:id="@+id/tv_variable_header"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
+                android:layout_marginTop="@dimen/spacing_large"
                 android:text="Variable Expenses"
                 android:textColor="@color/secondary"
                 android:textSize="16sp"
@@ -187,7 +187,7 @@
                         android:id="@+id/tv_empty_variable"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:padding="16dp"
+                        android:padding="@dimen/spacing_screen_edge"
                         android:gravity="center"
                         android:text="No variable expenses."
                         android:textColor="@color/text_secondary"
@@ -222,7 +222,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="16dp">
+            android:padding="@dimen/spacing_screen_edge">
 
             <TextView
                 android:id="@+id/tv_selected_count"

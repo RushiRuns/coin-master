@@ -34,7 +34,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="16dp">
+            android:padding="@dimen/spacing_screen_edge">
 
             <TextView
                 android:id="@+id/tv_desc"
@@ -51,7 +51,7 @@
                 android:id="@+id/card_form"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="@dimen/spacing_grouped"
                 app:cardCornerRadius="@dimen/shape_large"
                 app:cardElevation="1dp"
                 app:strokeWidth="1dp"
@@ -64,7 +64,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:padding="16dp">
+                    android:padding="@dimen/spacing_screen_edge">
 
                     <TextView
                         android:id="@+id/tv_form_header"
@@ -123,7 +123,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
-                        android:layout_marginTop="16dp">
+                        android:layout_marginTop="@dimen/spacing_grouped">
 
                         <Button app:backgroundTint="@null" android:background="@drawable/bg_primary_button" 
                             android:id="@+id/btn_add_category"
@@ -149,7 +149,7 @@
                 android:id="@+id/tv_list_header"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="@dimen/spacing_grouped"
                 android:text="Existing Categories"
                 android:textSize="16sp"
                 android:textStyle="bold"
@@ -163,7 +163,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:layout_marginBottom="16dp"
+                android:layout_marginBottom="@dimen/spacing_grouped"
                 android:orientation="vertical"
                 app:layout_constraintTop_toBottomOf="@id/tv_list_header"
                 app:layout_constraintStart_toStartOf="parent"

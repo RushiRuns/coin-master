@@ -45,7 +45,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="16dp">
+            android:padding="@dimen/spacing_screen_edge">
 
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/card_form"
@@ -63,7 +63,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:padding="16dp">
+                    android:padding="@dimen/spacing_screen_edge">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -94,7 +94,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp"
+                        android:layout_marginTop="@dimen/spacing_grouped"
                         android:text="@string/ob_label_account_type"
                         android:textSize="16sp"
                         android:textStyle="bold"
@@ -114,14 +114,18 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:inputType="none"
-                            android:text="@string/acc_type_bank" />
+                            android:text="@string/acc_type_bank" 
+                    android:paddingTop="28dp"
+                    android:paddingBottom="12dp"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp"/>
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <TextView
                         android:id="@+id/tv_balance_label"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp"
+                        android:layout_marginTop="@dimen/spacing_grouped"
                         android:text="@string/label_opening_balance"
                         android:textSize="16sp"
                         android:textStyle="bold"
@@ -148,7 +152,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp"
+                        android:layout_marginTop="@dimen/spacing_grouped"
                         android:text="@string/label_brand_color"
                         android:textSize="16sp"
                         android:textStyle="bold"
@@ -168,7 +172,11 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:inputType="none"
-                            android:text="@string/color_green" />
+                            android:text="@string/color_green" 
+                    android:paddingTop="28dp"
+                    android:paddingBottom="12dp"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp"/>
                     </com.google.android.material.textfield.TextInputLayout>
 
 
@@ -180,7 +188,7 @@
                 android:id="@+id/btn_save"
                 android:layout_width="0dp"
                 android:layout_height="48dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="@dimen/spacing_grouped"
                 android:text="@string/btn_save_account"
                 android:textSize="14sp"
                 android:textStyle="bold"

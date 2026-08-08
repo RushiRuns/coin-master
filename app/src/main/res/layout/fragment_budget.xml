@@ -44,7 +44,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:gravity="center"
-                android:padding="16dp"
+                android:padding="@dimen/spacing_screen_edge"
                 app:layout_constraintTop_toTopOf="parent">
 
                 <ImageButton
@@ -95,7 +95,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:padding="16dp">
+                    android:padding="@dimen/spacing_screen_edge">
 
                     <TextView
                         android:id="@+id/tv_declared_income"
@@ -129,7 +129,7 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp"
+                        android:layout_marginTop="@dimen/spacing_grouped"
                         android:orientation="horizontal"
                         android:gravity="center_vertical">
 
@@ -162,7 +162,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="@dimen/spacing_grouped"
                 android:visibility="gone"
                 app:cardCornerRadius="@dimen/shape_large"
                 app:cardElevation="1dp"
@@ -177,7 +177,7 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:gravity="center_vertical"
-                    android:padding="12dp">
+                    android:padding="@dimen/spacing_list_item">
 
                     <ImageView
                         android:layout_width="24dp"
@@ -213,7 +213,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="@dimen/spacing_grouped"
                 app:cardCornerRadius="@dimen/shape_large"
                 app:cardElevation="1dp"
                 app:strokeWidth="1dp"
@@ -224,7 +224,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:padding="16dp">
+                    android:padding="@dimen/spacing_screen_edge">
 
                     <!-- Bucket Header -->
                     <RelativeLayout
@@ -266,7 +266,7 @@
                         android:id="@+id/container_needs_envelopes"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp"
+                        android:layout_marginTop="@dimen/spacing_grouped"
                         android:orientation="vertical" />
 
                     <!-- Add Category action -->
@@ -288,7 +288,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="@dimen/spacing_grouped"
                 app:cardCornerRadius="@dimen/shape_large"
                 app:cardElevation="1dp"
                 app:strokeWidth="1dp"
@@ -299,7 +299,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:padding="16dp">
+                    android:padding="@dimen/spacing_screen_edge">
 
                     <!-- Bucket Header -->
                     <RelativeLayout
@@ -341,7 +341,7 @@
                         android:id="@+id/container_wants_envelopes"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp"
+                        android:layout_marginTop="@dimen/spacing_grouped"
                         android:orientation="vertical" />
 
                     <!-- Add Category action -->
@@ -363,7 +363,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="@dimen/spacing_grouped"
                 android:visibility="gone"
                 app:cardCornerRadius="@dimen/shape_large"
                 app:cardElevation="1dp"
@@ -375,7 +375,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:padding="16dp">
+                    android:padding="@dimen/spacing_screen_edge">
 
                     <!-- Bucket Header -->
                     <RelativeLayout
@@ -417,7 +417,7 @@
                         android:id="@+id/container_savings_envelopes"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp"
+                        android:layout_marginTop="@dimen/spacing_grouped"
                         android:orientation="vertical" />
 
                     <!-- Add Category action -->

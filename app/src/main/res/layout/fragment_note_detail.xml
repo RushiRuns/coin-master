@@ -37,7 +37,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="16dp">
+            android:padding="@dimen/spacing_screen_edge">
 
             <!-- Title -->
             <TextView
@@ -71,7 +71,7 @@
                 android:id="@+id/divider"
                 android:layout_width="0dp"
                 android:layout_height="1dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="@dimen/spacing_grouped"
                 android:background="@color/divider"
                 app:layout_constraintTop_toBottomOf="@id/tv_note_date"
                 app:layout_constraintStart_toStartOf="parent"
@@ -82,7 +82,7 @@
                 android:id="@+id/tv_note_content"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="@dimen/spacing_grouped"
                 android:textColor="@color/text_primary"
                 android:textSize="16sp"
                 android:lineSpacingMultiplier="1.2"

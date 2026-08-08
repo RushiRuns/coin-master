@@ -7,14 +7,14 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:background="?attr/colorSurface"
-    android:padding="16dp">
+    android:padding="@dimen/spacing_screen_edge">
 
     <!-- Bottom Sheet Drag Handle -->
     <View
         android:layout_width="40dp"
         android:layout_height="4dp"
         android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="@dimen/spacing_grouped"
         android:background="@color/divider" />
 
     <!-- Title -->
@@ -42,8 +42,8 @@
         android:id="@+id/rv_envelopes"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginTop="@dimen/spacing_grouped"
+        android:layout_marginBottom="@dimen/spacing_grouped"
         tools:listitem="@layout/item_category_analysis" />
 
 </LinearLayout>

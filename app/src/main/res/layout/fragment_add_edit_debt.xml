@@ -43,7 +43,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="16dp">
+            android:padding="@dimen/spacing_screen_edge">
 
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/card_form"
@@ -61,7 +61,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:padding="16dp">
+                    android:padding="@dimen/spacing_screen_edge">
 
                     <!-- Person Name -->
                     <TextView
@@ -94,7 +94,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp"
+                        android:layout_marginTop="@dimen/spacing_grouped"
                         android:text="Type of Loan"
                         android:textSize="16sp"
                         android:textStyle="bold"
@@ -127,7 +127,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp"
+                        android:layout_marginTop="@dimen/spacing_grouped"
                         android:text="Amount (₹)"
                         android:textSize="16sp"
                         android:textStyle="bold"
@@ -155,7 +155,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp"
+                        android:layout_marginTop="@dimen/spacing_grouped"
                         android:text="Link to Account"
                         android:textSize="16sp"
                         android:textStyle="bold"
@@ -175,14 +175,18 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:inputType="none"
-                            android:hint="Select Account" />
+                            android:hint="Select Account" 
+                    android:paddingTop="28dp"
+                    android:paddingBottom="12dp"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp"/>
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <!-- Due Date -->
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp"
+                        android:layout_marginTop="@dimen/spacing_grouped"
                         android:text="Due Date (Optional)"
                         android:textSize="16sp"
                         android:textStyle="bold"
@@ -211,7 +215,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp"
+                        android:layout_marginTop="@dimen/spacing_grouped"
                         android:text="Note"
                         android:textSize="16sp"
                         android:textStyle="bold"
@@ -242,7 +246,7 @@
                 android:id="@+id/btn_save"
                 android:layout_width="0dp"
                 android:layout_height="48dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="@dimen/spacing_grouped"
                 android:text="Save"
                 android:textSize="14sp"
                 android:textStyle="bold"

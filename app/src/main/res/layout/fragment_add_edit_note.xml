@@ -37,7 +37,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="16dp">
+            android:padding="@dimen/spacing_screen_edge">
 
             <!-- Title Input -->
             <com.google.android.material.textfield.TextInputLayout
@@ -64,7 +64,7 @@
                 app:boxBackgroundMode="filled" app:boxBackgroundColor="@color/color_surface_variant" app:boxCornerRadiusTopStart="@dimen/shape_medium" app:boxCornerRadiusTopEnd="@dimen/shape_medium" app:boxCornerRadiusBottomStart="@dimen/shape_medium" app:boxCornerRadiusBottomEnd="@dimen/shape_medium" app:boxStrokeWidth="0dp" app:boxStrokeWidthFocused="0dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="@dimen/spacing_grouped"
                 android:hint="Content (Markdown supported)"
                 app:layout_constraintTop_toBottomOf="@id/til_note_title">
 
@@ -84,7 +84,7 @@
                 android:id="@+id/btn_save"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
-                android:layout_marginTop="24dp"
+                android:layout_marginTop="@dimen/spacing_large"
                 android:text="Save Note"
                 android:textSize="14sp"
                 android:textStyle="bold"

@@ -45,7 +45,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="16dp">
+            android:padding="@dimen/spacing_screen_edge">
 
             <!-- Card for quick creation -->
             <com.google.android.material.card.MaterialCardView
@@ -62,7 +62,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:padding="16dp">
+                    android:padding="@dimen/spacing_screen_edge">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -92,7 +92,7 @@
                         android:id="@+id/btn_add_envelope"
                         android:layout_width="match_parent"
                         android:layout_height="48dp"
-                        android:layout_marginTop="16dp"
+                        android:layout_marginTop="@dimen/spacing_grouped"
                         android:text="Add Envelope"
                         android:textStyle="bold"
                          />
@@ -104,7 +104,7 @@
                 android:id="@+id/tv_all_envelopes_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
+                android:layout_marginTop="@dimen/spacing_large"
                 android:text="Envelope Pool"
                 android:textColor="@color/text_primary"
                 android:textSize="16sp"

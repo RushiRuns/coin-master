@@ -38,14 +38,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="16dp">
+            android:padding="@dimen/spacing_screen_edge">
 
             <!-- Net Worth Card (Hero Card) -->
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/card_net_worth"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
+                android:layout_marginBottom="@dimen/spacing_grouped"
                 app:cardCornerRadius="@dimen/shape_extra_large"
                 app:cardElevation="0dp"
                 app:strokeWidth="0dp">
@@ -84,7 +84,7 @@
                 android:id="@+id/card_debts"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
+                android:layout_marginBottom="@dimen/spacing_grouped"
                 android:clickable="true"
                 android:focusable="true"
                 app:cardCornerRadius="@dimen/shape_large"
@@ -96,7 +96,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:padding="16dp">
+                    android:padding="@dimen/spacing_screen_edge">
 
                     <TextView
                         android:layout_width="match_parent"
@@ -184,7 +184,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_marginBottom="16dp"
+                android:layout_marginBottom="@dimen/spacing_grouped"
                 android:clipToPadding="false"
                 android:paddingStart="4dp"
                 android:paddingEnd="4dp"
@@ -196,7 +196,7 @@
                 android:id="@+id/card_budget_health"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
+                android:layout_marginBottom="@dimen/spacing_grouped"
                 app:cardCornerRadius="@dimen/shape_large"
                 app:cardElevation="1dp"
                 app:strokeWidth="1dp"
@@ -206,7 +206,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:padding="16dp">
+                    android:padding="@dimen/spacing_screen_edge">
 
                     <TextView
                         android:layout_width="match_parent"
@@ -230,7 +230,7 @@
                         android:id="@+id/pb_budget_health"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp"
+                        android:layout_marginTop="@dimen/spacing_grouped"
                         app:trackThickness="8dp"
                         app:trackCornerRadius="4dp"
                         android:max="100"
@@ -245,7 +245,7 @@
                 android:id="@+id/card_breakdown_needs_wants"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
+                android:layout_marginBottom="@dimen/spacing_grouped"
                 app:cardCornerRadius="@dimen/shape_large"
                 app:cardElevation="1dp"
                 app:strokeWidth="1dp"
@@ -255,7 +255,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:padding="16dp">
+                    android:padding="@dimen/spacing_screen_edge">
 
                     <TextView
                         android:layout_width="match_parent"
@@ -279,7 +279,7 @@
                 android:id="@+id/card_breakdown_expense_type"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
+                android:layout_marginBottom="@dimen/spacing_grouped"
                 app:cardCornerRadius="@dimen/shape_large"
                 app:cardElevation="1dp"
                 app:strokeWidth="1dp"
@@ -289,7 +289,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:padding="16dp">
+                    android:padding="@dimen/spacing_screen_edge">
 
                     <TextView
                         android:layout_width="match_parent"
@@ -313,7 +313,7 @@
                 android:id="@+id/card_breakdown"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
+                android:layout_marginBottom="@dimen/spacing_grouped"
                 app:cardCornerRadius="@dimen/shape_large"
                 app:cardElevation="1dp"
                 app:strokeWidth="1dp"
@@ -323,7 +323,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:padding="16dp">
+                    android:padding="@dimen/spacing_screen_edge">
 
                     <TextView
                         android:layout_width="match_parent"
@@ -345,7 +345,7 @@
                         android:id="@+id/card_category_detail"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp"
+                        android:layout_marginTop="@dimen/spacing_grouped"
                         app:cardCornerRadius="@dimen/shape_large"
                         app:cardBackgroundColor="@color/surface"
                         app:strokeWidth="1dp"
@@ -356,7 +356,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center"
-                            android:padding="12dp"
+                            android:padding="@dimen/spacing_list_item"
                             android:text="@string/text_chart_placeholder"
                             android:textColor="@color/text_secondary"
                             android:textSize="12sp"

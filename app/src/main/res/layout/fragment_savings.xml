@@ -36,7 +36,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="16dp"
+            android:padding="@dimen/spacing_screen_edge"
             android:paddingBottom="88dp">
 
             <!-- Savings Status Card (ZBB display at the top) -->
@@ -54,7 +54,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:padding="16dp">
+                    android:padding="@dimen/spacing_screen_edge">
 
                     <TextView
                         android:id="@+id/tv_total_savings_target"
@@ -87,7 +87,7 @@
                     <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp">
+                        android:layout_marginTop="@dimen/spacing_grouped">
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -125,7 +125,7 @@
                 android:id="@+id/tv_envelopes_header"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
+                android:layout_marginTop="@dimen/spacing_large"
                 android:text="Savings Envelopes"
                 android:textColor="@color/text_primary"
                 android:textSize="16sp"
@@ -154,7 +154,7 @@
                         android:id="@+id/tv_empty_savings"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:padding="16dp"
+                        android:padding="@dimen/spacing_screen_edge"
                         android:gravity="center"
                         android:text="No savings envelopes allocated. Click below to add an envelope."
                         android:textColor="@color/text_secondary"

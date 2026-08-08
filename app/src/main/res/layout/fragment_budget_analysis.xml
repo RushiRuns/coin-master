@@ -44,7 +44,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="@dimen/spacing_grouped"
                 app:cardCornerRadius="@dimen/shape_large"
                 app:cardElevation="1dp"
                 app:strokeWidth="1dp"
@@ -54,7 +54,7 @@
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="16dp">
+                    android:padding="@dimen/spacing_screen_edge">
 
                     <LinearLayout
                         android:layout_width="0dp"
@@ -113,7 +113,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:gravity="center"
-                android:padding="16dp"
+                android:padding="@dimen/spacing_screen_edge"
                 app:layout_constraintTop_toBottomOf="@id/card_total_budget">
 
                 <ImageButton

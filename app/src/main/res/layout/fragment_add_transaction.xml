@@ -36,7 +36,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="16dp">
+            android:padding="@dimen/spacing_screen_edge">
 
             <!-- Amount Input -->
             <com.google.android.material.textfield.TextInputLayout
@@ -63,7 +63,7 @@
                 app:boxBackgroundMode="filled" app:boxBackgroundColor="@color/color_surface_variant" app:boxCornerRadiusTopStart="@dimen/shape_medium" app:boxCornerRadiusTopEnd="@dimen/shape_medium" app:boxCornerRadiusBottomStart="@dimen/shape_medium" app:boxCornerRadiusBottomEnd="@dimen/shape_medium" app:boxStrokeWidth="0dp" app:boxStrokeWidthFocused="0dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="@dimen/spacing_grouped"
                 android:hint="@string/hint_transaction_type"
                 app:layout_constraintTop_toBottomOf="@id/til_amount">
 
@@ -72,7 +72,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="none"
-                    android:textColor="@color/text_primary" />
+                    android:textColor="@color/text_primary" 
+                    android:paddingTop="28dp"
+                    android:paddingBottom="12dp"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <!-- Source Account Dropdown -->
@@ -81,7 +85,7 @@
                 app:boxBackgroundMode="filled" app:boxBackgroundColor="@color/color_surface_variant" app:boxCornerRadiusTopStart="@dimen/shape_medium" app:boxCornerRadiusTopEnd="@dimen/shape_medium" app:boxCornerRadiusBottomStart="@dimen/shape_medium" app:boxCornerRadiusBottomEnd="@dimen/shape_medium" app:boxStrokeWidth="0dp" app:boxStrokeWidthFocused="0dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="@dimen/spacing_grouped"
                 android:hint="@string/hint_source_account"
                 app:layout_constraintTop_toBottomOf="@id/til_type">
 
@@ -90,7 +94,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="none"
-                    android:textColor="@color/text_primary" />
+                    android:textColor="@color/text_primary" 
+                    android:paddingTop="28dp"
+                    android:paddingBottom="12dp"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <!-- Destination Account Dropdown (Visible only for Transfer) -->
@@ -99,7 +107,7 @@
                 app:boxBackgroundMode="filled" app:boxBackgroundColor="@color/color_surface_variant" app:boxCornerRadiusTopStart="@dimen/shape_medium" app:boxCornerRadiusTopEnd="@dimen/shape_medium" app:boxCornerRadiusBottomStart="@dimen/shape_medium" app:boxCornerRadiusBottomEnd="@dimen/shape_medium" app:boxStrokeWidth="0dp" app:boxStrokeWidthFocused="0dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="@dimen/spacing_grouped"
                 android:hint="@string/hint_destination_account"
                 android:visibility="gone"
                 app:layout_constraintTop_toBottomOf="@id/til_account">
@@ -109,7 +117,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="none"
-                    android:textColor="@color/text_primary" />
+                    android:textColor="@color/text_primary" 
+                    android:paddingTop="28dp"
+                    android:paddingBottom="12dp"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <!-- Category Dropdown (Visible only for Expense) -->
@@ -118,7 +130,7 @@
                 app:boxBackgroundMode="filled" app:boxBackgroundColor="@color/color_surface_variant" app:boxCornerRadiusTopStart="@dimen/shape_medium" app:boxCornerRadiusTopEnd="@dimen/shape_medium" app:boxCornerRadiusBottomStart="@dimen/shape_medium" app:boxCornerRadiusBottomEnd="@dimen/shape_medium" app:boxStrokeWidth="0dp" app:boxStrokeWidthFocused="0dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="@dimen/spacing_grouped"
                 android:hint="@string/hint_category_envelope"
                 android:visibility="visible"
                 app:layout_constraintTop_toBottomOf="@id/til_transfer_to_account">
@@ -128,8 +140,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="text"
-                    android:padding="16dp"
-                    android:textColor="@color/text_primary" />
+                    android:textColor="@color/text_primary" 
+                    android:paddingTop="28dp"
+                    android:paddingBottom="12dp"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <!-- Recipient Dropdown (Visible only for External Transfer) -->
@@ -138,7 +153,7 @@
                 app:boxBackgroundMode="filled" app:boxBackgroundColor="@color/color_surface_variant" app:boxCornerRadiusTopStart="@dimen/shape_medium" app:boxCornerRadiusTopEnd="@dimen/shape_medium" app:boxCornerRadiusBottomStart="@dimen/shape_medium" app:boxCornerRadiusBottomEnd="@dimen/shape_medium" app:boxStrokeWidth="0dp" app:boxStrokeWidthFocused="0dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="@dimen/spacing_grouped"
                 android:hint="Recipient"
                 android:visibility="gone"
                 app:layout_constraintTop_toBottomOf="@id/til_category">
@@ -148,7 +163,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="none"
-                    android:textColor="@color/text_primary" />
+                    android:textColor="@color/text_primary" 
+                    android:paddingTop="28dp"
+                    android:paddingBottom="12dp"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <!-- Date Picker Field -->
@@ -157,7 +176,7 @@
                 app:boxBackgroundMode="filled" app:boxBackgroundColor="@color/color_surface_variant" app:boxCornerRadiusTopStart="@dimen/shape_medium" app:boxCornerRadiusTopEnd="@dimen/shape_medium" app:boxCornerRadiusBottomStart="@dimen/shape_medium" app:boxCornerRadiusBottomEnd="@dimen/shape_medium" app:boxStrokeWidth="0dp" app:boxStrokeWidthFocused="0dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="@dimen/spacing_grouped"
                 android:hint="@string/label_date"
                 app:layout_constraintTop_toBottomOf="@id/til_recipient">
 
@@ -178,7 +197,7 @@
                 app:boxBackgroundMode="filled" app:boxBackgroundColor="@color/color_surface_variant" app:boxCornerRadiusTopStart="@dimen/shape_medium" app:boxCornerRadiusTopEnd="@dimen/shape_medium" app:boxCornerRadiusBottomStart="@dimen/shape_medium" app:boxCornerRadiusBottomEnd="@dimen/shape_medium" app:boxStrokeWidth="0dp" app:boxStrokeWidthFocused="0dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="@dimen/spacing_grouped"
                 android:hint="@string/label_note"
                 app:layout_constraintTop_toBottomOf="@id/til_date">
 
@@ -195,7 +214,7 @@
                 android:id="@+id/btn_save"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
-                android:layout_marginTop="24dp"
+                android:layout_marginTop="@dimen/spacing_large"
                 android:text="@string/btn_save_transaction"
                 android:textSize="14sp"
                 android:textStyle="bold"

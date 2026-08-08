@@ -24,7 +24,7 @@
             android:textColor="@color/primary"
             android:textSize="18sp"
             android:textStyle="bold"
-            android:layout_marginBottom="16dp" />
+            android:layout_marginBottom="@dimen/spacing_grouped" />
 
         <!-- Amount Input -->
         <com.google.android.material.textfield.TextInputLayout
@@ -59,7 +59,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="none"
-                android:textColor="@color/text_primary" />
+                android:textColor="@color/text_primary" 
+                    android:paddingTop="28dp"
+                    android:paddingBottom="12dp"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp"/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <!-- Category Selector -->
@@ -76,7 +80,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="none"
-                android:textColor="@color/text_primary" />
+                android:textColor="@color/text_primary" 
+                    android:paddingTop="28dp"
+                    android:paddingBottom="12dp"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp"/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <!-- Note Input -->
@@ -85,7 +93,7 @@
             app:boxBackgroundMode="filled" app:boxBackgroundColor="@color/color_surface_variant" app:boxCornerRadiusTopStart="@dimen/shape_medium" app:boxCornerRadiusTopEnd="@dimen/shape_medium" app:boxCornerRadiusBottomStart="@dimen/shape_medium" app:boxCornerRadiusBottomEnd="@dimen/shape_medium" app:boxStrokeWidth="0dp" app:boxStrokeWidthFocused="0dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
+            android:layout_marginBottom="@dimen/spacing_grouped"
             android:hint="@string/label_note">
 
             <com.google.android.material.textfield.TextInputEditText

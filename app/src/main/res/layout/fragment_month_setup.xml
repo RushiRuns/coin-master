@@ -36,7 +36,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="16dp">
+            android:padding="@dimen/spacing_screen_edge">
 
             <!-- Select Date Range Card -->
             <com.google.android.material.card.MaterialCardView
@@ -53,7 +53,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:padding="16dp">
+                    android:padding="@dimen/spacing_screen_edge">
 
                     <!-- Start Date Row -->
                     <LinearLayout
@@ -131,7 +131,7 @@
                 app:boxBackgroundMode="filled" app:boxBackgroundColor="@color/color_surface_variant" app:boxCornerRadiusTopStart="@dimen/shape_medium" app:boxCornerRadiusTopEnd="@dimen/shape_medium" app:boxCornerRadiusBottomStart="@dimen/shape_medium" app:boxCornerRadiusBottomEnd="@dimen/shape_medium" app:boxStrokeWidth="0dp" app:boxStrokeWidthFocused="0dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="@dimen/spacing_grouped"
                 android:hint="@string/hint_monthly_income_rupees"
                 app:helperText="Calculated from your active Income Streams. Tap to manage streams."
                 app:helperTextTextColor="@color/primary"
@@ -153,7 +153,7 @@
                 android:id="@+id/tv_split_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
+                android:layout_marginTop="@dimen/spacing_large"
                 android:text="@string/label_bucket_split_percentages"
                 android:textColor="@color/text_primary"
                 android:textSize="16sp"
@@ -245,7 +245,7 @@
                 android:id="@+id/tv_computed_split_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
+                android:layout_marginTop="@dimen/spacing_large"
                 android:text="@string/label_split_target_calculations"
                 android:textColor="@color/text_primary"
                 android:textSize="16sp"
@@ -274,7 +274,7 @@
                     <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:padding="12dp">
+                        android:padding="@dimen/spacing_list_item">
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -308,7 +308,7 @@
                     <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:padding="12dp">
+                        android:padding="@dimen/spacing_list_item">
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -341,7 +341,7 @@
                     <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:padding="12dp">
+                        android:padding="@dimen/spacing_list_item">
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -368,7 +368,7 @@
                 android:id="@+id/btn_save_setup"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
-                android:layout_marginTop="24dp"
+                android:layout_marginTop="@dimen/spacing_large"
                 android:text="@string/btn_save_setup"
                 android:textSize="14sp"
                 android:textStyle="bold"

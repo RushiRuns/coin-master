@@ -35,7 +35,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="16dp"
+            android:padding="@dimen/spacing_screen_edge"
             android:paddingBottom="80dp">
 
             <!-- Total Income Summary Card -->
@@ -43,7 +43,7 @@
                 android:id="@+id/card_total_income"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
+                android:layout_marginBottom="@dimen/spacing_grouped"
                 app:cardCornerRadius="@dimen/shape_large"
                 app:cardElevation="2dp"
                 app:cardBackgroundColor="@color/primary"
@@ -53,7 +53,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:padding="16dp">
+                    android:padding="@dimen/spacing_screen_edge">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -93,7 +93,7 @@
                 android:id="@+id/card_add_form"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
+                android:layout_marginBottom="@dimen/spacing_grouped"
                 app:cardCornerRadius="@dimen/shape_large"
                 app:cardElevation="1dp"
                 app:strokeWidth="1dp"
@@ -103,7 +103,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:padding="16dp">
+                    android:padding="@dimen/spacing_screen_edge">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -168,7 +168,11 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:inputType="none"
-                            android:textColor="@color/text_primary" />
+                            android:textColor="@color/text_primary" 
+                    android:paddingTop="28dp"
+                    android:paddingBottom="12dp"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp"/>
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <Button app:backgroundTint="@null" android:background="@drawable/bg_primary_button" 
