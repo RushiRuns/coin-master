@@ -54,7 +54,7 @@
             android:gravity="center"
             android:text="No notes found. Tap '+' to create your first note!"
             android:textColor="@color/text_secondary"
-            android:textSize="16sp"
+            android:textAppearance="@style/TextAppearance.Clarity.Callout"
             android:visibility="gone"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"

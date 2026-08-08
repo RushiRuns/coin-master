@@ -13,7 +13,7 @@
         android:text="Repayment Amount"
         android:textStyle="bold"
         android:textColor="@color/text_primary"
-        android:textSize="14sp" />
+        android:textAppearance="@style/TextAppearance.Clarity.Footnote" />
 
     <com.google.android.material.textfield.TextInputLayout
         app:boxBackgroundMode="filled" app:boxBackgroundColor="@color/color_surface_variant" app:boxCornerRadiusTopStart="@dimen/shape_medium" app:boxCornerRadiusTopEnd="@dimen/shape_medium" app:boxCornerRadiusBottomStart="@dimen/shape_medium" app:boxCornerRadiusBottomEnd="@dimen/shape_medium" app:boxStrokeWidth="0dp" app:boxStrokeWidthFocused="0dp"
@@ -39,7 +39,7 @@
         android:text="Select Account"
         android:textStyle="bold"
         android:textColor="@color/text_primary"
-        android:textSize="14sp" />
+        android:textAppearance="@style/TextAppearance.Clarity.Footnote" />
 
     <com.google.android.material.textfield.TextInputLayout
         app:boxBackgroundMode="filled" app:boxBackgroundColor="@color/color_surface_variant" app:boxCornerRadiusTopStart="@dimen/shape_medium" app:boxCornerRadiusTopEnd="@dimen/shape_medium" app:boxCornerRadiusBottomStart="@dimen/shape_medium" app:boxCornerRadiusBottomEnd="@dimen/shape_medium" app:boxStrokeWidth="0dp" app:boxStrokeWidthFocused="0dp"
@@ -68,7 +68,7 @@
         android:text="Note"
         android:textStyle="bold"
         android:textColor="@color/text_primary"
-        android:textSize="14sp" />
+        android:textAppearance="@style/TextAppearance.Clarity.Footnote" />
 
     <com.google.android.material.textfield.TextInputLayout
         app:boxBackgroundMode="filled" app:boxBackgroundColor="@color/color_surface_variant" app:boxCornerRadiusTopStart="@dimen/shape_medium" app:boxCornerRadiusTopEnd="@dimen/shape_medium" app:boxCornerRadiusBottomStart="@dimen/shape_medium" app:boxCornerRadiusBottomEnd="@dimen/shape_medium" app:boxStrokeWidth="0dp" app:boxStrokeWidthFocused="0dp"

@@ -70,7 +70,7 @@
                             android:layout_height="wrap_content"
                             android:text="Total Budgeted"
                             android:textColor="@color/text_secondary"
-                            android:textSize="14sp"
+                            android:textAppearance="@style/TextAppearance.Clarity.Footnote"
                             android:textAllCaps="true"
                             android:textStyle="bold"
                             android:letterSpacing="0.05" />
@@ -81,8 +81,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="4dp"
                             android:textColor="@color/text_primary"
-                            android:textSize="20sp"
-                            android:textStyle="bold"
+                            android:textAppearance="@style/TextAppearance.Clarity.Title3"
                             tools:text="₹0.00 / ₹0.00" />
 
                         <TextView
@@ -91,7 +90,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="4dp"
                             android:textColor="@color/text_secondary"
-                            android:textSize="12sp"
+                            android:textAppearance="@style/TextAppearance.Clarity.Caption1"
                             tools:text="March 2026" />
                     </LinearLayout>
 
@@ -132,8 +131,7 @@
                     android:layout_weight="1"
                     android:gravity="center"
                     android:textColor="@color/text_primary"
-                    android:textSize="20sp"
-                    android:textStyle="bold"
+                    android:textAppearance="@style/TextAppearance.Clarity.Title3"
                     tools:text="June 2026" />
 
                 <ImageButton
@@ -155,7 +153,7 @@
                 android:gravity="center"
                 android:text="Set up a budget to see your analysis"
                 android:textColor="@color/text_secondary"
-                android:textSize="16sp"
+                android:textAppearance="@style/TextAppearance.Clarity.Callout"
                 android:visibility="gone"
                 app:layout_constraintTop_toBottomOf="@id/layout_month_switcher" />
 

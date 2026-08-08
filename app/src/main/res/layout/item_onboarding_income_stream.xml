@@ -26,7 +26,7 @@
                 android:id="@+id/tv_stream_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="16sp"
+                android:textAppearance="@style/TextAppearance.Clarity.Callout"
                 android:textStyle="bold"
                 android:textColor="@color/text_primary" />
 
@@ -35,7 +35,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="2dp"
-                android:textSize="14sp"
+                android:textAppearance="@style/TextAppearance.Clarity.Footnote"
                 android:textColor="@color/text_secondary" />
 
             <TextView
@@ -43,7 +43,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="2dp"
-                android:textSize="12sp"
+                android:textAppearance="@style/TextAppearance.Clarity.Caption1"
                 android:textColor="@color/primary"
                 android:visibility="gone" />
         </LinearLayout>

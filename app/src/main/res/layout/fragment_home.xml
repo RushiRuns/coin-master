@@ -126,7 +126,7 @@
                                 android:layout_height="wrap_content"
                                 android:text="Owed to You"
                                 android:textColor="@color/text_secondary"
-                                android:textSize="12sp" />
+                                android:textAppearance="@style/TextAppearance.Clarity.Caption1" />
 
                             <TextView
                                 android:id="@+id/tv_owed_to_you"
@@ -135,7 +135,7 @@
                                 android:layout_marginTop="4dp"
                                 android:text="₹ 0.00"
                                 android:textColor="@color/color_positive"
-                                android:textSize="18sp"
+                                android:textAppearance="@style/TextAppearance.Clarity.Body"
                                 android:textStyle="bold" />
                         </LinearLayout>
 
@@ -150,7 +150,7 @@
                                 android:layout_height="wrap_content"
                                 android:text="You Owe"
                                 android:textColor="@color/text_secondary"
-                                android:textSize="12sp" />
+                                android:textAppearance="@style/TextAppearance.Clarity.Caption1" />
 
                             <TextView
                                 android:id="@+id/tv_you_owe"
@@ -159,7 +159,7 @@
                                 android:layout_marginTop="4dp"
                                 android:text="₹ 0.00"
                                 android:textColor="@color/color_negative"
-                                android:textSize="18sp"
+                                android:textAppearance="@style/TextAppearance.Clarity.Body"
                                 android:textStyle="bold" />
                         </LinearLayout>
                     </LinearLayout>
@@ -213,7 +213,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/label_budget_health"
                         android:textColor="@color/text_primary"
-                        android:textSize="16sp"
+                        android:textAppearance="@style/TextAppearance.Clarity.Callout"
                         android:textStyle="bold" />
 
                     <TextView
@@ -223,7 +223,7 @@
                         android:layout_marginTop="4dp"
                         android:text="@string/placeholder_budget_health_summary"
                         android:textColor="@color/text_secondary"
-                        android:textSize="12sp" />
+                        android:textAppearance="@style/TextAppearance.Clarity.Caption1" />
 
                     <!-- Linear Progress Indicator (MD2 Spec) -->
                     <com.google.android.material.progressindicator.LinearProgressIndicator
@@ -262,7 +262,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/label_needs_wants_breakdown"
                         android:textColor="@color/text_primary"
-                        android:textSize="16sp"
+                        android:textAppearance="@style/TextAppearance.Clarity.Callout"
                         android:textStyle="bold" />
 
                     <com.github.mikephil.charting.charts.PieChart
@@ -296,7 +296,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/label_expense_type_breakdown"
                         android:textColor="@color/text_primary"
-                        android:textSize="16sp"
+                        android:textAppearance="@style/TextAppearance.Clarity.Callout"
                         android:textStyle="bold" />
 
                     <com.github.mikephil.charting.charts.PieChart
@@ -330,7 +330,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/label_category_breakdown"
                         android:textColor="@color/text_primary"
-                        android:textSize="16sp"
+                        android:textAppearance="@style/TextAppearance.Clarity.Callout"
                         android:textStyle="bold" />
 
                     <!-- MPAndroidChart PieChart -->
@@ -359,7 +359,7 @@
                             android:padding="@dimen/spacing_list_item"
                             android:text="@string/text_chart_placeholder"
                             android:textColor="@color/text_secondary"
-                            android:textSize="12sp"
+                            android:textAppearance="@style/TextAppearance.Clarity.Caption1"
                             android:textStyle="italic" />
 
                     </com.google.android.material.card.MaterialCardView>

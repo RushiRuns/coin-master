@@ -8,6 +8,7 @@
 
     <style name="TextAppearance.Clarity.Display">
         <item name="android:textSize">52sp</item>
+        <item name="android:lineHeight">60sp</item>
         <item name="android:textStyle">bold</item>
         <item name="fontFamily">@font/inter_bold</item>
         <item name="android:letterSpacing">-0.022</item>
@@ -15,6 +16,7 @@
 
     <style name="TextAppearance.Clarity.LargeTitle">
         <item name="android:textSize">34sp</item>
+        <item name="android:lineHeight">42sp</item>
         <item name="android:textStyle">bold</item>
         <item name="fontFamily">@font/inter_bold</item>
         <item name="android:letterSpacing">-0.022</item>
@@ -22,6 +24,7 @@
 
     <style name="TextAppearance.Clarity.Title1">
         <item name="android:textSize">28sp</item>
+        <item name="android:lineHeight">34sp</item>
         <item name="android:textStyle">bold</item>
         <item name="fontFamily">@font/inter_bold</item>
         <item name="android:letterSpacing">-0.022</item>
@@ -29,6 +32,7 @@
 
     <style name="TextAppearance.Clarity.Title2">
         <item name="android:textSize">22sp</item>
+        <item name="android:lineHeight">28sp</item>
         <item name="android:textStyle">bold</item>
         <item name="fontFamily">@font/inter_bold</item>
         <item name="android:letterSpacing">-0.022</item>
@@ -36,48 +40,56 @@
 
     <style name="TextAppearance.Clarity.Title3">
         <item name="android:textSize">20sp</item>
+        <item name="android:lineHeight">26sp</item>
         <item name="fontFamily">@font/inter_semibold</item>
         <item name="android:letterSpacing">-0.022</item>
     </style>
 
     <style name="TextAppearance.Clarity.Headline">
         <item name="android:textSize">17sp</item>
+        <item name="android:lineHeight">24sp</item>
         <item name="fontFamily">@font/inter_semibold</item>
         <item name="android:letterSpacing">-0.022</item>
     </style>
 
     <style name="TextAppearance.Clarity.Body">
         <item name="android:textSize">17sp</item>
+        <item name="android:lineHeight">24sp</item>
         <item name="fontFamily">@font/inter_regular</item>
         <item name="android:letterSpacing">-0.022</item>
     </style>
 
     <style name="TextAppearance.Clarity.Callout">
         <item name="android:textSize">16sp</item>
+        <item name="android:lineHeight">22sp</item>
         <item name="fontFamily">@font/inter_regular</item>
         <item name="android:letterSpacing">-0.011</item>
     </style>
 
     <style name="TextAppearance.Clarity.Subheadline">
         <item name="android:textSize">15sp</item>
+        <item name="android:lineHeight">20sp</item>
         <item name="fontFamily">@font/inter_regular</item>
         <item name="android:letterSpacing">-0.011</item>
     </style>
 
     <style name="TextAppearance.Clarity.Footnote">
         <item name="android:textSize">13sp</item>
+        <item name="android:lineHeight">18sp</item>
         <item name="fontFamily">@font/inter_regular</item>
         <item name="android:letterSpacing">0.000</item>
     </style>
 
     <style name="TextAppearance.Clarity.Caption1">
         <item name="android:textSize">12sp</item>
+        <item name="android:lineHeight">16sp</item>
         <item name="fontFamily">@font/inter_regular</item>
         <item name="android:letterSpacing">0.011</item>
     </style>
 
     <style name="TextAppearance.Clarity.Caption2">
         <item name="android:textSize">11sp</item>
+        <item name="android:lineHeight">14sp</item>
         <item name="fontFamily">@font/inter_regular</item>
         <item name="android:letterSpacing">0.022</item>
     </style>
@@ -85,6 +97,7 @@
     <!-- Financial Amount Typography -->
     <style name="TextAppearance.Clarity.AmountHero">
         <item name="android:textSize">52sp</item>
+        <item name="android:lineHeight">60sp</item>
         <item name="android:textStyle">bold</item>
         <item name="fontFamily">@font/inter_bold</item>
         <item name="android:fontFeatureSettings">tnum</item>
@@ -92,28 +105,33 @@
 
     <style name="TextAppearance.Clarity.AmountLarge">
         <item name="android:textSize">34sp</item>
+        <item name="android:lineHeight">42sp</item>
         <item name="fontFamily">@font/inter_semibold</item>
         <item name="android:fontFeatureSettings">tnum</item>
     </style>
 
     <style name="TextAppearance.Clarity.AmountStandard">
         <item name="android:textSize">22sp</item>
+        <item name="android:lineHeight">28sp</item>
         <item name="fontFamily">@font/inter_semibold</item>
         <item name="android:fontFeatureSettings">tnum</item>
     </style>
 
     <style name="TextAppearance.Clarity.AmountList">
         <item name="android:textSize">17sp</item>
+        <item name="android:lineHeight">24sp</item>
         <item name="fontFamily">@font/jetbrains_mono_medium</item>
     </style>
 
     <style name="TextAppearance.Clarity.AmountSmall">
         <item name="android:textSize">15sp</item>
+        <item name="android:lineHeight">20sp</item>
         <item name="fontFamily">@font/jetbrains_mono_medium</item>
     </style>
 
     <style name="TextAppearance.Clarity.AmountCaption">
         <item name="android:textSize">13sp</item>
+        <item name="android:lineHeight">18sp</item>
         <item name="fontFamily">@font/jetbrains_mono_regular</item>
     </style>
 

@@ -30,8 +30,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/title_customize_envelope"
                 android:textColor="@color/text_primary"
-                android:textSize="20sp"
-                android:textStyle="bold" />
+                android:textAppearance="@style/TextAppearance.Clarity.Title3" />
         </com.google.android.material.appbar.MaterialToolbar>
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -132,7 +131,7 @@
                     android:layout_marginTop="@dimen/spacing_grouped"
                     android:text="@string/label_select_color"
                     android:textColor="@color/text_primary"
-                    android:textSize="16sp"
+                    android:textAppearance="@style/TextAppearance.Clarity.Callout"
                     android:textStyle="bold" />
 
                 <!-- Simple Grid of Color Presets -->
@@ -219,7 +218,7 @@
                     android:layout_marginTop="@dimen/spacing_grouped"
                     android:text="@string/label_select_icon"
                     android:textColor="@color/text_primary"
-                    android:textSize="16sp"
+                    android:textAppearance="@style/TextAppearance.Clarity.Callout"
                     android:textStyle="bold" />
 
                 <!-- Simple Grid of Icon Presets -->
@@ -418,7 +417,7 @@
                 android:layout_height="48dp"
                 android:layout_marginTop="@dimen/spacing_large"
                 android:text="@string/btn_save_envelope"
-                android:textSize="14sp"
+                android:textAppearance="@style/TextAppearance.Clarity.Footnote"
                 android:textStyle="bold"
                 app:layout_constraintTop_toBottomOf="@id/layout_advanced_icon_color" />
 

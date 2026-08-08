@@ -85,7 +85,7 @@
                     android:layout_weight="1"
                     android:layout_marginStart="8dp"
                     android:textColor="@color/primary"
-                    android:textSize="14sp"
+                    android:textAppearance="@style/TextAppearance.Clarity.Footnote"
                     android:textStyle="bold"
                     tools:text="Filtered: Groceries" />
 
@@ -147,7 +147,7 @@
                 android:layout_centerVertical="true"
                 android:text="Activity Date:"
                 android:textColor="@color/text_secondary"
-                android:textSize="14sp" />
+                android:textAppearance="@style/TextAppearance.Clarity.Footnote" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_select_date"
@@ -157,7 +157,7 @@
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
                 android:textColor="@color/primary"
-                android:textSize="14sp"
+                android:textAppearance="@style/TextAppearance.Clarity.Footnote"
                 app:icon="@drawable/ic_calendar"
                 app:iconTint="@color/primary"
                 app:iconPadding="4dp"
@@ -195,7 +195,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/label_today"
                         android:textColor="@color/text_secondary"
-                        android:textSize="11sp"
+                        android:textAppearance="@style/TextAppearance.Clarity.Caption2"
                         android:textAllCaps="true"
                         android:textStyle="bold"
                         android:letterSpacing="0.05" />
@@ -206,7 +206,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
                         android:textColor="@color/color_negative"
-                        android:textSize="14sp"
+                        android:textAppearance="@style/TextAppearance.Clarity.Footnote"
                         android:textStyle="bold"
                         tools:text="₹0" />
                 </LinearLayout>
@@ -231,7 +231,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/label_this_week"
                         android:textColor="@color/text_secondary"
-                        android:textSize="11sp"
+                        android:textAppearance="@style/TextAppearance.Clarity.Caption2"
                         android:textAllCaps="true"
                         android:textStyle="bold"
                         android:letterSpacing="0.05" />
@@ -242,7 +242,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
                         android:textColor="@color/color_negative"
-                        android:textSize="14sp"
+                        android:textAppearance="@style/TextAppearance.Clarity.Footnote"
                         android:textStyle="bold"
                         tools:text="₹0" />
                 </LinearLayout>
@@ -267,7 +267,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/label_this_month"
                         android:textColor="@color/text_secondary"
-                        android:textSize="11sp"
+                        android:textAppearance="@style/TextAppearance.Clarity.Caption2"
                         android:textAllCaps="true"
                         android:textStyle="bold"
                         android:letterSpacing="0.05" />
@@ -278,7 +278,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
                         android:textColor="@color/color_negative"
-                        android:textSize="14sp"
+                        android:textAppearance="@style/TextAppearance.Clarity.Footnote"
                         android:textStyle="bold"
                         tools:text="₹0" />
                 </LinearLayout>
@@ -301,7 +301,7 @@
             android:gravity="center"
             android:text="No transactions found."
             android:textColor="@color/text_secondary"
-            android:textSize="16sp"
+            android:textAppearance="@style/TextAppearance.Clarity.Callout"
             android:visibility="gone" />
     </LinearLayout>
 

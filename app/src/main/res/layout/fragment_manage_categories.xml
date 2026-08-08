@@ -41,7 +41,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="Group your budgeting envelopes under parent categories (e.g., Housing, Food)."
-                android:textSize="14sp"
+                android:textAppearance="@style/TextAppearance.Clarity.Footnote"
                 android:textColor="@color/text_secondary"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -71,7 +71,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Create Category"
-                        android:textSize="16sp"
+                        android:textAppearance="@style/TextAppearance.Clarity.Callout"
                         android:textStyle="bold"
                         android:textColor="@color/text_primary" />
 
@@ -97,7 +97,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="12dp"
                         android:text="Select Presets (Color &amp; Icon)"
-                        android:textSize="14sp"
+                        android:textAppearance="@style/TextAppearance.Clarity.Footnote"
                         android:textColor="@color/text_secondary" />
 
                     <LinearLayout
@@ -150,7 +150,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/spacing_grouped"
                 android:text="Existing Categories"
-                android:textSize="16sp"
+                android:textAppearance="@style/TextAppearance.Clarity.Callout"
                 android:textStyle="bold"
                 android:textColor="@color/text_primary"
                 app:layout_constraintTop_toBottomOf="@id/card_form"

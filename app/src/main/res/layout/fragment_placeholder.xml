@@ -9,6 +9,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:text="Coin Master Initialized"
-        android:textSize="20sp" />
+        android:textAppearance="@style/TextAppearance.Clarity.Title3" />
 
 </FrameLayout>

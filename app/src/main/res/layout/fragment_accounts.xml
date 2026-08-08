@@ -56,7 +56,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/label_net_worth_short"
                     android:textColor="@color/white"
-                    android:textSize="12sp"
+                    android:textAppearance="@style/TextAppearance.Clarity.Caption1"
                     android:alpha="0.8" />
 
                 <TextView
@@ -66,8 +66,8 @@
                     android:layout_marginTop="4dp"
                     android:text="₹ 0.00"
                     android:textColor="@color/white"
-                    android:textSize="34sp"
-                    android:textStyle="bold" />
+                    android:textAppearance="@style/TextAppearance.Clarity.LargeTitle"
+                     />
 
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>

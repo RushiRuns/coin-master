@@ -72,7 +72,7 @@
                     android:layout_height="wrap_content"
                     android:text="Owed to You (Lent)"
                     android:textColor="@color/text_secondary"
-                    android:textSize="12sp" />
+                    android:textAppearance="@style/TextAppearance.Clarity.Caption1" />
 
                 <TextView
                     android:id="@+id/tv_total_lent"
@@ -81,7 +81,7 @@
                     android:layout_marginTop="4dp"
                     android:text="₹ 0.00"
                     android:textColor="@color/color_positive"
-                    android:textSize="18sp"
+                    android:textAppearance="@style/TextAppearance.Clarity.Body"
                     android:textStyle="bold" />
             </LinearLayout>
 
@@ -102,7 +102,7 @@
                     android:layout_height="wrap_content"
                     android:text="You Owe (Borrowed)"
                     android:textColor="@color/text_secondary"
-                    android:textSize="12sp" />
+                    android:textAppearance="@style/TextAppearance.Clarity.Caption1" />
 
                 <TextView
                     android:id="@+id/tv_total_borrowed"
@@ -111,7 +111,7 @@
                     android:layout_marginTop="4dp"
                     android:text="₹ 0.00"
                     android:textColor="@color/color_negative"
-                    android:textSize="18sp"
+                    android:textAppearance="@style/TextAppearance.Clarity.Body"
                     android:textStyle="bold" />
             </LinearLayout>
         </LinearLayout>
@@ -132,7 +132,7 @@
         android:layout_gravity="center"
         android:text="No debts or loans tracked yet."
         android:textColor="@color/text_secondary"
-        android:textSize="16sp"
+        android:textAppearance="@style/TextAppearance.Clarity.Callout"
         android:visibility="gone" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton

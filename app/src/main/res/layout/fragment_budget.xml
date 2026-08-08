@@ -64,8 +64,7 @@
                     android:gravity="center"
                     android:text="@string/placeholder_june_2026"
                     android:textColor="@color/text_primary"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
+                    android:textAppearance="@style/TextAppearance.Clarity.Title3" />
 
                 <ImageButton
                     android:id="@+id/btn_next_month"
@@ -103,7 +102,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/placeholder_declared_income"
                         android:textColor="@color/text_secondary"
-                        android:textSize="14sp" />
+                        android:textAppearance="@style/TextAppearance.Clarity.Footnote" />
 
                     <TextView
                         android:id="@+id/tv_unallocated_status"
@@ -112,7 +111,7 @@
                         android:layout_marginTop="4dp"
                         android:text="@string/placeholder_left_to_budget"
                         android:textColor="@color/primary"
-                        android:textSize="24sp"
+                        android:textAppearance="@style/TextAppearance.Clarity.Title2"
                         android:textStyle="bold" />
 
                     <!-- Simple helper indicator -->
@@ -123,7 +122,7 @@
                         android:layout_marginTop="4dp"
                         android:text="@string/text_zbb_rule"
                         android:textColor="@color/text_secondary"
-                        android:textSize="12sp"
+                        android:textAppearance="@style/TextAppearance.Clarity.Caption1"
                         android:textStyle="italic" />
 
                     <LinearLayout
@@ -193,7 +192,7 @@
                         android:layout_marginEnd="12dp"
                         android:text="Copy allocations from the previous month?"
                         android:textColor="@color/text_primary"
-                        android:textSize="14sp" />
+                        android:textAppearance="@style/TextAppearance.Clarity.Footnote" />
 
                     <Button android:id="@+id/btn_copy_previous"
                         style="@style/Widget.Clarity.Button.Text"
@@ -235,7 +234,7 @@
                             android:layout_height="wrap_content"
                             android:text="@string/placeholder_needs_percent"
                             android:textColor="@color/text_primary"
-                            android:textSize="16sp"
+                            android:textAppearance="@style/TextAppearance.Clarity.Callout"
                             android:textStyle="bold" />
 
                         <TextView
@@ -245,7 +244,7 @@
                             android:layout_alignParentEnd="true"
                             android:text="₹0 / ₹0"
                             android:textColor="@color/text_secondary"
-                            android:textSize="14sp" />
+                            android:textAppearance="@style/TextAppearance.Clarity.Footnote" />
                     </RelativeLayout>
 
                     <!-- Linear Progress Indicator -->
@@ -309,7 +308,7 @@
                             android:layout_height="wrap_content"
                             android:text="@string/placeholder_wants_percent"
                             android:textColor="@color/text_primary"
-                            android:textSize="16sp"
+                            android:textAppearance="@style/TextAppearance.Clarity.Callout"
                             android:textStyle="bold" />
 
                         <TextView
@@ -319,7 +318,7 @@
                             android:layout_alignParentEnd="true"
                             android:text="₹0 / ₹0"
                             android:textColor="@color/text_secondary"
-                            android:textSize="14sp" />
+                            android:textAppearance="@style/TextAppearance.Clarity.Footnote" />
                     </RelativeLayout>
 
                     <!-- Linear Progress Indicator -->
@@ -384,7 +383,7 @@
                             android:layout_height="wrap_content"
                             android:text="@string/placeholder_savings_percent"
                             android:textColor="@color/text_primary"
-                            android:textSize="16sp"
+                            android:textAppearance="@style/TextAppearance.Clarity.Callout"
                             android:textStyle="bold" />
 
                         <TextView
@@ -394,7 +393,7 @@
                             android:layout_alignParentEnd="true"
                             android:text="₹0 / ₹0"
                             android:textColor="@color/text_secondary"
-                            android:textSize="14sp" />
+                            android:textAppearance="@style/TextAppearance.Clarity.Footnote" />
                     </RelativeLayout>
 
                     <!-- Linear Progress Indicator -->

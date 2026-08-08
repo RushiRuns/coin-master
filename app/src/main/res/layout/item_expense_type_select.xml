@@ -47,7 +47,7 @@
         android:layout_marginStart="16dp"
         android:text="Groceries"
         android:textColor="@color/text_primary"
-        android:textSize="16sp"
+        android:textAppearance="@style/TextAppearance.Clarity.Callout"
         android:textStyle="bold"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -62,7 +62,7 @@
         android:layout_marginEnd="16dp"
         android:text="Needs"
         android:textColor="@color/text_secondary"
-        android:textSize="12sp"
+        android:textAppearance="@style/TextAppearance.Clarity.Caption1"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />

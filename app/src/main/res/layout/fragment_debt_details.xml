@@ -60,7 +60,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textColor="@color/text_primary"
-                        android:textSize="22sp"
+                        android:textAppearance="@style/TextAppearance.Clarity.Title2"
                         android:textStyle="bold"
                         tools:text="Sunita Sharma" />
 
@@ -69,7 +69,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
-                        android:textSize="12sp"
+                        android:textAppearance="@style/TextAppearance.Clarity.Caption1"
                         android:textStyle="bold"
                         tools:text="LENT (They owe you)"
                         tools:textColor="@color/color_positive" />
@@ -98,7 +98,7 @@
                                 android:layout_height="wrap_content"
                                 android:text="Remaining"
                                 android:textColor="@color/text_secondary"
-                                android:textSize="12sp" />
+                                android:textAppearance="@style/TextAppearance.Clarity.Caption1" />
 
                             <TextView
                                 android:id="@+id/tv_remaining_amount"
@@ -106,8 +106,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="4dp"
                                 android:textColor="@color/text_primary"
-                                android:textSize="20sp"
-                                android:textStyle="bold"
+                                android:textAppearance="@style/TextAppearance.Clarity.Title3"
                                 tools:text="₹ 2,000.00" />
                         </LinearLayout>
 
@@ -122,7 +121,7 @@
                                 android:layout_height="wrap_content"
                                 android:text="Total Amount"
                                 android:textColor="@color/text_secondary"
-                                android:textSize="12sp" />
+                                android:textAppearance="@style/TextAppearance.Clarity.Caption1" />
 
                             <TextView
                                 android:id="@+id/tv_total_amount"
@@ -130,7 +129,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="4dp"
                                 android:textColor="@color/text_secondary"
-                                android:textSize="20sp"
+                                android:textAppearance="@style/TextAppearance.Clarity.Title3"
                                 tools:text="₹ 2,000.00" />
                         </LinearLayout>
                     </LinearLayout>
@@ -141,7 +140,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/spacing_grouped"
                         android:textColor="@color/text_secondary"
-                        android:textSize="14sp"
+                        android:textAppearance="@style/TextAppearance.Clarity.Footnote"
                         tools:text="Due Date: 30 Jun 2026" />
 
                     <TextView
@@ -150,7 +149,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:textColor="@color/text_secondary"
-                        android:textSize="14sp"
+                        android:textAppearance="@style/TextAppearance.Clarity.Footnote"
                         tools:text="Note: For shopping bills" />
 
                 </LinearLayout>
@@ -163,7 +162,7 @@
                 android:layout_marginBottom="8dp"
                 android:text="Payment History"
                 android:textColor="@color/text_secondary"
-                android:textSize="12sp"
+                android:textAppearance="@style/TextAppearance.Clarity.Caption1"
                 android:textStyle="bold"
                 android:letterSpacing="0.1"
                 android:textAllCaps="true" />
@@ -196,7 +195,7 @@
                         android:padding="24dp"
                         android:text="No transactions found."
                         android:textColor="@color/text_secondary"
-                        android:textSize="14sp"
+                        android:textAppearance="@style/TextAppearance.Clarity.Footnote"
                         android:visibility="gone" />
 
                 </LinearLayout>
@@ -213,7 +212,7 @@
         android:layout_gravity="bottom"
         android:layout_margin="16dp"
         android:text="Record Repayment"
-        android:textSize="14sp"
+        android:textAppearance="@style/TextAppearance.Clarity.Footnote"
         android:textStyle="bold"
         app:cornerRadius="@dimen/shape_small" />
 

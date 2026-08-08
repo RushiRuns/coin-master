@@ -28,7 +28,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/spacing_grouped"
             android:text="Welcome to CoinMaster"
-            android:textSize="28sp"
+            android:textAppearance="@style/TextAppearance.Clarity.Title1"
             android:textStyle="bold"
             android:textColor="@color/text_primary"
             android:gravity="center"
@@ -42,7 +42,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:text="A local-first, zero-based personal budget planner built to keep your financial data completely offline and secure."
-            android:textSize="16sp"
+            android:textAppearance="@style/TextAppearance.Clarity.Callout"
             android:textColor="@color/text_secondary"
             android:gravity="center"
             app:layout_constraintTop_toBottomOf="@id/tv_title"
@@ -84,7 +84,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Start Fresh"
-                        android:textSize="18sp"
+                        android:textAppearance="@style/TextAppearance.Clarity.Body"
                         android:textStyle="bold"
                         android:textColor="@color/primary" />
 
@@ -93,7 +93,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
                         android:text="Set up a new envelope budget, accounts, and income streams from scratch."
-                        android:textSize="14sp"
+                        android:textAppearance="@style/TextAppearance.Clarity.Footnote"
                         android:textColor="@color/text_secondary" />
 
                 </LinearLayout>
@@ -122,7 +122,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Restore from Backup"
-                        android:textSize="18sp"
+                        android:textAppearance="@style/TextAppearance.Clarity.Body"
                         android:textStyle="bold"
                         android:textColor="@color/text_primary" />
 
@@ -131,7 +131,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
                         android:text="Import an existing CoinMaster backup file (.db) to restore all your data and settings."
-                        android:textSize="14sp"
+                        android:textAppearance="@style/TextAppearance.Clarity.Footnote"
                         android:textColor="@color/text_secondary" />
 
                 </LinearLayout>

@@ -45,7 +45,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="Classify your budgeting envelopes as Fixed (predictable bills) or Variable (flexible, adjustable spending) to run analytics on discretionary vs commit-oriented expenses."
-                android:textSize="14sp"
+                android:textAppearance="@style/TextAppearance.Clarity.Footnote"
                 android:textColor="@color/text_secondary"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -59,7 +59,7 @@
                 android:layout_marginTop="@dimen/spacing_large"
                 android:text="Unassigned Expenses"
                 android:textColor="@color/text_primary"
-                android:textSize="16sp"
+                android:textAppearance="@style/TextAppearance.Clarity.Callout"
                 android:textStyle="bold"
                 app:layout_constraintTop_toBottomOf="@id/tv_desc"
                 app:layout_constraintStart_toStartOf="parent"
@@ -90,7 +90,7 @@
                         android:gravity="center"
                         android:text="No unclassified expenses."
                         android:textColor="@color/text_secondary"
-                        android:textSize="14sp"
+                        android:textAppearance="@style/TextAppearance.Clarity.Footnote"
                         android:visibility="gone" />
 
                     <LinearLayout
@@ -109,7 +109,7 @@
                 android:layout_marginTop="@dimen/spacing_large"
                 android:text="Fixed Expenses"
                 android:textColor="@color/primary"
-                android:textSize="16sp"
+                android:textAppearance="@style/TextAppearance.Clarity.Callout"
                 android:textStyle="bold"
                 app:layout_constraintTop_toBottomOf="@id/card_unclassified"
                 app:layout_constraintStart_toStartOf="parent"
@@ -140,7 +140,7 @@
                         android:gravity="center"
                         android:text="No fixed expenses. Select variable envelopes below and assign them to Fixed."
                         android:textColor="@color/text_secondary"
-                        android:textSize="14sp"
+                        android:textAppearance="@style/TextAppearance.Clarity.Footnote"
                         android:visibility="gone" />
 
                     <LinearLayout
@@ -159,7 +159,7 @@
                 android:layout_marginTop="@dimen/spacing_large"
                 android:text="Variable Expenses"
                 android:textColor="@color/secondary"
-                android:textSize="16sp"
+                android:textAppearance="@style/TextAppearance.Clarity.Callout"
                 android:textStyle="bold"
                 app:layout_constraintTop_toBottomOf="@id/card_fixed"
                 app:layout_constraintStart_toStartOf="parent"
@@ -191,7 +191,7 @@
                         android:gravity="center"
                         android:text="No variable expenses."
                         android:textColor="@color/text_secondary"
-                        android:textSize="14sp"
+                        android:textAppearance="@style/TextAppearance.Clarity.Footnote"
                         android:visibility="gone" />
 
                     <LinearLayout
@@ -230,7 +230,7 @@
                 android:layout_height="wrap_content"
                 android:text="0 envelopes selected"
                 android:textColor="@color/text_primary"
-                android:textSize="14sp"
+                android:textAppearance="@style/TextAppearance.Clarity.Footnote"
                 android:textStyle="bold" />
 
             <LinearLayout

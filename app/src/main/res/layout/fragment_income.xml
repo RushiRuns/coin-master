@@ -72,8 +72,8 @@
                         android:layout_marginTop="4dp"
                         android:text="₹ 0.00"
                         android:textColor="@color/white"
-                        android:textSize="34sp"
-                        android:textStyle="bold" />
+                        android:textAppearance="@style/TextAppearance.Clarity.LargeTitle"
+                         />
 
                     <TextView
                         android:id="@+id/tv_stream_count"
@@ -82,7 +82,7 @@
                         android:layout_marginTop="4dp"
                         android:text="0 income streams"
                         android:textColor="@color/white"
-                        android:textSize="12sp"
+                        android:textAppearance="@style/TextAppearance.Clarity.Caption1"
                         android:alpha="0.8" />
 
                 </LinearLayout>
@@ -109,7 +109,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Add Income Stream"
-                        android:textSize="16sp"
+                        android:textAppearance="@style/TextAppearance.Clarity.Callout"
                         android:textStyle="bold"
                         android:textColor="@color/text_primary" />
 
@@ -118,7 +118,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
                         android:text="Declare a salary, freelance, rental income or any recurring source."
-                        android:textSize="12sp"
+                        android:textAppearance="@style/TextAppearance.Clarity.Caption1"
                         android:textColor="@color/text_secondary" />
 
                     <com.google.android.material.textfield.TextInputLayout
@@ -207,7 +207,7 @@
                 android:padding="24dp"
                 android:text="No income streams added yet.\nTap &quot;Add Income Stream&quot; above to get started."
                 android:textColor="@color/text_secondary"
-                android:textSize="14sp"
+                android:textAppearance="@style/TextAppearance.Clarity.Footnote"
                 android:visibility="gone" />
 
             <!-- Dynamic list container -->

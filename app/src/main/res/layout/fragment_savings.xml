@@ -62,7 +62,7 @@
                         android:layout_height="wrap_content"
                         android:text="Target: ₹0.00"
                         android:textColor="@color/text_secondary"
-                        android:textSize="14sp" />
+                        android:textAppearance="@style/TextAppearance.Clarity.Footnote" />
 
                     <TextView
                         android:id="@+id/tv_remaining_savings"
@@ -71,7 +71,7 @@
                         android:layout_marginTop="4dp"
                         android:text="₹0.00 Left to Allocate"
                         android:textColor="@color/secondary"
-                        android:textSize="24sp"
+                        android:textAppearance="@style/TextAppearance.Clarity.Title2"
                         android:textStyle="bold" />
 
                     <TextView
@@ -80,7 +80,7 @@
                         android:layout_marginTop="4dp"
                         android:text="ZBB requires allocating your entire savings target to envelopes."
                         android:textColor="@color/text_secondary"
-                        android:textSize="12sp"
+                        android:textAppearance="@style/TextAppearance.Clarity.Caption1"
                         android:textStyle="italic" />
 
                     <!-- Bucket Ratio and Progress -->
@@ -94,7 +94,7 @@
                             android:layout_height="wrap_content"
                             android:text="Allocated Split"
                             android:textColor="@color/text_primary"
-                            android:textSize="14sp"
+                            android:textAppearance="@style/TextAppearance.Clarity.Footnote"
                             android:textStyle="bold" />
 
                         <TextView
@@ -104,7 +104,7 @@
                             android:layout_alignParentEnd="true"
                             android:text="₹0 / ₹0"
                             android:textColor="@color/text_secondary"
-                            android:textSize="14sp" />
+                            android:textAppearance="@style/TextAppearance.Clarity.Footnote" />
                     </RelativeLayout>
 
                     <com.google.android.material.progressindicator.LinearProgressIndicator
@@ -128,7 +128,7 @@
                 android:layout_marginTop="@dimen/spacing_large"
                 android:text="Savings Envelopes"
                 android:textColor="@color/text_primary"
-                android:textSize="16sp"
+                android:textAppearance="@style/TextAppearance.Clarity.Callout"
                 android:textStyle="bold"
                 app:layout_constraintTop_toBottomOf="@id/card_savings_status"
                 app:layout_constraintStart_toStartOf="parent" />
@@ -158,7 +158,7 @@
                         android:gravity="center"
                         android:text="No savings envelopes allocated. Click below to add an envelope."
                         android:textColor="@color/text_secondary"
-                        android:textSize="14sp"
+                        android:textAppearance="@style/TextAppearance.Clarity.Footnote"
                         android:visibility="gone" />
 
                     <!-- Container for dynamic envelope list -->

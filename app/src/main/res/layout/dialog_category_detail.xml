@@ -12,8 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Category Name"
-        android:textSize="20sp"
-        android:textStyle="bold"
+        android:textAppearance="@style/TextAppearance.Clarity.Title3"
         android:textColor="@color/primary" />
 
     <TextView
@@ -22,7 +21,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
         android:text="Aggregated Summary"
-        android:textSize="14sp"
+        android:textAppearance="@style/TextAppearance.Clarity.Footnote"
         android:textColor="@color/text_secondary" />
 
     <View

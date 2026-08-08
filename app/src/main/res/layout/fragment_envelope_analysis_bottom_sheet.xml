@@ -23,8 +23,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textColor="@color/text_primary"
-        android:textSize="20sp"
-        android:textStyle="bold"
+        android:textAppearance="@style/TextAppearance.Clarity.Title3"
         tools:text="Groceries Envelopes" />
 
     <!-- Subtitle -->
@@ -34,7 +33,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
         android:textColor="@color/text_secondary"
-        android:textSize="14sp"
+        android:textAppearance="@style/TextAppearance.Clarity.Footnote"
         tools:text="Total Spent: ₹420.75 / Allocated: ₹550" />
 
     <!-- Envelopes RecyclerView -->

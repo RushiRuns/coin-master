@@ -16,7 +16,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="@string/ob_account_title"
-            android:textSize="24sp"
+            android:textAppearance="@style/TextAppearance.Clarity.Title2"
             android:textStyle="bold"
             android:textColor="@color/primary"
             app:layout_constraintTop_toTopOf="parent"
@@ -29,7 +29,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:text="@string/ob_account_desc"
-            android:textSize="16sp"
+            android:textAppearance="@style/TextAppearance.Clarity.Callout"
             android:textColor="@color/text_secondary"
             app:layout_constraintTop_toBottomOf="@id/tv_title"
             app:layout_constraintStart_toStartOf="parent"
@@ -58,7 +58,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/label_account_name"
-                    android:textSize="16sp"
+                    android:textAppearance="@style/TextAppearance.Clarity.Callout"
                     android:textStyle="bold"
                     android:textColor="@color/text_primary" />
 
@@ -85,7 +85,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/spacing_large"
                     android:text="@string/ob_label_account_type"
-                    android:textSize="16sp"
+                    android:textAppearance="@style/TextAppearance.Clarity.Callout"
                     android:textStyle="bold"
                     android:textColor="@color/text_primary" />
 
@@ -115,7 +115,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/spacing_large"
                     android:text="@string/label_opening_balance"
-                    android:textSize="16sp"
+                    android:textAppearance="@style/TextAppearance.Clarity.Callout"
                     android:textStyle="bold"
                     android:textColor="@color/text_primary" />
 

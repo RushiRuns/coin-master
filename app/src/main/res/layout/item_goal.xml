@@ -30,7 +30,7 @@
                 android:layout_height="wrap_content"
                 android:text="MacBook Pro"
                 android:textColor="@color/text_primary"
-                android:textSize="16sp"
+                android:textAppearance="@style/TextAppearance.Clarity.Callout"
                 android:textStyle="bold" />
 
             <!-- Goal Category (Caption) -->
@@ -42,7 +42,7 @@
                 android:layout_marginTop="2dp"
                 android:text="Envelope: Tech Savings"
                 android:textColor="@color/text_secondary"
-                android:textSize="12sp" />
+                android:textAppearance="@style/TextAppearance.Clarity.Caption1" />
 
             <ImageButton
                 android:id="@+id/btn_delete_goal"
@@ -85,7 +85,7 @@
                 android:layout_height="wrap_content"
                 android:text="₹20,000 saved"
                 android:textColor="@color/primary"
-                android:textSize="14sp"
+                android:textAppearance="@style/TextAppearance.Clarity.Footnote"
                 android:textStyle="bold" />
 
             <TextView
@@ -95,7 +95,7 @@
                 android:layout_alignParentEnd="true"
                 android:text="of ₹60,000"
                 android:textColor="@color/text_secondary"
-                android:textSize="14sp" />
+                android:textAppearance="@style/TextAppearance.Clarity.Footnote" />
         </RelativeLayout>
 
         <!-- Linear Progress Indicator (MD2: 4dp thick, square ends) -->
@@ -120,7 +120,7 @@
                 android:layout_height="wrap_content"
                 android:text="Target: Dec 2026"
                 android:textColor="@color/text_secondary"
-                android:textSize="12sp" />
+                android:textAppearance="@style/TextAppearance.Clarity.Caption1" />
 
             <TextView
                 android:id="@+id/tv_goal_percent"
@@ -129,7 +129,7 @@
                 android:layout_alignParentEnd="true"
                 android:text="33%"
                 android:textColor="@color/text_primary"
-                android:textSize="12sp"
+                android:textAppearance="@style/TextAppearance.Clarity.Caption1"
                 android:textStyle="bold" />
         </RelativeLayout>
 
@@ -148,7 +148,7 @@
             android:layout_height="wrap_content"
             android:text="Monthly savings needed: ₹8,000/month"
             android:textColor="@color/text_primary"
-            android:textSize="14sp"
+            android:textAppearance="@style/TextAppearance.Clarity.Footnote"
             android:textStyle="bold" />
 
     </LinearLayout>

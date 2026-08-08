@@ -16,7 +16,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="@string/ob_income_title"
-            android:textSize="24sp"
+            android:textAppearance="@style/TextAppearance.Clarity.Title2"
             android:textStyle="bold"
             android:textColor="@color/primary"
             app:layout_constraintTop_toTopOf="parent"
@@ -29,7 +29,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:text="@string/ob_income_desc"
-            android:textSize="16sp"
+            android:textAppearance="@style/TextAppearance.Clarity.Callout"
             android:textColor="@color/text_secondary"
             app:layout_constraintTop_toBottomOf="@id/tv_title"
             app:layout_constraintStart_toStartOf="parent"
@@ -58,7 +58,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Add Income Stream"
-                    android:textSize="16sp"
+                    android:textAppearance="@style/TextAppearance.Clarity.Callout"
                     android:textStyle="bold"
                     android:textColor="@color/text_primary" />
 
@@ -129,7 +129,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/spacing_grouped"
             android:text="Declared Income Streams"
-            android:textSize="16sp"
+            android:textAppearance="@style/TextAppearance.Clarity.Callout"
             android:textStyle="bold"
             android:textColor="@color/text_primary"
             app:layout_constraintTop_toBottomOf="@id/card_form"
@@ -169,7 +169,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="Total Monthly Income"
-                    android:textSize="16sp"
+                    android:textAppearance="@style/TextAppearance.Clarity.Callout"
                     android:textStyle="bold"
                     android:textColor="@android:color/white" />
 
@@ -178,7 +178,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="₹0.00"
-                    android:textSize="18sp"
+                    android:textAppearance="@style/TextAppearance.Clarity.Body"
                     android:textStyle="bold"
                     android:textColor="@android:color/white" />
             </LinearLayout>
@@ -208,7 +208,7 @@
                 android:padding="@dimen/spacing_list_item"
                 android:text="@string/ob_info_zbb"
                 android:textColor="@color/text_secondary"
-                android:textSize="14sp"
+                android:textAppearance="@style/TextAppearance.Clarity.Footnote"
                 android:lineSpacingMultiplier="1.2" />
         </com.google.android.material.card.MaterialCardView>
 

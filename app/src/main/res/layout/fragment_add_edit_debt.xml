@@ -28,8 +28,7 @@
                 android:layout_height="wrap_content"
                 android:text="Add Loan / Debt"
                 android:textColor="@color/text_primary"
-                android:textSize="20sp"
-                android:textStyle="bold" />
+                android:textAppearance="@style/TextAppearance.Clarity.Title3" />
         </com.google.android.material.appbar.MaterialToolbar>
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -68,7 +67,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Person Name"
-                        android:textSize="16sp"
+                        android:textAppearance="@style/TextAppearance.Clarity.Callout"
                         android:textStyle="bold"
                         android:textColor="@color/text_primary" />
 
@@ -96,7 +95,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/spacing_grouped"
                         android:text="Type of Loan"
-                        android:textSize="16sp"
+                        android:textAppearance="@style/TextAppearance.Clarity.Callout"
                         android:textStyle="bold"
                         android:textColor="@color/text_primary" />
 
@@ -129,7 +128,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/spacing_grouped"
                         android:text="Amount (₹)"
-                        android:textSize="16sp"
+                        android:textAppearance="@style/TextAppearance.Clarity.Callout"
                         android:textStyle="bold"
                         android:textColor="@color/text_primary" />
 
@@ -157,7 +156,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/spacing_grouped"
                         android:text="Link to Account"
-                        android:textSize="16sp"
+                        android:textAppearance="@style/TextAppearance.Clarity.Callout"
                         android:textStyle="bold"
                         android:textColor="@color/text_primary" />
 
@@ -188,7 +187,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/spacing_grouped"
                         android:text="Due Date (Optional)"
-                        android:textSize="16sp"
+                        android:textAppearance="@style/TextAppearance.Clarity.Callout"
                         android:textStyle="bold"
                         android:textColor="@color/text_primary" />
 
@@ -217,7 +216,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/spacing_grouped"
                         android:text="Note"
-                        android:textSize="16sp"
+                        android:textAppearance="@style/TextAppearance.Clarity.Callout"
                         android:textStyle="bold"
                         android:textColor="@color/text_primary" />
 
@@ -248,7 +247,7 @@
                 android:layout_height="48dp"
                 android:layout_marginTop="@dimen/spacing_grouped"
                 android:text="Save"
-                android:textSize="14sp"
+                android:textAppearance="@style/TextAppearance.Clarity.Footnote"
                 android:textStyle="bold"
                 app:cornerRadius="@dimen/shape_small"
                 app:layout_constraintTop_toBottomOf="@id/card_form"
