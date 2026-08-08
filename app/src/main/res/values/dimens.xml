@@ -1,16 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Spacing Scale (Clarity Design System) -->
-    <dimen name="spacing_1">4dp</dimen>
-    <dimen name="spacing_2">8dp</dimen>
-    <dimen name="spacing_3">12dp</dimen>
-    <dimen name="spacing_4">16dp</dimen>
-    <dimen name="spacing_5">20dp</dimen>
-    <dimen name="spacing_6">24dp</dimen>
-    <dimen name="spacing_8">32dp</dimen>
-    <dimen name="spacing_10">40dp</dimen>
-    <dimen name="spacing_12">48dp</dimen>
-    <dimen name="spacing_16">64dp</dimen>
+    <!-- Apple HIG Semantic Spacing System -->
+    <dimen name="spacing_inline">4dp</dimen>
+    <dimen name="spacing_related">8dp</dimen>
+    <dimen name="spacing_list_item">12dp</dimen>
+    <dimen name="spacing_button_gap">12dp</dimen>
+    <dimen name="spacing_grouped">16dp</dimen>
+    <dimen name="spacing_input_vertical">16dp</dimen>
+    <dimen name="spacing_input_horizontal">16dp</dimen>
+    <dimen name="spacing_section">20dp</dimen>
+    <dimen name="spacing_screen_edge">20dp</dimen>
+    <dimen name="spacing_card_inset">20dp</dimen>
+    <dimen name="spacing_large">24dp</dimen>
+    <dimen name="spacing_extra_large">32dp</dimen>
     
     <!-- Shape Radii -->
     <dimen name="shape_none">0dp</dimen>
