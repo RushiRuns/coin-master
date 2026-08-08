@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Brand Colors (Clarity Design System) -->
-    <color name="primary">#4F5BD5</color> <!-- Clarity Indigo -->
-    <color name="primary_variant">#3A46C0</color>
-    <color name="secondary">#5C5F7A</color>
-    <color name="secondary_variant">#3A3D55</color>
+    <!-- Brand Colors (Clarity Monochrome + Electric Blue Accent) -->
+    <color name="primary">#007AFF</color> <!-- Electric Blue -->
+    <color name="primary_variant">#005CE6</color>
+    <color name="secondary">#8E8E93</color> <!-- Monochrome -->
+    <color name="secondary_variant">#636366</color> <!-- Monochrome -->
     
     <!-- UI Element Colors -->
     <color name="background">#F2F2F7</color>
     <color name="surface">#FFFFFF</color>
-    <color name="error">#FF3B30</color> <!-- Clarity expense red -->
+    <color name="error">#1C1C1E</color> <!-- Monochrome (Replaced Red) -->
     <color name="text_primary">#1A1A1A</color>
     <color name="text_secondary">#7C7C82</color>
     <color name="divider">#D8D8E0</color>
@@ -18,27 +18,27 @@
     <color name="black">#FF000000</color>
     
     <!-- Indicator/Chart Colors -->
-    <color name="color_needs">#4F5BD5</color>
-    <color name="color_wants">#FF9500</color>
-    <color name="color_savings">#5AC8FA</color>
+    <color name="color_needs">#007AFF</color> <!-- Electric Blue Accent -->
+    <color name="color_wants">#AEAEB2</color> <!-- Monochrome -->
+    <color name="color_savings">#D1D1D6</color> <!-- Monochrome -->
     
     <!-- Semantic Colors -->
-    <color name="color_positive">#34C759</color> <!-- Clarity income green -->
-    <color name="color_negative">#FF3B30</color> <!-- Clarity expense red -->
+    <color name="color_positive">#000000</color> <!-- Monochrome -->
+    <color name="color_negative">#8E8E93</color> <!-- Monochrome -->
     
     <!-- Selection highlight color -->
-    <color name="selected_item_background">#E6E8FF</color>
+    <color name="selected_item_background">#E5F0FF</color> <!-- Light Electric Blue Tint -->
 
     <!-- NEW Clarity Tokens -->
-    <color name="color_income_container">#E8F9ED</color>
-    <color name="color_expense_container">#FFF0EE</color>
-    <color name="color_transfer">#007AFF</color>
-    <color name="color_envelope">#AF52DE</color>
-    <color name="color_envelope_container">#F5EAFF</color>
-    <color name="color_warning">#FF9500</color>
-    <color name="color_warning_container">#FFF8E6</color>
+    <color name="color_income_container">#E5E5EA</color> <!-- Monochrome -->
+    <color name="color_expense_container">#F2F2F7</color> <!-- Monochrome -->
+    <color name="color_transfer">#C7C7CC</color> <!-- Monochrome -->
+    <color name="color_envelope">#8E8E93</color> <!-- Monochrome -->
+    <color name="color_envelope_container">#E5E5EA</color> <!-- Monochrome -->
+    <color name="color_warning">#AEAEB2</color> <!-- Monochrome -->
+    <color name="color_warning_container">#F2F2F7</color> <!-- Monochrome -->
     <color name="color_surface_variant">#E8E8EF</color>
     <color name="color_outline">#B0B0BE</color>
     <color name="color_outline_variant">#D8D8E0</color>
-    <color name="color_primary_container">#E6E8FF</color>
+    <color name="color_primary_container">#E5F0FF</color> <!-- Light Electric Blue Tint -->
 </resources>

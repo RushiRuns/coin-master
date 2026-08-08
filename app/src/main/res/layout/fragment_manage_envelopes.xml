@@ -88,7 +88,7 @@
                             android:textColor="@color/text_primary" />
                     </com.google.android.material.textfield.TextInputLayout>
 
-                    <Button app:backgroundTint="@null" android:background="@drawable/bg_primary_button" 
+                    <Button style="@style/Widget.Clarity.Button.Primary" 
                         android:id="@+id/btn_add_envelope"
                         android:layout_width="match_parent"
                         android:layout_height="48dp"

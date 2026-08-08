@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Brand Colors (Clarity Design System) -->
-    <color name="primary">#8B95F5</color>
-    <color name="primary_variant">#7080F0</color>
-    <color name="secondary">#C2C3DC</color>
-    <color name="secondary_variant">#3A3D55</color>
+    <!-- Brand Colors (Clarity Monochrome + Electric Blue Accent) -->
+    <color name="primary">#0A84FF</color> <!-- Electric Blue -->
+    <color name="primary_variant">#0060DF</color>
+    <color name="secondary">#8E8E93</color>
+    <color name="secondary_variant">#636366</color>
     
     <!-- UI Element Colors -->
     <color name="background">#000000</color>
     <color name="surface">#1C1C1E</color>
-    <color name="error">#FF453A</color>
+    <color name="error">#E5E5EA</color> <!-- Monochrome (Replaced Red) -->
     <color name="text_primary">#DEDEDE</color>
     <color name="text_secondary">#9898A8</color>
     <color name="divider">#3A3A3C</color>
@@ -18,27 +18,27 @@
     <color name="black">#FF000000</color>
     
     <!-- Indicator/Chart Colors -->
-    <color name="color_needs">#8B95F5</color>
-    <color name="color_wants">#FF9F0A</color>
-    <color name="color_savings">#64D2FF</color>
+    <color name="color_needs">#0A84FF</color> <!-- Electric Blue Accent -->
+    <color name="color_wants">#636366</color> <!-- Monochrome -->
+    <color name="color_savings">#48484A</color> <!-- Monochrome -->
     
     <!-- Semantic Colors -->
-    <color name="color_positive">#30DB5B</color>
-    <color name="color_negative">#FF453A</color>
+    <color name="color_positive">#FFFFFF</color> <!-- Monochrome -->
+    <color name="color_negative">#8E8E93</color> <!-- Monochrome -->
     
     <!-- Selection highlight color (dark mode) -->
-    <color name="selected_item_background">#1E2560</color>
+    <color name="selected_item_background">#003366</color> <!-- Dark Electric Blue Tint -->
 
     <!-- NEW Clarity Tokens -->
-    <color name="color_income_container">#0D3D1D</color>
-    <color name="color_expense_container">#4A1210</color>
-    <color name="color_transfer">#0A84FF</color>
-    <color name="color_envelope">#BF5AF2</color>
-    <color name="color_envelope_container">#341545</color>
-    <color name="color_warning">#FF9F0A</color>
-    <color name="color_warning_container">#3D2800</color>
+    <color name="color_income_container">#2C2C2E</color> <!-- Monochrome -->
+    <color name="color_expense_container">#1C1C1E</color> <!-- Monochrome -->
+    <color name="color_transfer">#48484A</color> <!-- Monochrome -->
+    <color name="color_envelope">#8E8E93</color> <!-- Monochrome -->
+    <color name="color_envelope_container">#2C2C2E</color> <!-- Monochrome -->
+    <color name="color_warning">#636366</color> <!-- Monochrome -->
+    <color name="color_warning_container">#1C1C1E</color> <!-- Monochrome -->
     <color name="color_surface_variant">#2C2C2E</color>
     <color name="color_outline">#58585A</color>
     <color name="color_outline_variant">#3A3A3C</color>
-    <color name="color_primary_container">#1E2560</color>
+    <color name="color_primary_container">#003366</color> <!-- Dark Electric Blue Tint -->
 </resources>

@@ -58,17 +58,15 @@
         android:gravity="end"
         android:layout_marginTop="8dp">
 
-        <Button app:backgroundTint="@null" android:background="@drawable/bg_primary_button" 
-            android:id="@+id/btn_add_envelope"
-            style="@style/Widget.MaterialComponents.Button.TextButton"
+        <Button android:id="@+id/btn_add_envelope"
+            style="@style/Widget.Clarity.Button.Text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="+ ADD ENVELOPE"
             android:textColor="@color/primary" />
 
-        <Button app:backgroundTint="@null" android:background="@drawable/bg_primary_button" 
-            android:id="@+id/btn_close"
-            style="@style/Widget.MaterialComponents.Button.TextButton"
+        <Button android:id="@+id/btn_close"
+            style="@style/Widget.Clarity.Button.Text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Close" />

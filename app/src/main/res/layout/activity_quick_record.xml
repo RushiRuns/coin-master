@@ -111,16 +111,15 @@
             android:orientation="horizontal"
             android:gravity="end">
 
-            <Button app:backgroundTint="@null" android:background="@drawable/bg_primary_button" 
-                android:id="@+id/btn_cancel"
-                style="@style/Widget.MaterialComponents.Button.TextButton"
+            <Button android:id="@+id/btn_cancel"
+                style="@style/Widget.Clarity.Button.Text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/btn_cancel"
                 android:textColor="@color/text_secondary"
                 android:layout_marginEnd="8dp" />
 
-            <Button app:backgroundTint="@null" android:background="@drawable/bg_primary_button" 
+            <Button style="@style/Widget.Clarity.Button.Primary" 
                 android:id="@+id/btn_save"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

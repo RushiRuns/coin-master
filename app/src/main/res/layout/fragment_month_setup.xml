@@ -83,7 +83,7 @@
 
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/btn_select_start_date"
-                            style="@style/Widget.MaterialComponents.Button.TextButton"
+                            style="@style/Widget.Clarity.Button.Text"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Change" />
@@ -116,7 +116,7 @@
 
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/btn_select_end_date"
-                            style="@style/Widget.MaterialComponents.Button.TextButton"
+                            style="@style/Widget.Clarity.Button.Text"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Change" />

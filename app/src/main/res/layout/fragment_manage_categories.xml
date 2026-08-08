@@ -125,16 +125,15 @@
                         android:orientation="horizontal"
                         android:layout_marginTop="@dimen/spacing_grouped">
 
-                        <Button app:backgroundTint="@null" android:background="@drawable/bg_primary_button" 
+                        <Button style="@style/Widget.Clarity.Button.Primary" 
                             android:id="@+id/btn_add_category"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:text="Add Category" />
 
-                        <Button app:backgroundTint="@null" android:background="@drawable/bg_primary_button" 
-                            android:id="@+id/btn_cancel_edit"
-                            style="@style/Widget.MaterialComponents.Button.TextButton"
+                        <Button android:id="@+id/btn_cancel_edit"
+                            style="@style/Widget.Clarity.Button.Text"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="8dp"

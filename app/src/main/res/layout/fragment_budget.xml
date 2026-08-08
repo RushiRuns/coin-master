@@ -133,9 +133,8 @@
                         android:orientation="horizontal"
                         android:gravity="center_vertical">
 
-                        <Button app:backgroundTint="@null" android:background="@drawable/bg_primary_button" 
-                            android:id="@+id/btn_setup_month"
-                            style="@style/Widget.MaterialComponents.Button.TextButton"
+                        <Button android:id="@+id/btn_setup_month"
+                            style="@style/Widget.Clarity.Button.Text"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/btn_setup_month" />
@@ -145,7 +144,7 @@
                             android:layout_height="1dp"
                             android:layout_weight="1" />
 
-                        <Button app:backgroundTint="@null" android:background="@drawable/bg_primary_button" 
+                        <Button style="@style/Widget.Clarity.Button.Primary" 
                             android:id="@+id/btn_activate_budget"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -196,9 +195,8 @@
                         android:textColor="@color/text_primary"
                         android:textSize="14sp" />
 
-                    <Button app:backgroundTint="@null" android:background="@drawable/bg_primary_button" 
-                        android:id="@+id/btn_copy_previous"
-                        style="@style/Widget.MaterialComponents.Button.TextButton"
+                    <Button android:id="@+id/btn_copy_previous"
+                        style="@style/Widget.Clarity.Button.Text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Copy"
@@ -270,9 +268,8 @@
                         android:orientation="vertical" />
 
                     <!-- Add Category action -->
-                    <Button app:backgroundTint="@null" android:background="@drawable/bg_primary_button" 
-                        android:id="@+id/btn_add_needs_envelope"
-                        style="@style/Widget.MaterialComponents.Button.TextButton"
+                    <Button android:id="@+id/btn_add_needs_envelope"
+                        style="@style/Widget.Clarity.Button.Text"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
@@ -345,9 +342,8 @@
                         android:orientation="vertical" />
 
                     <!-- Add Category action -->
-                    <Button app:backgroundTint="@null" android:background="@drawable/bg_primary_button" 
-                        android:id="@+id/btn_add_wants_envelope"
-                        style="@style/Widget.MaterialComponents.Button.TextButton"
+                    <Button android:id="@+id/btn_add_wants_envelope"
+                        style="@style/Widget.Clarity.Button.Text"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
@@ -421,18 +417,16 @@
                         android:orientation="vertical" />
 
                     <!-- Add Category action -->
-                    <Button app:backgroundTint="@null" android:background="@drawable/bg_primary_button" 
-                        android:id="@+id/btn_add_savings_envelope"
-                        style="@style/Widget.MaterialComponents.Button.TextButton"
+                    <Button android:id="@+id/btn_add_savings_envelope"
+                        style="@style/Widget.Clarity.Button.Text"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:text="@string/btn_add_savings_envelope"
                         android:textColor="@color/color_wants" />
 
-                    <Button app:backgroundTint="@null" android:background="@drawable/bg_primary_button" 
-                        android:id="@+id/btn_manage_goals"
-                        style="@style/Widget.MaterialComponents.Button.TextButton"
+                    <Button android:id="@+id/btn_manage_goals"
+                        style="@style/Widget.Clarity.Button.Text"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
@@ -452,7 +446,6 @@
         android:layout_margin="16dp"
         android:src="@drawable/ic_edit"
         app:tint="@color/white"
-        app:backgroundTint="@color/primary"
         android:contentDescription="@string/cd_add_transaction"
         app:shapeAppearanceOverlay="@style/ShapeAppearance.Clarity.Large" />
 

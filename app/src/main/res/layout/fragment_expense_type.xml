@@ -240,9 +240,9 @@
                 android:layout_marginTop="12dp"
                 android:weightSum="2">
 
-                <Button app:backgroundTint="@null" android:background="@drawable/bg_primary_button" 
+                <Button style="@style/Widget.Clarity.Button.Primary" 
                     android:id="@+id/btn_assign_fixed"
-                    style="@style/Widget.MaterialComponents.Button"
+                    
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -251,9 +251,9 @@
                     android:textStyle="bold"
                      />
 
-                <Button app:backgroundTint="@null" android:background="@drawable/bg_primary_button" 
+                <Button style="@style/Widget.Clarity.Button.Primary" 
                     android:id="@+id/btn_assign_variable"
-                    style="@style/Widget.MaterialComponents.Button"
+                    
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"

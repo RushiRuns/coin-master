@@ -312,7 +312,7 @@
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/btn_clear_data"
-                        style="@style/Widget.MaterialComponents.Button.TextButton"
+                        style="@style/Widget.Clarity.Button.Text"
                         android:layout_width="wrap_content"
                         android:layout_height="48dp"
                         android:text="@string/btn_clear_all_data"

@@ -113,7 +113,7 @@
                     android:paddingEnd="16dp"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <Button app:backgroundTint="@null" android:background="@drawable/bg_primary_button" 
+                <Button style="@style/Widget.Clarity.Button.Primary" 
                     android:id="@+id/btn_add_stream"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

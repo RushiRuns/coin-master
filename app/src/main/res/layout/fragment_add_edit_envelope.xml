@@ -106,9 +106,8 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <!-- Toggle Advanced Section Button -->
-            <Button app:backgroundTint="@null" android:background="@drawable/bg_primary_button" 
-                android:id="@+id/btn_toggle_advanced"
-                style="@style/Widget.MaterialComponents.Button.TextButton"
+            <Button android:id="@+id/btn_toggle_advanced"
+                style="@style/Widget.Clarity.Button.Text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/spacing_grouped"
@@ -421,12 +420,11 @@
                 android:text="@string/btn_save_envelope"
                 android:textSize="14sp"
                 android:textStyle="bold"
-                app:cornerRadius="@dimen/shape_small"
                 app:layout_constraintTop_toBottomOf="@id/layout_advanced_icon_color" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_delete_category"
-                style="@style/Widget.MaterialComponents.Button.TextButton"
+                style="@style/Widget.Clarity.Button.Text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
